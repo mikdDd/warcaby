@@ -1,0 +1,19 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>320</x><y>30</y><w>210</w><h>70</h></coordinates><panel_attributes>_Main_
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>320</y><w>210</w><h>70</h></coordinates><panel_attributes>_Game_
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>270</y><w>210</w><h>70</h></coordinates><panel_attributes>_MessageInput_
+--
+waitForText();</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>220</y><w>40</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;100;20;10</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>280</y><w>130</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;110;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>250</x><y>500</y><w>210</w><h>70</h></coordinates><panel_attributes>_Board_
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>550</x><y>470</y><w>210</w><h>70</h></coordinates><panel_attributes>_Move_
+--
+bool validation(String move);</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>390</y><w>210</w><h>70</h></coordinates><panel_attributes>_MessageOutput_
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>370</y><w>130</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;40;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>160</y><w>210</w><h>70</h></coordinates><panel_attributes>_Server_
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>620</x><y>220</y><w>210</w><h>70</h></coordinates><panel_attributes>_User_
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>90</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>240</y><w>120</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>100;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>380</y><w>70</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;120;50;10</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>380</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>30;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>620</x><y>30</y><w>210</w><h>150</h></coordinates><panel_attributes>_State_
+--
+waiting for players
+first player move
+checking move
+second player move
+game ended
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
