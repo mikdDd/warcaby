@@ -1,0 +1,23 @@
+adapter
+dekorator
+proxy
+builder
+singleton
+facade
+state
+factory
+abstract factory
+template
+strategy
+composite
+flyweight
+mediator
+observer
+command
+prototype
+bridge
+interpreter
+chain of responsibility
+memento
+visitor
+mediator + observer
