@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class Server {
+    static BufferedReader in;
     public static void main(String[] args) {
 
         try (ServerSocket serverSocket = new ServerSocket(4444)) {
@@ -22,7 +23,7 @@ public class Server {
                 Thread gTh = new Thread(g);
                 gTh.start();
 
-                // TODO: Musi byc dokldnie dwoch klientow
+
 
             }
 
