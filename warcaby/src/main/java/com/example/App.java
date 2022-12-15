@@ -1,9 +1,14 @@
 package com.example;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -19,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HexFormat;
 
 /**
  * JavaFX App
@@ -26,7 +33,7 @@ import java.net.UnknownHostException;
 public class App extends Application implements Runnable
 {
   //temp
-  public Text t;
+  private Label tourLabel;
    //TODO: posprzatac, zrobic klasy
    //TODO: wysylanie info
    //TODO: synchronizacja
@@ -141,20 +148,20 @@ public class App extends Application implements Runnable
         }
       }
 
-      //temp
-      t = new Text(10, 50, "This is a test");
-      t.setFont(new Font(20));
+      tourLabel = new Label("Waiting");
+      tourLabel.setFont(new Font(SIZE/2));
+      tourLabel.setMinWidth(WIDTH-HEIGHT);
+      tourLabel.setAlignment(Pos.CENTER);
+      gridPane.add(tourLabel,10,2);
 
-      gridPane.add(t,10,0);
+
       stage.setScene(new Scene(gridPane, WIDTH, HEIGHT));
+      
       stage.show();
-      
-      
 
-
-        this.listenSocket();
-        this.receiveInitFromServer();
-        this.startThread();
+      this.listenSocket();
+      this.receiveInitFromServer();
+      this.startThread();
     }
     
 
@@ -229,7 +236,7 @@ public class App extends Application implements Runnable
       try {
           // Odbieranie z serwera
           String str = in.readLine();
-          t.setText(str);
+          tourLabel.setText(str);
       }
       catch (IOException e) {
           System.out.println("Read failed"); System.exit(1);}
@@ -253,9 +260,9 @@ public class App extends Application implements Runnable
       try {
           player = Integer.parseInt(in.readLine());
           if (player == PLAYER1) {
-              t.setText("My Turn");
+            tourLabel.setText("My Turn");
           } else {
-              t.setText("Opposite turn");
+            tourLabel.setText("Opposite turn");
           }
       } catch (IOException e) {
           System.out.println("Read failed");
