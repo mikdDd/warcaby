@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
-//TODO: Zamienic na javafx :)
+//TODO: Zamienic na javafx :) resdfvgbh
 public class Client extends Frame implements ActionListener, Runnable {
     Label msg;
     Label output;
