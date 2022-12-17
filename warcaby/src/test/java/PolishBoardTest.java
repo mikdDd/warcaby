@@ -35,6 +35,8 @@ public class PolishBoardTest {
         PolishCheckersBoard b = new PolishCheckersBoard();
         //b.setFields();
         b.movePawn(b.fields[1][3],2,4);
+        b.movePawn(b.fields[4][6],3,5);
+        b.movePawn(b.fields[2][4],4, 6);
         for(int i = 0; i < 10; i++)
         {
             for(int k = 0; k < 10; k++)
@@ -52,6 +54,7 @@ public class PolishBoardTest {
 
         
     }
+
 
 
 }

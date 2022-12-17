@@ -11,9 +11,13 @@ public class Pawn {
         this.xPosition = x;
         this.yPosition = y;
         this.color = c;
+        isActive = true;
     }
     public void changePosition(int x, int y) {
         this.xPosition = x;
         this.yPosition = y;
+    }
+    public void capture() {
+        this.isActive = false;
     }
 }
