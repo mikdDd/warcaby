@@ -4,6 +4,7 @@ import javafx.application.Application;
 //import javafx.fxml.FXMLLoader;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.css.Size;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -41,7 +42,7 @@ public class App extends Application implements Runnable
     Label output;
     TextField input;
     
-    //TODO: posprzatac, zrobic klasy
+    //TODO: wybor startowy 
     //TODO: wysylanie info
     //TODO: synchronizacja
 
@@ -51,31 +52,28 @@ public class App extends Application implements Runnable
     Button tourButton;
     Label tourLabel;
 
-    char[][] board = new char[FIELDS][FIELDS];
-
-    //TODO: zamiana na Tile
-    Rectangle[][] rect = new Rectangle[FIELDS][FIELDS];
+    
 
     private static int WIDTH = 800;
     private static int HEIGHT = 600;
     private static int FIELDS = 10;
+    private static int PAWNS = 10;
     private static int SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
 
-
-     Socket socket ;
+    Board board;
+   
+    Socket socket ;
      PrintWriter out ;
      BufferedReader in;
 
-
-    private int player=1;
 
     public final static int PLAYER1 = 1;
     public final static int PLAYER2 = 2;
 
     public final static int ACTIVE = 0;
     public final static int NONACTIVE = 1;
-    private  static int actualPlayer = PLAYER1;
-
+    private int actualPlayer = PLAYER1;
+    private int player = 1;
     private static int showing = ACTIVE;
 
 
@@ -85,69 +83,22 @@ public class App extends Application implements Runnable
     @Override
     public void start(Stage stage)
     {
+      
+      
+        Pawn.setSize(SIZE);
+        Tile.setSize(SIZE);
         stage.setTitle("Client");
     
         scene.setCursor(Cursor.CROSSHAIR);
 
         input = new TextField();
         output = new Label("OUTPUT");
-
-        //get board from server
-
-        for (int i=0; i<FIELDS; i++)
-        {
-            for (int j=0; j<FIELDS; j++)
-            {
-                board[i][j]='0';
-            }
-        }
-        board[1][0]='B';
-        board[3][0]='B';
-        board[5][0]='B';
-        board[7][0]='B';
-        board[9][0]='B';
-        board[0][1]='B';
-        board[2][1]='B';
-        board[4][1]='B';
-        board[6][1]='B';
-        board[8][1]='B';
-
-        board[1][8]='W';
-        board[3][8]='W';
-        board[5][8]='W';
-        board[7][8]='W';
-        board[9][8]='W';
-        board[0][9]='W';
-        board[2][9]='W';
-        board[4][9]='W';
-        board[6][9]='W';
-        board[8][9]='W';
-
-        //draw board
-        for (int i=0; i<FIELDS; i++)
-        {
-            for (int j=0; j<FIELDS; j++)
-            {
-                rect[i][j] = new Rectangle();
-                rect[i][j].setWidth(SIZE);
-                rect[i][j].setHeight(SIZE);
-                if((i+j) % 2 == 1 )
-                {
-                    rect[i][j].setFill(Color.BROWN);
-                }
-                else
-                {
-                    rect[i][j].setFill(Color.YELLOW);
-                }
-                gridPane.add(rect[i][j], i, j);
-            }
-        }
-
+        board = new Board(FIELDS, PAWNS);
+        board.setDefaultPosition();
+        board.addEvents(player, scene);
+        board.addToScene(gridPane);
         
-
-        
-        //temp
-        tourLabel = new Label("This is a test");
+        tourLabel = new Label("");
         tourLabel.setFont(new Font(SIZE/2));
         tourLabel.setPrefWidth(WIDTH-HEIGHT);
         tourLabel.setAlignment(Pos.CENTER);
@@ -177,91 +128,25 @@ public class App extends Application implements Runnable
             }
         });
 
+        // board.addToScene(gridPane);
+
+        
 
         gridPane.add(tourButton,10,2);
         gridPane.add(output,10,5);
         gridPane.add(input,10,6);
 
+        
 
         stage.setScene(scene);
         stage.show();
 
-        //TODO: uncomment 
-        this.listenSocket();
-        this.receiveInitFromServer();
-        this.startThread();
-        drawPawns();
-    }
+        listenSocket();
+      receiveInitFromServer();
+      
+        startThread();
 
-    public void drawPawns()
-    {
-      //draw pawns
-      for (int i=0; i<FIELDS; i++)
-      {
-          for (int j=0; j<FIELDS; j++)
-          {
-              if(board[i][j]!='0')
-              {
-                //TODO: zmiana na Pawn
-                  Circle cir = new Circle();
-                  cir.setRadius(SIZE/2);
-                  if(board[i][j]=='W')
-                  {
-                      cir.setFill(Color.WHITE);
-                      if(player==PLAYER1)
-                      {
-                        rect[i][j].setOnMouseClicked(new EventHandler<MouseEvent>()
-                        {
-                          @Override
-                          public void handle(MouseEvent t) 
-                          {
-                            //TODO: naprawic
-                            send("X cordinate, Y cordinate");    
-                          }
-                        });
-                        rect[i][j].setOnMouseEntered(new EventHandler<MouseEvent>() {
-                          public void handle(MouseEvent me) {
-                              scene.setCursor(Cursor.HAND);
-                          }
-                        });
-                        rect[i][j].setOnMouseExited(new EventHandler<MouseEvent>() {
-                          public void handle(MouseEvent me) {
-                              scene.setCursor(Cursor.CROSSHAIR);
-                          }
-                        });
-                      }
-                  }
-                  if(board[i][j]=='B')
-                  {
-                      cir.setFill(Color.BLACK);
-                      if(player==PLAYER2)
-                      {
-                        rect[i][j].setOnMouseClicked(new EventHandler<MouseEvent>()
-                        {
-                          @Override
-                          public void handle(MouseEvent t) 
-                          {
-                            //TODO: naprawic
-                            send("X cordinate, Y cordinate");    
-                          }
-                        });
-                        rect[i][j].setOnMouseEntered(new EventHandler<MouseEvent>() {
-                          public void handle(MouseEvent me) {
-                              scene.setCursor(Cursor.HAND);
-                          }
-                        });
-                        rect[i][j].setOnMouseExited(new EventHandler<MouseEvent>() {
-                          public void handle(MouseEvent me) {
-                              scene.setCursor(Cursor.CROSSHAIR);
-                          }
-                        });
-                      }
-                  }
-                  gridPane.add(cir, i, j);
-              }
-          }
-      }
-
+      
     }
 
     private void startThread() 
@@ -401,13 +286,9 @@ public class App extends Application implements Runnable
       }
     }
 
-    public static void main(String[] args) {
-
-
-        //listenSocket();
-        //receiveInitFromServer();
-        //startThread();
-        launch(args);
+    public static void main(String[] args) 
+    {
+      launch(args);
     }
 
 }

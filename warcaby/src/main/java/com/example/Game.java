@@ -67,7 +67,7 @@ public class Game implements Runnable{
             } while (true);
 
         } catch (IOException ex) {
-            System.err.println("ex");
+            System.err.println("ex" + ex);
         }
     }
 
