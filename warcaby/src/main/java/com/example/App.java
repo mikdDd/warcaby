@@ -70,9 +70,8 @@ public class App extends Application implements Runnable
     Button game1Button;
 
 
-    Socket socket ;
-    PrintWriter out ;
-    BufferedReader in;
+    Bridge bridge;
+    
 
 
     public final static int PLAYER1 = 1;
@@ -95,15 +94,9 @@ public class App extends Application implements Runnable
       stage.setTitle("Client");
 
       buildMenuScene();
-
+      
       stage.setScene(menuScene);
       stage.show();
-
-      // 
-      
-      
-      
-    //     
     }
     public void buildMenuScene()
     {
@@ -128,8 +121,6 @@ public class App extends Application implements Runnable
       {
           public void handle(ActionEvent event)
           {
-            listenSocket();
-            receiveInitFromServer();
             buildGameScene();
             stage.show();
             startThread();
@@ -141,6 +132,30 @@ public class App extends Application implements Runnable
 
     public void buildGameScene()
     {  
+      try 
+      {
+        bridge = new Bridge();
+      } 
+      catch (UnknownHostException e) 
+      {
+        System.out.println("Unknown host: localhost");
+        System.exit(1);
+      } 
+      catch (IOException e) 
+      {
+        System.out.println("No I/O");
+        System.exit(1);
+      }
+      try 
+      {
+        player = bridge.receiveInitFromServer();
+      } 
+      catch (IOException e) 
+      {
+        System.out.println("Read failed");
+        System.exit(1);
+      }
+
       Pawn.setSize(SIZE);
       Tile.setSize(SIZE);
       board = new Board(FIELDS, PAWNS);
@@ -180,7 +195,7 @@ public class App extends Application implements Runnable
 
           public void handle(ActionEvent event)
           {
-              send("button pressed");
+            bridge.send("Button clicked ");
           }
       });
 
@@ -193,6 +208,12 @@ public class App extends Application implements Runnable
     }
 
     
+    private void send(String text)
+    {
+      bridge.send(text);
+      showing = ACTIVE;
+      actualPlayer = player;
+    }
 
     @Override
     public void run() 
@@ -208,131 +229,85 @@ public class App extends Application implements Runnable
     }
 
     /// Metoda uruchamiana w run dla PLAYER1
-    void f1(){
-        while(true) {
-            synchronized (this) {
-                if (actualPlayer== PLAYER1) {
-                    try {
-                        wait(10);
-                    } catch (InterruptedException e) {
-                    }
-                }
-                if (showing ==ACTIVE){
-                    receive();
-                    showing =NONACTIVE;
-                }
-                notifyAll();
-            }
-        }
-    }
-
-    /// Metoda uruchamiana w run dla PLAYER2
-    void f2(){
-        while(true) {
-            synchronized (this) {
-                if (actualPlayer== PLAYER2) {
-                    try {
-                        wait(10);
-                    } catch (InterruptedException e) {
-                    }
-                }
-                if (showing ==ACTIVE){
-                    receive();
-                    showing =NONACTIVE;
-                }
-                notifyAll();
-            }
-        }
-    }
-
-    private void send(String text)
+    void f1()
     {
-        // Wysylanie do serwera
-        // out.println(input.getText());
-        out.println(text);
-
-        Platform.runLater(() -> {
-
-          tourLabel.setText("OppositeTurn");
-          tourButton.setDisable(true);
-          input.setText("");
-          input.requestFocus();
-          
-
+      while(true) 
+      {
+        synchronized (this) 
+        {
+          if (actualPlayer== PLAYER1) 
+          {
+            try 
+            {
+                wait(10);
+            } catch (InterruptedException e) 
+            {
+            }
+          }
+          if (showing == ACTIVE)
+          {
+            try 
+            {
+              // Odbieranie z serwera
+              String message = bridge.receive();
+              input.setText(message);
+              showing = NONACTIVE;
+            }
+            catch (IOException e) 
+            {
+              System.out.println("Read failed"); 
+              System.exit(1);
+            }
+          }
+          notifyAll();
         }
-      );
-        showing = ACTIVE;
-        actualPlayer = player;
-    }
-
-    private void receive()
-    {
-      try 
-      {
-        // Odbieranie z serwera
-        String str = in.readLine();
-        Platform.runLater(() -> {
-          output.setText(str);
-          tourLabel.setText("My turn");
-          tourButton.setDisable(false);
-          input.setText("");
-          input.requestFocus();
-
-        });
-      }
-      catch (IOException e) 
-      {
-        System.out.println("Read failed"); 
-        System.exit(1);
       }
     }
 
-    public void listenSocket() {
-        try {
-            socket = new Socket("localhost", 4444);
-            // Inicjalizacja wysylania do serwera
-            out = new PrintWriter(socket.getOutputStream(), true);
-            // Inicjalizacja odbierania z serwera
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (UnknownHostException e) {
-            System.out.println("Unknown host: localhost");
-            System.exit(1);
-        } catch (IOException e) {
-            System.out.println("No I/O");
-            System.exit(1);
+  /// Metoda uruchamiana w run dla PLAYER2
+  void f2()
+  {
+    while(true) 
+    {
+      synchronized (this) 
+      {
+        if (actualPlayer== PLAYER2) 
+        {
+          try 
+          {
+            wait(10);
+          } 
+          catch (InterruptedException e) 
+          {
+          }
         }
+        if (showing == ACTIVE)
+        {
+          try 
+          {
+            // Odbieranie z serwera
+            bridge.receive();
+            showing = NONACTIVE;
+          }
+          catch (IOException e) 
+          {
+            System.out.println("Read failed"); 
+            System.exit(1);
+          }
+        }
+        notifyAll();
+      }
     }
+  }
     
-    private void receiveInitFromServer() 
-    {
-      try 
-      {
-        player = Integer.parseInt(in.readLine());
-        if (player== PLAYER1) 
-        {
-          //tourLabel.setText("My Turn");
-          System.out.println("Player 1");
-        } 
-        else 
-        {
-          // tourLabel.setText("Opposite turn");
-          // tourButton.setDisable(true);
-          System.out.println("Player 2");
-        }
-      } 
-      catch (IOException e) 
-      {
-        System.out.println("Read failed");
-        System.exit(1);
-      }
-    }
-    private void startThread() 
-    {
-      Thread gTh = new Thread(this);
-      gTh.start();
-    }
-    public static void main(String[] args) 
-    {
-      launch(args);
-    }
+  private void startThread() 
+  {
+    Thread gTh = new Thread(this);
+    gTh.start();
+  }
+  
+  public static void main(String[] args) 
+  {
+    launch(args);
+  }
 }

@@ -11,7 +11,8 @@ public class Server {
 
             System.out.println("Server is listening on port 4444");
 
-            while (true) {
+            while (true) 
+            {
                 Socket firstClient = serverSocket.accept();
                 System.out.println("First client connected");
                 System.out.println("Waiting for the second player");
