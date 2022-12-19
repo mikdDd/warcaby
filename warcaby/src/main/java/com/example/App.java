@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -32,6 +33,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.channels.FileLock;
 
 /**
  * JavaFX App
@@ -42,29 +44,35 @@ public class App extends Application implements Runnable
     Label output;
     TextField input;
     
-    //TODO: wybor startowy 
+    //TODO: posprzątać
+    //TODO: zwiecha po wyborze
     //TODO: wysylanie info
     //TODO: synchronizacja
 
-    GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane, WIDTH, HEIGHT);
-
-    Button tourButton;
-    Label tourLabel;
-
     
-
     private static int WIDTH = 800;
     private static int HEIGHT = 600;
     private static int FIELDS = 10;
     private static int PAWNS = 10;
     private static int SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
 
+    Stage stage;
+    //game
+    GridPane gridPane = new GridPane();
+    Scene gameScene = new Scene(gridPane, WIDTH, HEIGHT);
+    Button tourButton;
+    Label tourLabel;    
     Board board;
    
+    //menu
+    VBox vbox;
+    Scene menuScene;
+    Button game1Button;
+
+
     Socket socket ;
-     PrintWriter out ;
-     BufferedReader in;
+    PrintWriter out ;
+    BufferedReader in;
 
 
     public final static int PLAYER1 = 1;
@@ -83,77 +91,108 @@ public class App extends Application implements Runnable
     @Override
     public void start(Stage stage)
     {
+      this.stage=stage;
+      stage.setTitle("Client");
+
+      buildMenuScene();
+
+      stage.setScene(menuScene);
+      stage.show();
+
+      // 
       
       
-        Pawn.setSize(SIZE);
-        Tile.setSize(SIZE);
-        stage.setTitle("Client");
-    
-        scene.setCursor(Cursor.CROSSHAIR);
-
-        input = new TextField();
-        output = new Label("OUTPUT");
-        board = new Board(FIELDS, PAWNS);
-        board.setDefaultPosition();
-        board.addEvents(player, scene);
-        board.addToScene(gridPane);
-        
-        tourLabel = new Label("");
-        tourLabel.setFont(new Font(SIZE/2));
-        tourLabel.setPrefWidth(WIDTH-HEIGHT);
-        tourLabel.setAlignment(Pos.CENTER);
-        gridPane.add(tourLabel,10,1);
-
-
-
-        tourButton = new Button("END TOUR");
-        tourButton.setMinWidth((WIDTH-HEIGHT)/1.5);
-        GridPane.setHalignment(tourButton, HPos.CENTER);
-
-        tourButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-          public void handle(MouseEvent me) {
-              scene.setCursor(Cursor.HAND);
-          }
-        });
-        tourButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-          public void handle(MouseEvent me) {
-              scene.setCursor(Cursor.CROSSHAIR);
-          }
-        });
-        tourButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            public void handle(ActionEvent event)
-            {
-                send("button pressed");
-            }
-        });
-
-        // board.addToScene(gridPane);
-
-        
-
-        gridPane.add(tourButton,10,2);
-        gridPane.add(output,10,5);
-        gridPane.add(input,10,6);
-
-        
-
-        stage.setScene(scene);
-        stage.show();
-
-        listenSocket();
-      receiveInitFromServer();
       
-        startThread();
-
-      
+    //     
     }
-
-    private void startThread() 
+    public void buildMenuScene()
     {
-      Thread gTh = new Thread(this);
-      gTh.start();
+      vbox = new VBox();
+      menuScene = new Scene(vbox, WIDTH, HEIGHT);
+
+      game1Button = new Button("Game1");
+      game1Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
+      {
+        public void handle(MouseEvent me) {
+            menuScene.setCursor(Cursor.HAND);
+        }
+      });
+      game1Button.setOnMouseExited(new EventHandler<MouseEvent>() 
+      {
+        public void handle(MouseEvent me) 
+        {
+            menuScene.setCursor(Cursor.CROSSHAIR);
+        }
+      });
+      game1Button.setOnAction(new EventHandler<ActionEvent>() 
+      {
+          public void handle(ActionEvent event)
+          {
+            listenSocket();
+            receiveInitFromServer();
+            buildGameScene();
+            stage.show();
+            startThread();
+          }
+      });
+      
+      vbox.getChildren().add(game1Button);
     }
+
+    public void buildGameScene()
+    {  
+      Pawn.setSize(SIZE);
+      Tile.setSize(SIZE);
+      board = new Board(FIELDS, PAWNS);
+      board.addToScene(gridPane);
+      board.addEvents(player, gameScene);
+
+      gameScene.setCursor(Cursor.CROSSHAIR);
+
+      input = new TextField();
+      output = new Label("OUTPUT");
+      board = new Board(FIELDS, PAWNS);
+      board.setDefaultPosition();
+      board.addEvents(player, gameScene);
+      board.addToScene(gridPane);
+      
+      tourLabel = new Label("");
+      tourLabel.setFont(new Font(SIZE/2));
+      tourLabel.setPrefWidth(WIDTH-HEIGHT);
+      tourLabel.setAlignment(Pos.CENTER);
+      gridPane.add(tourLabel,10,1);
+
+      tourButton = new Button("END TOUR");
+      tourButton.setMinWidth((WIDTH-HEIGHT)/1.5);
+      GridPane.setHalignment(tourButton, HPos.CENTER);
+
+      tourButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent me) {
+            gameScene.setCursor(Cursor.HAND);
+        }
+      });
+      tourButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+        public void handle(MouseEvent me) {
+            gameScene.setCursor(Cursor.CROSSHAIR);
+        }
+      });
+      tourButton.setOnAction(new EventHandler<ActionEvent>() {
+
+          public void handle(ActionEvent event)
+          {
+              send("button pressed");
+          }
+      });
+
+
+      gridPane.add(tourButton,10,2);
+      gridPane.add(output,10,5);
+      gridPane.add(input,10,6);
+
+      stage.setScene(gameScene);
+    }
+
+    
 
     @Override
     public void run() 
@@ -271,12 +310,14 @@ public class App extends Application implements Runnable
         player = Integer.parseInt(in.readLine());
         if (player== PLAYER1) 
         {
-          tourLabel.setText("My Turn");
+          //tourLabel.setText("My Turn");
+          System.out.println("Player 1");
         } 
         else 
         {
-          tourLabel.setText("Opposite turn");
-          tourButton.setDisable(true);
+          // tourLabel.setText("Opposite turn");
+          // tourButton.setDisable(true);
+          System.out.println("Player 2");
         }
       } 
       catch (IOException e) 
@@ -285,10 +326,13 @@ public class App extends Application implements Runnable
         System.exit(1);
       }
     }
-
+    private void startThread() 
+    {
+      Thread gTh = new Thread(this);
+      gTh.start();
+    }
     public static void main(String[] args) 
     {
       launch(args);
     }
-
 }
