@@ -12,6 +12,7 @@ public class Pawn {
         this.yPosition = y;
         this.color = c;
         isActive = true;
+        this.isKing = false;
     }
     public void changePosition(int x, int y) {
         this.xPosition = x;
@@ -19,5 +20,8 @@ public class Pawn {
     }
     public void capture() {
         this.isActive = false;
+    }
+    public void setKing() {
+        this.isKing = true;
     }
 }

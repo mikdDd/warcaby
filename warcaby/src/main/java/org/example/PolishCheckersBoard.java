@@ -4,11 +4,9 @@ import javafx.geometry.Point2D;
 
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
-
+//TODO "globalne" sprawdzenie czy ktoryś z pionków gracza ma bicie
 public class PolishCheckersBoard extends Board{
     public int xSize = 10; //poziomo
     public int ySize = 10;  //pionowo
@@ -21,60 +19,87 @@ public class PolishCheckersBoard extends Board{
         setFields();
 
     }
-    public List<Point> checkPossibleMoves(Pawn pawn) {
+    public List<Move> checkPossibleMoves(Pawn pawn) {
         String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         boolean captureExist = false;
-        List<Point> possibleMoves= new ArrayList<>();
+        List<Move> possibleMoves= new ArrayList<>();
 
-        for (int x = xPawn - 1; x <= xPawn + 1; x+=2) {
+        for (int x = xPawn - 1; x <= xPawn + 1; x+=2) {                     //TODO ujednolic i zmniejszyc liczbe ifów
             for (int y = yPawn - 1; y <= yPawn + 1; y+=2) {
-                if (x > 0 && x < 10 && y > 0 && y < 10) {
+                if (x >= 0 && x < 10 && y >= 0 && y < 10) {
                 if (color.equals("white")) {                //poruszanie się białych pionków
                     if (fields[x][y] != null) {
-                        if (fields[x][y].color == "black") {      //bicie
-                                                                                                //TODO bicia w tył + skoro są we wszystkich kierunkach to można ujednolicić
+                        if (Objects.equals(fields[x][y].color, "black")) {      //bicie
+                                                                                                //TODO dla x i y można w zaleznosci czy >,< #Pawn mozna ustawiac flagi i zrobi to w jednym ifie
                                 if (x > xPawn) {
-                                    if (fields[x + 1][y + 1] == null) {
-                                        possibleMoves.add(new Point(x + 1, y + 1));
+                                    if(y>yPawn) {
+                                      if ( x+1 < 10 && y + 1 < 10 && fields[x + 1][y + 1] == null ) {
+                                        possibleMoves.add(new Move(x + 1, y + 1,true));
                                         captureExist = true;
+                                      }
+                                    } else {
+                                        if ( x + 1 < 10 && y - 1 >= 0 && fields[x + 1][y - 1] == null ) {
+                                            possibleMoves.add(new Move(x + 1, y - 1,true));
+                                            captureExist = true;
+                                        }
                                     }
 
                                 } else {
-                                    if (fields[x - 1][y + 1] == null) {
-                                        possibleMoves.add(new Point(x - 1, y + 1));
-                                        captureExist = true;
+                                    if(y > yPawn) {
+                                        if (x - 1 >= 0 && y + 1 < 10 && fields[x - 1][y + 1] == null) {
+                                            possibleMoves.add(new Move(x - 1, y + 1,true));
+                                            captureExist = true;
+                                        }
+                                    } else {
+                                        if ( x - 1 >= 0 && y - 1 >= 0 && fields[x - 1][y - 1] == null) {
+                                            possibleMoves.add(new Move(x - 1, y - 1,true));
+                                            captureExist = true;
+                                        }
                                     }
                                 }
-
                         }
                     } else {
-                        if (y > yPawn && x > 0 && x < 10) {
-                            possibleMoves.add(new Point(x, y));
+                        if (y > yPawn) {
+                            possibleMoves.add(new Move(x, y,false));
                         }
                     }
-                } else {
+                } else {                            //poruszanie czarnych pionków
                     if (fields[x][y] != null) {
-                        if (fields[x][y].color == "white") {         //bicie
+                        if (Objects.equals(fields[x][y].color, "white")) {         //bicie
 
-                                if (x > xPawn) {
-                                    if (fields[x + 1][y - 1] == null) {         //czy za zbijanym pionkiem jest puste pole
-                                        possibleMoves.add(new Point(x + 1, y - 1));
+                            if (x > xPawn) {
+                                if(y>yPawn) {
+                                    if ( x+1 < 10 && y + 1 < 10 && fields[x + 1][y + 1] == null ) {
+                                        possibleMoves.add(new Move(x + 1, y + 1,true));
                                         captureExist = true;
                                     }
-
                                 } else {
-                                    if (fields[x - 1][y - 1] == null) {
-                                        possibleMoves.add(new Point(x - 1, y - 1));
+                                    if ( x + 1 < 10 && y - 1 >= 0 && fields[x + 1][y - 1] == null ) {
+                                        possibleMoves.add(new Move(x + 1, y - 1,true));
                                         captureExist = true;
                                     }
                                 }
 
+                            } else {
+                                if(y > yPawn) {
+                                    if (x - 1 >= 0 && y + 1 < 10 && fields[x - 1][y + 1] == null) {
+                                        possibleMoves.add(new Move(x - 1, y + 1,true));
+                                        captureExist = true;
+                                    }
+                                } else {
+                                    if ( x - 1 >= 0 && y - 1 >= 0 && fields[x - 1][y - 1] == null) {
+                                        possibleMoves.add(new Move(x - 1, y - 1,true));
+                                        captureExist = true;
+                                    }
+                                }
+                            }
+
                         }
                     } else {
-                        if (y < yPawn && x > 0 && x < 10) {
-                            possibleMoves.add(new Point(x, y));
+                        if (y < yPawn) {
+                            possibleMoves.add(new Move(x, y,false));
                         }
                     }
                 }
@@ -85,49 +110,67 @@ public class PolishCheckersBoard extends Board{
         //jezeli wystapilo bicie usuwamy z listy wszystkie ruchy nie będące biciami
         if(captureExist) {
 
-            //bicia sa ruchami na pole w odleglosci 2 od pionka
-            possibleMoves.removeIf(point -> Math.abs(point.x - xPawn) < 2);
+            possibleMoves.removeIf(move -> !move.isCapture());
         }
         return possibleMoves;
     }
-    public List<Point> checkKingPossibleMoves(Pawn pawn) {
+    public List<Move> checkKingPossibleMoves(Pawn pawn) {
         String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         boolean captureExist = false;
-        List<Point> possibleMoves= new ArrayList<>();
+        List<Move> possibleMoves = new ArrayList<>();
 
         for(int x = 0; x<10; x++)
         {
             for(int y = 0; y < 10; y++)
             {
                 if(Math.abs(x-xPawn)==Math.abs(y-yPawn)) {          //pola na przekątnej
+                    //System.out.println("X:"+x+"Y:"+y);
                     if (fields[x][y] != null) {
-                        if (fields[x][y].color != pawn.color) {         //bicie
-                                                                                    //TODO dokończyć bicie dla damki
-                                if (x > xPawn) {
-                                    if (fields[x + 1][y - 1] == null) {         //czy za zbijanym pionkiem jest puste pole
-                                        possibleMoves.add(new Point(x + 1, y - 1));
+                        if (!Objects.equals(fields[x][y].color, pawn.color)) {         //bicie
+
+                            if (x > xPawn) {
+                                if(y>yPawn) {
+                                    if ( x+1 < 10 && y + 1 < 10 && fields[x + 1][y + 1] == null ) {
+                                        possibleMoves.add(new Move(x + 1, y + 1, true));
                                         captureExist = true;
                                     }
-
                                 } else {
-                                    if (fields[x - 1][y - 1] == null) {
-                                        possibleMoves.add(new Point(x - 1, y - 1));
+                                    if ( x + 1 < 10 && y - 1 >= 0 && fields[x + 1][y - 1] == null ) {
+                                        possibleMoves.add(new Move(x + 1, y - 1, true));
                                         captureExist = true;
                                     }
                                 }
 
+                            } else {
+                                if(y > yPawn) {
+                                    if (x - 1 >= 0 && y + 1 < 10 && fields[x - 1][y + 1] == null) {
+                                        possibleMoves.add(new Move(x - 1, y + 1, true));
+                                        captureExist = true;
+                                    }
+                                } else {
+                                    if ( x - 1 >= 0 && y - 1 >= 0 && fields[x - 1][y - 1] == null) {
+                                        possibleMoves.add(new Move(x - 1, y - 1, true));
+                                        captureExist = true;
+                                    }
+                                }
+                            }
+
                         }
                     } else {
-                        if (y < yPawn && x > 0 && x < 10) {
-                            possibleMoves.add(new Point(x, y));
-                        }
+                        //System.out.println("ASDASD");
+                            possibleMoves.add(new Move(x, y, false));
+
                     }
                 }
             }
         }
-        return null;
+        if(captureExist) {
+            //System.out.println("CAPTURE");
+            possibleMoves.removeIf(move -> !move.isCapture());
+        }
+        return possibleMoves;
     }
 
 
@@ -167,29 +210,54 @@ public class PolishCheckersBoard extends Board{
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         String color = pawn.color;
-        Point p = new Point(x,y);
-        if(checkPossibleMoves(pawn).contains(p)) {
+        Move moveWithCapture = new Move(x,y,true);
+        Move moveWithNoCapture = new Move(x,y,false);
+        if(moveWithNoCapture.equals(moveWithCapture)) System.out.println("KAKAKA");
+        List<Move> movesList;
+        if(pawn.isKing){
+            movesList = checkKingPossibleMoves(pawn);
 
-            //sprawdz czy bylo bicie
-            if(x==xPawn+2){
+        } else {
+            movesList = checkPossibleMoves(pawn);
+
+        }
+        if(movesList.contains(moveWithCapture)) {
+            System.out.println("zBICIem");
+            if(x>xPawn){
                 if(y>yPawn){
-                    fields[xPawn+1][yPawn+1].capture();
+                    fields[x-1][y-1].capture();
                 } else {
-                    fields[xPawn+1][yPawn-1].capture();
+                    fields[x-1][y+1].capture();
                 }
-            } else if (x==pawn.xPosition-2) {
+            } else if (x<xPawn) {
                 if(y>yPawn){
-                    fields[xPawn-1][yPawn+1].capture();
+                    fields[x+1][y-1].capture();
                 } else {
-                    fields[xPawn-1][yPawn-1].capture();
+                    fields[x+1][y+1].capture();
                 }
             }
+            pawn.changePosition(x,y);
+        } else if(movesList.contains(moveWithNoCapture)) {
+            System.out.println("BEZBICIA");
             pawn.changePosition(x,y);
         }
 
         this.setFields();
+        checkKings();
     }
-
+    public void checkKings()
+    {
+        for(int x = 0; x < 10; x++)
+        {  try {
+            if (Objects.equals(fields[x][0].color, "black")) {
+                fields[x][0].setKing();
+            }
+            if (Objects.equals(fields[x][9].color, "white")) {
+                fields[x][9].setKing();
+            }
+        } catch (NullPointerException e){}
+        }
+    }
     @Override
     public boolean checkIfWon() {
         return false;
