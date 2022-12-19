@@ -1,4 +1,5 @@
 import org.example.Move;
+import org.example.Pawn;
 import org.example.PolishCheckersBoard;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -18,11 +19,14 @@ public class ConsoleGameTest {
 
             //String move = myObj.nextLine();  // Read user input
             PolishCheckersBoard b = new PolishCheckersBoard();
-        b.fields[3][3].setKing();
+            b.fields[3][3].setKing();
+
+
+
             //b.setFields();
             while (true) {
 
-
+                System.out.println(b.whichPlayerTurn());
 
                 for (int i = 0; i < 10; i++) {
                     for (int k = 0; k < 10; k++) {
