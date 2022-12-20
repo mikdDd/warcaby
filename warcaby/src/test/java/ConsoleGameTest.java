@@ -1,7 +1,7 @@
-import org.example.Move;
-import org.example.Pawn;
-import org.example.PolishCheckersBoard;
+import org.example.*;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import java.awt.*;
@@ -18,23 +18,23 @@ public class ConsoleGameTest {
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
             //String move = myObj.nextLine();  // Read user input
-            PolishCheckersBoard b = new PolishCheckersBoard();
-            b.fields[3][3].setKing();
+            GameFactory gameFactory = new GameControllerFactory();
 
-
+            GameController b = gameFactory.createGame("POLISH");
+            //PolishCheckers b = new PolishCheckers();
 
             //b.setFields();
             while (true) {
-
-                System.out.println(b.whichPlayerTurn());
+                System.out.println(b.boardToString());
+               // System.out.println(b.whichPlayerTurn());
 
                 for (int i = 0; i < 10; i++) {
                     for (int k = 0; k < 10; k++) {
 
                         try {
 
-                            System.out.print("[" + b.fields[k][i].color + "(" + k + i + ")" );
-                            if(b.fields[k][i].isKing){
+                            System.out.print("[" + b.getPawn(k,i).color + "(" + k + i + ")" );
+                            if(b.getPawn(k,i).isKing){
                                 System.out.print("D]");
                             } else {
                                 System.out.print(" ]");
@@ -53,22 +53,8 @@ public class ConsoleGameTest {
                 int y2 = Character.getNumericValue(move.charAt(3));
                 System.out.println(x1+","+y1+","+x2+","+y2);
                // List<Move> kingMoves = b.checkKingPossibleMoves(b.fields[x1][y1]));
-                List<Move> moves= new ArrayList<>();
-                //= b.checkPossibleMoves(b.fields[x1][y1]));
-                try {
-                if(b.fields[x1][y1].isKing){
-                    moves = b.checkKingPossibleMoves(b.fields[x1][y1]);
-                } else {
-                    moves = b.checkPossibleMoves(b.fields[x1][y1]);
-                }
-                } catch (NullPointerException e){}
-                for(Move p : moves)
-                {
-                    try {
-                        System.out.println(p.getX() + " " + p.getY());
-                    } catch (NullPointerException e){}
-                }
-                b.movePawn(b.fields[x1][y1], x2, y2);
+                System.out.println(b.possibleMovesToString(b.getPawn(x1,y1)));
+                b.movePawn(b.getPawn(x1,y1), x2, y2);
             }
         }
 

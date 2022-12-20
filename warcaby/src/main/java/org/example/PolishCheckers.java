@@ -1,27 +1,28 @@
 package org.example;
 
-import javafx.geometry.Point2D;
-
-
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 //TODO sprawdzanie czy nie chcemy bić niaktywnego(zbitego) pionka
-public class PolishCheckersBoard extends Board{
+//TODO poprawki poruszania i bicia
+public class PolishCheckers extends GameType{
     public int xSize = 10; //poziomo
     public int ySize = 10;  //pionowo
     public int pawnCount = 40;
-    public Pawn[][] fields = new Pawn[xSize][ySize];
-    public List<Pawn> pawnList = new ArrayList<>();
+   // public Board board;
+
+    //private List<Pawn> pawnList = new ArrayList<>();
     private String turn = "white";
     private Pawn multipleCapturePawn;
 
-    public PolishCheckersBoard() {
-        setPawnList();
-        setFields();
+    public PolishCheckers() {
+        this.board = new PolishBoard(xSize, ySize, pawnCount);
+        board.setPawnList();
+
+        board.updateFields();
+
 
     }
-    public List<Move> checkPossibleMoves(Pawn pawn) {
+    List<Move> checkPawnPossibleMoves(Pawn pawn) {
 
         String color = pawn.color;
         int xPawn = pawn.xPosition;
@@ -39,17 +40,17 @@ public class PolishCheckersBoard extends Board{
             for (int y = yPawn - 1; y <= yPawn + 1; y+=2) {
                 if (x >= 0 && x < 10 && y >= 0 && y < 10) {
                 if (color.equals("white")) {                //poruszanie się białych pionków
-                    if (fields[x][y] != null) {
-                        if (Objects.equals(fields[x][y].color, "black")) {      //bicie
+                    if (board.fields[x][y] != null) {
+                        if (Objects.equals(board.fields[x][y].color, "black")) {      //bicie
                                                                                                 //TODO dla x i y można w zaleznosci czy >,< #Pawn mozna ustawiac flagi i zrobi to w jednym ifie
                                 if (x > xPawn) {
                                     if(y>yPawn) {
-                                      if ( x+1 < 10 && y + 1 < 10 && fields[x + 1][y + 1] == null ) {
+                                      if ( x+1 < 10 && y + 1 < 10 && board.fields[x + 1][y + 1] == null ) {
                                         possibleMoves.add(new Move(x + 1, y + 1,true));
                                         captureExist = true;
                                       }
                                     } else {
-                                        if ( x + 1 < 10 && y - 1 >= 0 && fields[x + 1][y - 1] == null ) {
+                                        if ( x + 1 < 10 && y - 1 >= 0 && board.fields[x + 1][y - 1] == null ) {
                                             possibleMoves.add(new Move(x + 1, y - 1,true));
                                             captureExist = true;
                                         }
@@ -57,12 +58,12 @@ public class PolishCheckersBoard extends Board{
 
                                 } else {
                                     if(y > yPawn) {
-                                        if (x - 1 >= 0 && y + 1 < 10 && fields[x - 1][y + 1] == null) {
+                                        if (x - 1 >= 0 && y + 1 < 10 && board.fields[x - 1][y + 1] == null) {
                                             possibleMoves.add(new Move(x - 1, y + 1,true));
                                             captureExist = true;
                                         }
                                     } else {
-                                        if ( x - 1 >= 0 && y - 1 >= 0 && fields[x - 1][y - 1] == null) {
+                                        if ( x - 1 >= 0 && y - 1 >= 0 && board.fields[x - 1][y - 1] == null) {
                                             possibleMoves.add(new Move(x - 1, y - 1,true));
                                             captureExist = true;
                                         }
@@ -75,17 +76,17 @@ public class PolishCheckersBoard extends Board{
                         }
                     }
                 } else {                            //poruszanie czarnych pionków
-                    if (fields[x][y] != null) {
-                        if (Objects.equals(fields[x][y].color, "white")) {         //bicie
+                    if (board.fields[x][y] != null) {
+                        if (Objects.equals(board.fields[x][y].color, "white")) {         //bicie
 
                             if (x > xPawn) {
                                 if(y>yPawn) {
-                                    if ( x+1 < 10 && y + 1 < 10 && fields[x + 1][y + 1] == null ) {
+                                    if ( x+1 < 10 && y + 1 < 10 && board.fields[x + 1][y + 1] == null ) {
                                         possibleMoves.add(new Move(x + 1, y + 1,true));
                                         captureExist = true;
                                     }
                                 } else {
-                                    if ( x + 1 < 10 && y - 1 >= 0 && fields[x + 1][y - 1] == null ) {
+                                    if ( x + 1 < 10 && y - 1 >= 0 && board.fields[x + 1][y - 1] == null ) {
                                         possibleMoves.add(new Move(x + 1, y - 1,true));
                                         captureExist = true;
                                     }
@@ -93,12 +94,12 @@ public class PolishCheckersBoard extends Board{
 
                             } else {
                                 if(y > yPawn) {
-                                    if (x - 1 >= 0 && y + 1 < 10 && fields[x - 1][y + 1] == null) {
+                                    if (x - 1 >= 0 && y + 1 < 10 && board.fields[x - 1][y + 1] == null) {
                                         possibleMoves.add(new Move(x - 1, y + 1,true));
                                         captureExist = true;
                                     }
                                 } else {
-                                    if ( x - 1 >= 0 && y - 1 >= 0 && fields[x - 1][y - 1] == null) {
+                                    if ( x - 1 >= 0 && y - 1 >= 0 && board.fields[x - 1][y - 1] == null) {
                                         possibleMoves.add(new Move(x - 1, y - 1,true));
                                         captureExist = true;
                                     }
@@ -141,17 +142,17 @@ public class PolishCheckersBoard extends Board{
             {
                 if(Math.abs(x-xPawn)==Math.abs(y-yPawn)) {          //pola na przekątnej
                     //System.out.println("X:"+x+"Y:"+y);
-                    if (fields[x][y] != null && fields[x][y].isActive) {
-                        if (!Objects.equals(fields[x][y].color, pawn.color)) {         //bicie
+                    if (board.fields[x][y] != null && board.fields[x][y].isActive) {
+                        if (!Objects.equals(board.fields[x][y].color, pawn.color)) {         //bicie
 
                             if (x > xPawn) {
                                 if(y>yPawn) {
-                                    if ( x+1 < 10 && y + 1 < 10 && fields[x + 1][y + 1] == null ) {
+                                    if ( x+1 < 10 && y + 1 < 10 && board.fields[x + 1][y + 1] == null ) {
                                         possibleMoves.add(new Move(x + 1, y + 1, true));
                                         captureExist = true;
                                     }
                                 } else {
-                                    if ( x + 1 < 10 && y - 1 >= 0 && fields[x + 1][y - 1] == null ) {
+                                    if ( x + 1 < 10 && y - 1 >= 0 && board.fields[x + 1][y - 1] == null ) {
                                         possibleMoves.add(new Move(x + 1, y - 1, true));
                                         captureExist = true;
                                     }
@@ -159,12 +160,12 @@ public class PolishCheckersBoard extends Board{
 
                             } else {
                                 if(y > yPawn) {
-                                    if (x - 1 >= 0 && y + 1 < 10 && fields[x - 1][y + 1] == null) {
+                                    if (x - 1 >= 0 && y + 1 < 10 && board.fields[x - 1][y + 1] == null) {
                                         possibleMoves.add(new Move(x - 1, y + 1, true));
                                         captureExist = true;
                                     }
                                 } else {
-                                    if ( x - 1 >= 0 && y - 1 >= 0 && fields[x - 1][y - 1] == null) {
+                                    if ( x - 1 >= 0 && y - 1 >= 0 && board.fields[x - 1][y - 1] == null) {
                                         possibleMoves.add(new Move(x - 1, y - 1, true));
                                         captureExist = true;
                                     }
@@ -186,7 +187,15 @@ public class PolishCheckersBoard extends Board{
         }
         return possibleMoves;
     }
-
+/**
+    public List<Move> checkPossibleMoves(Pawn p) {
+        if(p.isKing){
+            return checkKingPossibleMoves(p);
+        } else {
+            return checkPawnPossibleMoves(p);
+        }
+    }
+ */
     public boolean canPawnCapture(Pawn pawn) {
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
@@ -197,8 +206,8 @@ public class PolishCheckersBoard extends Board{
         for (int x = xPawn - 1; x <= xPawn +1; x+=2) {
             for (int y = yPawn -1 ; y <= yPawn +1; y+=2) {
                 if (x >= 0 && x < 10 && y >= 0 && y < 10) {
-                        if (fields[x][y] != null  && fields[x][y].isActive) {
-                            if (!Objects.equals(fields[x][y].color, pawn.color)) {      //bicie
+                        if (board.fields[x][y] != null  && board.fields[x][y].isActive) {
+                            if (!Objects.equals(board.fields[x][y].color, pawn.color)) {      //bicie
 
 
                                 if(x > xPawn && x+1 < 10){xFlag = 1;}
@@ -209,7 +218,7 @@ public class PolishCheckersBoard extends Board{
                                 else if(y < yPawn && y-1 >=0 ){
                                     yFlag = -1;
                                 }
-                                if(xFlag != 0 && yFlag != 0 && fields[x+xFlag][y+yFlag] == null){
+                                if(xFlag != 0 && yFlag != 0 && board.fields[x+xFlag][y+yFlag] == null){
                                     return true;
                                 }
 
@@ -224,7 +233,7 @@ public class PolishCheckersBoard extends Board{
         return false;
     }
 
-    public boolean canKingCapture(Pawn pawn) {
+    boolean canKingCapture(Pawn pawn) {
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         int xFlag=0;
@@ -236,8 +245,8 @@ public class PolishCheckersBoard extends Board{
             for(int y = 0; y < 10; y++)
             {
                 if(Math.abs(x-xPawn)==Math.abs(y-yPawn)) {
-                    if (fields[x][y] != null && fields[x][y].isActive) {
-                        if (!Objects.equals(fields[x][y].color, pawn.color)) {      //bicie
+                    if (board.fields[x][y] != null && board.fields[x][y].isActive) {
+                        if (!Objects.equals(board.fields[x][y].color, pawn.color)) {      //bicie
 
 
                             if(x > xPawn && x+1 < 10){xFlag = 1;}
@@ -248,7 +257,7 @@ public class PolishCheckersBoard extends Board{
                             else if(y < yPawn && y-1 >=0 ){
                                 yFlag = -1;
                             }
-                            if(xFlag != 0 && yFlag != 0 && x+xFlag<10 && x+xFlag >=0 &&y+yFlag<10 && y+yFlag >=0 && fields[x+xFlag][y+yFlag] == null && fields[x][y].isActive){
+                            if(xFlag != 0 && yFlag != 0 && x+xFlag<10 && x+xFlag >=0 &&y+yFlag<10 && y+yFlag >=0 && board.fields[x+xFlag][y+yFlag] == null && board.fields[x][y].isActive){
                                 System.out.println((x+xFlag)+":::::"+(y+yFlag));
                                 return true;
                             }
@@ -263,19 +272,19 @@ public class PolishCheckersBoard extends Board{
         }
         return false;
     }
-
+    /**
     @Override
     public void setFields() {
 
         fields = new Pawn[xSize][ySize];
         for(Pawn pawn : pawnList)
-       {
+        {
            if(pawn.isActive) {
                int pawnX = pawn.xPosition;
                int pawnY = pawn.yPosition;
                fields[pawnX][pawnY] = pawn;
            }
-       }
+        }
     }
 
     @Override
@@ -288,7 +297,7 @@ public class PolishCheckersBoard extends Board{
                     String color="white";
                     if(i>5)color="black";
                    Pawn pawn = new Pawn(k,i,color);
-                    fields[k][i] = pawn;
+                    //fields[k][i] = pawn;
                     pawnList.add(pawn);
 
                 }
@@ -296,9 +305,18 @@ public class PolishCheckersBoard extends Board{
         }
     }
 
-    @Override
+
+     public boolean canCapture(Pawn pawn) {
+        if(pawn.isKing){
+            return canKingCapture(pawn);
+            }
+         else {
+                return canPawnCapture(pawn);
+            }
+    }
+     */
     public void movePawn(Pawn pawn, int x, int y) {
-        if(!pawn.color.equals(this.turn))return;
+        if( pawn == null || !pawn.color.equals(this.turn)  )return;
 
         if(this.multipleCapturePawn!=null&&pawn.equals(multipleCapturePawn)){
             this.multipleCapturePawn = null;
@@ -311,28 +329,25 @@ public class PolishCheckersBoard extends Board{
         Move moveWithNoCapture = new Move(x,y,false);
 
         List<Move> movesList;
-        if(pawn.isKing){
-            movesList = checkKingPossibleMoves(pawn);
 
-        } else {
-            movesList = checkPossibleMoves(pawn);
-        }
+        movesList = checkPossibleMoves(pawn);
+
         if(movesList.contains(moveWithCapture)) {
-            System.out.println("zBICIem");
+            //System.out.println("zBICIem");
             if(x>xPawn){
                 if(y>yPawn){
-                    fields[x-1][y-1].capture();
+                    board.fields[x-1][y-1].capture();
 
                 } else {
-                    fields[x-1][y+1].capture();
+                    board.fields[x-1][y+1].capture();
 
                 }
             } else if (x<xPawn) {
                 if(y>yPawn){
-                   fields[x+1][y-1].capture();
+                    board.fields[x+1][y-1].capture();
 
                 } else {
-                   fields[x+1][y+1].capture();
+                    board.fields[x+1][y+1].capture();
 
                 }
             }
@@ -349,23 +364,23 @@ public class PolishCheckersBoard extends Board{
             }
             if(multipleCapturePawn == null)this.changeTurn();
         } else if(movesList.contains(moveWithNoCapture)) {
-            System.out.println("BEZBICIA");
+           // System.out.println("BEZBICIA");
             pawn.changePosition(x,y);
             this.changeTurn();
         }
 
-        this.setFields();
+        board.updateFields();
         checkKings();
     }
     public void checkKings()
     {
         for(int x = 0; x < 10; x++)
         {  try {
-            if (Objects.equals(fields[x][0].color, "black")) {
-                fields[x][0].setKing();
+            if (Objects.equals(board.fields[x][0].color, "black")) {
+                board.fields[x][0].setKing();
             }
-            if (Objects.equals(fields[x][9].color, "white")) {
-                fields[x][9].setKing();
+            if (Objects.equals(board.fields[x][9].color, "white")) {
+                board.fields[x][9].setKing();
             }
         } catch (NullPointerException e){}
         }
@@ -373,14 +388,16 @@ public class PolishCheckersBoard extends Board{
     public String whichPlayerTurn() {
         return this.turn;
     }
+    /**
     public List<Pawn> playerPawnWithCaptureList(String playerColor) {
         List<Pawn> list = new ArrayList<>();
        // List<Move> possibleMoves = new ArrayList<>();
-        for(Pawn p:this.pawnList)
+        for(Pawn p:board.pawnList)
         {
             if(p.color.equals(playerColor)&&p.isActive){
 
-            if(p.isKing){if(this.canKingCapture(p)){
+            if(p.isKing){
+                if(this.canKingCapture(p)){
                 list.add(p);
             } }
             else{
@@ -397,7 +414,7 @@ public class PolishCheckersBoard extends Board{
         }
         return list;
     }
-    @Override
+*/
     public boolean checkIfWon() {
         return false;
     }

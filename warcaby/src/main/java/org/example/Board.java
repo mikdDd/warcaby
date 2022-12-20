@@ -11,12 +11,17 @@ public abstract class Board {
     public Pawn[][] fields = new Pawn[xSize][ySize];
     public List<Pawn> pawnList = new ArrayList<>();
 
-    //Board(int xSize, int ySize, int pawnCount);
-    abstract void setFields();
-    abstract void setPawnList();
-
-    public abstract void movePawn(Pawn pawn,int x, int y);
-    public abstract boolean checkIfWon();
-
+    public void updateFields() {
+        fields = new Pawn[xSize][ySize];
+        for(Pawn pawn : pawnList)
+        {
+            if(pawn.isActive) {
+                int pawnX = pawn.xPosition;
+                int pawnY = pawn.yPosition;
+                fields[pawnX][pawnY] = pawn;
+            }
+        }
+    }
+   abstract void setPawnList();
 
 }
