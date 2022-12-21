@@ -39,7 +39,6 @@ public class Bridge
   public String receive() throws IOException
   {
     String str = in.readLine();
-    System.out.println(str);
     return str;
   }
 

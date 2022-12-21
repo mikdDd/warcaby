@@ -8,6 +8,7 @@ public class Tile extends Rectangle
   int xIndex;
   int yIndex;
   Pawn pawn;
+  char color;
   private static int SIZE;
   Tile(int x, int y)
   {
@@ -18,10 +19,12 @@ public class Tile extends Rectangle
 
     if((x+y) % 2 == 1 )
     {
+      color='B';
       this.setFill(Color.BROWN);
     }
     else
     {
+      color='W';
       this.setFill(Color.YELLOW);
     }
   }  
@@ -32,6 +35,10 @@ public class Tile extends Rectangle
   public int getYIndex()
   {
     return yIndex;
+  }
+  public char getColor()
+  {
+    return color;
   }
   public static void setSize(int size)
   {

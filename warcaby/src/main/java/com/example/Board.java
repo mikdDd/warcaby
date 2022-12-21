@@ -1,5 +1,6 @@
 package com.example;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -11,13 +12,70 @@ public class Board
   Tile[][] tiles;
   Pawn[] whitePawns;
   Pawn[] blackPawns;
+  String message;
+  Bridge bridge;
   Board(int x, int y)
   {
     tiles = Tile.generateTiles(x);
     whitePawns = Pawn.generateWhitePawns(y);
     blackPawns = Pawn.generateBlackPawns(y);
   }  
+  public void setBridge(Bridge bridge)
+  {
+    this.bridge = bridge;
+  }
 
+  public void disableWhite()
+  {
+    for (Pawn pawn : whitePawns) {
+      pawn.setDisable(true);
+    }
+  }
+  public void enableWhite()
+  {
+    for (Pawn pawn : whitePawns) {
+      pawn.setDisable(true);
+    }
+  }
+  public void disableBlack()
+  {
+    for (Pawn pawn : blackPawns) {
+      pawn.setDisable(true);
+    }
+  }
+  public void enableBlack()
+  {
+    for (Pawn pawn : blackPawns) {
+      pawn.setDisable(false);
+    }
+  }
+  public void disableTiles()
+  {
+    for (Tile[] tileRow : tiles) 
+    {
+      for (Tile tile : tileRow) 
+      {
+        if(tile.getColor() == 'B')
+        {
+          tile.setDisable(true);
+        }
+      }
+    }
+  }
+  public void enableTiles()
+  {
+    for (Tile[] tileRow : tiles) 
+    {
+      for (Tile tile : tileRow) 
+      {
+        if(tile.getColor() == 'B')
+        {
+          tile.setDisable(false);
+        }
+      }
+    }
+  }
+  
   //TODO: zmiana na getPositionFromServer
   public void setDefaultPosition()
   {
@@ -46,6 +104,33 @@ public class Board
 
   public void addEvents(int player, Scene scene)
   {
+    
+    for (Tile[] tileRow : tiles) 
+    {
+      for (Tile tile : tileRow)
+      {
+        if(tile.getColor() == 'B')
+        {
+          tile.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                scene.setCursor(Cursor.HAND);
+            }
+          });
+          tile.setOnMouseExited(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                scene.setCursor(Cursor.CROSSHAIR);
+            }
+          });
+          tile.setOnMouseClicked(new EventHandler<MouseEvent>()
+          {
+              public void handle(MouseEvent me) 
+              {
+                secondOutput(tile.getXIndex() + "" + tile.getYIndex());
+              }
+          });
+        }
+      }
+    }
     if(player==1)
     {
       for (Pawn pawn : whitePawns) 
@@ -60,21 +145,39 @@ public class Board
               scene.setCursor(Cursor.CROSSHAIR);
           }
         });
+        pawn.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            public void handle(MouseEvent me) 
+            {
+              firstOutput(pawn.getXIndex() + "" + pawn.getYIndex());
+            }
+        });
       }
     }
     else if(player==2)
     {
       for (Pawn pawn : blackPawns) 
       {
-        pawn.setOnMouseEntered(new EventHandler<MouseEvent>() {
-          public void handle(MouseEvent me) {
+        pawn.setOnMouseEntered(new EventHandler<MouseEvent>() 
+        {
+          public void handle(MouseEvent me) 
+          {
               scene.setCursor(Cursor.HAND);
           }
         });
-        pawn.setOnMouseExited(new EventHandler<MouseEvent>() {
-          public void handle(MouseEvent me) {
+        pawn.setOnMouseExited(new EventHandler<MouseEvent>() 
+        {
+          public void handle(MouseEvent me) 
+          {
               scene.setCursor(Cursor.CROSSHAIR);
           }
+        });
+        pawn.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            public void handle(MouseEvent me) 
+            {
+              firstOutput(pawn.getXIndex() + "" + pawn.getYIndex());
+            }
         });
       }
     }
@@ -99,5 +202,15 @@ public class Board
     }
   }
 
-  
+  public void firstOutput(String pos)
+  {
+    message = "";
+    message += pos;
+  }
+
+  public void secondOutput(String pos)
+  {
+    message += pos;
+    bridge.send(message);
+  }
 }
