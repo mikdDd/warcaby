@@ -5,6 +5,7 @@ import java.util.List;
 //TODO remis?
 public abstract class GameType implements GameController {
     public Board board;
+    
 
     @Override
     public abstract void movePawn(Pawn pawn, int x, int y);
