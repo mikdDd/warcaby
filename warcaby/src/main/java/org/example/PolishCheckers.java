@@ -19,11 +19,10 @@ public class PolishCheckers extends GameType{
         board.setPawnList();
 
         board.updateFields();
-
-
     }
     List<Move> checkPawnPossibleMoves(Pawn pawn) {
-
+        int xFlag = 0;
+        int yFlag = 0;
         String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
@@ -39,6 +38,7 @@ public class PolishCheckers extends GameType{
         for (int x = xPawn - 1; x <= xPawn + 1; x+=2) {                     //TODO ujednolic i zmniejszyc liczbe ifów
             for (int y = yPawn - 1; y <= yPawn + 1; y+=2) {
                 if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+                    /**
                 if (color.equals("white")) {                //poruszanie się białych pionków
                     if (board.fields[x][y] != null) {
                         if (Objects.equals(board.fields[x][y].color, "black")) {      //bicie
@@ -113,8 +113,45 @@ public class PolishCheckers extends GameType{
                         }
                     }
                 }
+            */
 
-            }
+                    //if (board.fields[x][y] == null)
+                    if (board.fields[x][y] != null &&  board.fields[x][y].isActive) {
+                        if (!Objects.equals(board.fields[x][y].color, pawn.color)) {      //bicie
+
+
+                            if(x > xPawn && x+1 < 10){xFlag = 1;}
+                            else if(x < xPawn && x-1 >=0 ){
+                                xFlag = -1;
+                            }
+                            if(y > yPawn && y + 1 < 10 ){yFlag = 1;}
+                            else if(y < yPawn && y-1 >=0 ){
+                                yFlag = -1;
+                            }
+                            if(xFlag != 0 && yFlag != 0 && board.fields[x+xFlag][y+yFlag] == null){
+                                possibleMoves.add(new Move(x + xFlag, y + yFlag, true));
+                                captureExist = true;
+                            }
+
+
+                        }
+                    } else{
+                        if(color.equals("white")){
+                            if (y > yPawn) {
+                                possibleMoves.add(new Move(x, y,false));
+                                System.out.println("TTTT"+x+"d"+y+"P:"+xPawn+"PY:"+yPawn);
+                            }
+                        } else {
+                            if (y < yPawn) {
+                                possibleMoves.add(new Move(x, y,false));
+                            }
+                        }
+                    }
+
+
+
+
+                }
             }
         }
         //jezeli wystapilo bicie usuwamy z listy wszystkie ruchy nie będące biciami
