@@ -63,7 +63,7 @@ public class App extends Application implements Runnable
   Scene gameScene = new Scene(gridPane, WIDTH, HEIGHT);
   Button tourButton;
   Label tourLabel;    
-  Board board;
+  BoardFX board;
   
   //menu
   VBox vbox;
@@ -157,9 +157,9 @@ public class App extends Application implements Runnable
       System.exit(1);
     }
 
-    Pawn.setSize(SIZE);
-    Tile.setSize(SIZE);
-    board = new Board(FIELDS, PAWNS);
+    PawnFX.setSize(SIZE);
+    TileFX.setSize(SIZE);
+    board = new BoardFX(FIELDS, PAWNS);
     board.setBridge(bridge);
     board.setDefaultPosition();
     board.addEvents(player, gameScene);
