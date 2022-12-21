@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO remis?
 public abstract class GameType implements GameController {
     public Board board;
 
@@ -55,7 +55,7 @@ public abstract class GameType implements GameController {
      public Pawn getPawn(int x, int y) {
         return board.fields[x][y];
      }
-    public String boardToString(){
+    public String boardToString(){              //info o położeniu pionków na planszy, jeśli puste wszystkie pionki gracza zbite
         StringBuilder strWhite = new StringBuilder("");
         StringBuilder strBlack = new StringBuilder("");
         String s="";
@@ -72,6 +72,11 @@ public abstract class GameType implements GameController {
                     strBlack.append(Integer.toString(p.yPosition));
                 }
             }
+        }
+        if(strWhite.isEmpty() || !canPlayerMove("white")) {
+            strWhite.append("WHITEWINS");
+        } else if (strBlack.isEmpty() || !canPlayerMove("black")) {
+            strWhite.append("BLACKWINS");
         }
         s=strWhite.toString()+":"+strBlack.toString();
         return s;
@@ -92,6 +97,14 @@ public abstract class GameType implements GameController {
 
         }
         return str.toString();
+    }
+
+    boolean canPlayerMove(String color) {
+        for(Pawn p : this.board.pawnList)
+        {
+            if(p.color.equals(color) && !checkPossibleMoves(p).isEmpty())return true;
+        }
+        return false;
     }
     abstract List<Move> checkPawnPossibleMoves(Pawn pawn);
     abstract List<Move> checkKingPossibleMoves(Pawn pawn);

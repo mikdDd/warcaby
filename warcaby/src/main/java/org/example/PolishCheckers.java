@@ -2,8 +2,7 @@ package org.example;
 
 import java.util.*;
 import java.util.List;
-//TODO sprawdzanie czy nie chcemy bić niaktywnego(zbitego) pionka
-//TODO poprawki poruszania i bicia
+
 public class PolishCheckers extends GameType{
     public int xSize = 10; //poziomo
     public int ySize = 10;  //pionowo
@@ -139,7 +138,7 @@ public class PolishCheckers extends GameType{
                         if(color.equals("white")){
                             if (y > yPawn) {
                                 possibleMoves.add(new Move(x, y,false));
-                                System.out.println("TTTT"+x+"d"+y+"P:"+xPawn+"PY:"+yPawn);
+
                             }
                         } else {
                             if (y < yPawn) {
@@ -152,6 +151,8 @@ public class PolishCheckers extends GameType{
 
 
                 }
+                xFlag = 0;
+                yFlag = 0;
             }
         }
         //jezeli wystapilo bicie usuwamy z listy wszystkie ruchy nie będące biciami
@@ -165,6 +166,8 @@ public class PolishCheckers extends GameType{
         String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
+        int xFlag = 0;
+        int yFlag = 0;
         boolean captureExist = false;
         List<Move> possibleMoves = new ArrayList<>();
         if(this.multipleCapturePawn != null && !pawn.equals(multipleCapturePawn) && this.multipleCapturePawn.color.equals(pawn.color)){
@@ -182,31 +185,19 @@ public class PolishCheckers extends GameType{
                     if (board.fields[x][y] != null && board.fields[x][y].isActive) {
                         if (!Objects.equals(board.fields[x][y].color, pawn.color)) {         //bicie
 
-                            if (x > xPawn) {
-                                if(y>yPawn) {
-                                    if ( x+1 < 10 && y + 1 < 10 && board.fields[x + 1][y + 1] == null ) {
-                                        possibleMoves.add(new Move(x + 1, y + 1, true));
-                                        captureExist = true;
-                                    }
-                                } else {
-                                    if ( x + 1 < 10 && y - 1 >= 0 && board.fields[x + 1][y - 1] == null ) {
-                                        possibleMoves.add(new Move(x + 1, y - 1, true));
-                                        captureExist = true;
-                                    }
-                                }
+                            if(x > xPawn && x + 1 < 10){xFlag = 1;}
+                            else if(x < xPawn && x-1 >=0 ){
+                                xFlag = -1;
+                            }
+                            if(y > yPawn && y + 1 < 10 ){yFlag = 1;}
+                            else if(y < yPawn && y-1 >=0 ){
+                                yFlag = -1;
+                            }
+                            //System.out.println("x"+x+"y"+y+"xFlag:"+xFlag+"YFlag:"+yFlag);
+                            if(xFlag != 0 && yFlag != 0 && board.fields[x+xFlag][y+yFlag] == null){
 
-                            } else {
-                                if(y > yPawn) {
-                                    if (x - 1 >= 0 && y + 1 < 10 && board.fields[x - 1][y + 1] == null) {
-                                        possibleMoves.add(new Move(x - 1, y + 1, true));
-                                        captureExist = true;
-                                    }
-                                } else {
-                                    if ( x - 1 >= 0 && y - 1 >= 0 && board.fields[x - 1][y - 1] == null) {
-                                        possibleMoves.add(new Move(x - 1, y - 1, true));
-                                        captureExist = true;
-                                    }
-                                }
+                                possibleMoves.add(new Move(x + xFlag, y + yFlag, true));
+                                captureExist = true;
                             }
 
                         }
@@ -216,6 +207,8 @@ public class PolishCheckers extends GameType{
 
                     }
                 }
+                xFlag = 0;
+                yFlag = 0;
             }
         }
         if(captureExist) {
@@ -265,6 +258,8 @@ public class PolishCheckers extends GameType{
 
 
                 }
+                 xFlag=0;
+                 yFlag=0;
             }
         }
         return false;
@@ -305,6 +300,8 @@ public class PolishCheckers extends GameType{
 
 
                 }
+                xFlag=0;
+                yFlag=0;
             }
         }
         return false;
@@ -353,6 +350,7 @@ public class PolishCheckers extends GameType{
     }
      */
     public void movePawn(Pawn pawn, int x, int y) {
+
         if( pawn == null || !pawn.color.equals(this.turn)  )return;
 
         if(this.multipleCapturePawn!=null&&pawn.equals(multipleCapturePawn)){
@@ -389,7 +387,7 @@ public class PolishCheckers extends GameType{
                 }
             }
             pawn.changePosition(x,y);
-            if(pawn.isKing){                                                //czy jest bicie wielokrotne
+            if(pawn.isKing){
                 if(canKingCapture(pawn)) {
                     System.out.println("TRUE");
                     multipleCapturePawn = pawn;
@@ -409,6 +407,7 @@ public class PolishCheckers extends GameType{
         board.updateFields();
         checkKings();
     }
+
     public void checkKings()
     {
         for(int x = 0; x < 10; x++)
