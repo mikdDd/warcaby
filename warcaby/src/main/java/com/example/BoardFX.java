@@ -7,18 +7,18 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-public class Board 
+public class BoardFX 
 {
-  Tile[][] tiles;
-  Pawn[] whitePawns;
-  Pawn[] blackPawns;
+  TileFX[][] tiles;
+  PawnFX[] whitePawns;
+  PawnFX[] blackPawns;
   String message;
   Bridge bridge;
-  Board(int x, int y)
+  BoardFX(int x, int y)
   {
-    tiles = Tile.generateTiles(x);
-    whitePawns = Pawn.generateWhitePawns(y);
-    blackPawns = Pawn.generateBlackPawns(y);
+    tiles = TileFX.generateTiles(x);
+    whitePawns = PawnFX.generateWhitePawns(y);
+    blackPawns = PawnFX.generateBlackPawns(y);
   }  
   public void setBridge(Bridge bridge)
   {
@@ -27,33 +27,33 @@ public class Board
 
   public void disableWhite()
   {
-    for (Pawn pawn : whitePawns) {
+    for (PawnFX pawn : whitePawns) {
       pawn.setDisable(true);
     }
   }
   public void enableWhite()
   {
-    for (Pawn pawn : whitePawns) {
+    for (PawnFX pawn : whitePawns) {
       pawn.setDisable(true);
     }
   }
   public void disableBlack()
   {
-    for (Pawn pawn : blackPawns) {
+    for (PawnFX pawn : blackPawns) {
       pawn.setDisable(true);
     }
   }
   public void enableBlack()
   {
-    for (Pawn pawn : blackPawns) {
+    for (PawnFX pawn : blackPawns) {
       pawn.setDisable(false);
     }
   }
   public void disableTiles()
   {
-    for (Tile[] tileRow : tiles) 
+    for (TileFX[] tileRow : tiles) 
     {
-      for (Tile tile : tileRow) 
+      for (TileFX tile : tileRow) 
       {
         if(tile.getColor() == 'B')
         {
@@ -64,9 +64,9 @@ public class Board
   }
   public void enableTiles()
   {
-    for (Tile[] tileRow : tiles) 
+    for (TileFX[] tileRow : tiles) 
     {
-      for (Tile tile : tileRow) 
+      for (TileFX tile : tileRow) 
       {
         if(tile.getColor() == 'B')
         {
@@ -105,9 +105,9 @@ public class Board
   public void addEvents(int player, Scene scene)
   {
     
-    for (Tile[] tileRow : tiles) 
+    for (TileFX[] tileRow : tiles) 
     {
-      for (Tile tile : tileRow)
+      for (TileFX tile : tileRow)
       {
         if(tile.getColor() == 'B')
         {
@@ -133,7 +133,7 @@ public class Board
     }
     if(player==1)
     {
-      for (Pawn pawn : whitePawns) 
+      for (PawnFX pawn : whitePawns) 
       {
         pawn.setOnMouseEntered(new EventHandler<MouseEvent>() {
           public void handle(MouseEvent me) {
@@ -156,7 +156,7 @@ public class Board
     }
     else if(player==2)
     {
-      for (Pawn pawn : blackPawns) 
+      for (PawnFX pawn : blackPawns) 
       {
         pawn.setOnMouseEntered(new EventHandler<MouseEvent>() 
         {
@@ -185,18 +185,18 @@ public class Board
 
   public void addToScene(GridPane pane)
   {
-    for (Tile[] tileRow : tiles) 
+    for (TileFX[] tileRow : tiles) 
     {
-      for (Tile tile : tileRow)
+      for (TileFX tile : tileRow)
       {
         pane.add(tile, tile.getXIndex(), tile.getYIndex());
       }
     }
-    for (Pawn pawn : blackPawns) 
+    for (PawnFX pawn : blackPawns) 
     {
       pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
     }
-    for (Pawn pawn : whitePawns) 
+    for (PawnFX pawn : whitePawns) 
     {
       pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
     }
