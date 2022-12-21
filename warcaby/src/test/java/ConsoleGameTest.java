@@ -18,11 +18,11 @@ public class ConsoleGameTest {
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
             //String move = myObj.nextLine();  // Read user input
-            //GameFactory gameFactory = new GameControllerFactory();
+            GameFactory gameFactory = new GameControllerFactory();
 
-            //GameController b = gameFactory.createGame("POLISH");
-            PolishCheckers b = new PolishCheckers();
-            b.getPawn(3,3).setKing();
+            GameController b = gameFactory.createGame("POLISH");
+            //PolishCheckers b = new PolishCheckers();
+           // b.getPawn(3,3).setKing();
 
             //b.setFields();
             while (true) {
