@@ -34,7 +34,7 @@ public class BoardFX
   public void enableWhite()
   {
     for (PawnFX pawn : whitePawns) {
-      pawn.setDisable(true);
+      pawn.setDisable(false);
     }
   }
   public void disableBlack()
@@ -204,12 +204,16 @@ public class BoardFX
 
   public void firstOutput(String pos)
   {
+    this.disableBlack();
+    this.disableWhite();
+    this.enableTiles();
     message = "";
     message += pos;
   }
 
   public void secondOutput(String pos)
   {
+    this.disableTiles();
     message += pos;
     bridge.send(message);
   }

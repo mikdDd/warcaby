@@ -164,6 +164,9 @@ public class App extends Application implements Runnable
     board.setDefaultPosition();
     board.addEvents(player, gameScene);
     board.addToScene(gridPane);
+    board.disableTiles();
+    board.disableBlack();
+    board.disableWhite();
 
     gameScene.setCursor(Cursor.CROSSHAIR);
 
@@ -210,7 +213,7 @@ public class App extends Application implements Runnable
   private void send(String text)
   {
     System.out.println("Sending message");
-    bridge.send(text);
+    //bridge.send(text);
     if(actualPlayer == PLAYER1)
     {
       actualPlayer = PLAYER2;
@@ -246,7 +249,6 @@ public class App extends Application implements Runnable
           public void run()
           {
             board.enableWhite();
-            board.enableTiles();
             tourButton.setDisable(false);
           }
         });
@@ -258,16 +260,20 @@ public class App extends Application implements Runnable
         {
           public void run()
           {
-            board.disableBlack();
-            board.disableTiles();
             tourButton.setDisable(true);
-
           }
         });
         try
         {
           System.out.println("Waiting for receive");
-          System.out.println(bridge.receive());
+          String temp = bridge.receive();
+          Platform.runLater(new Runnable()
+        {
+          public void run()
+          {
+            output.setText(temp);
+          }
+        });
           System.out.println("Receive done");
           actualPlayer = PLAYER2;
         }
@@ -290,7 +296,6 @@ public class App extends Application implements Runnable
           public void run()
           {
             board.enableBlack();
-            board.enableTiles();
             tourButton.setDisable(false);
           }
         });
@@ -302,15 +307,20 @@ public class App extends Application implements Runnable
         {
           public void run()
           {
-            board.disableBlack();
-            board.disableTiles();
             tourButton.setDisable(true);
           }
         });
         try
         {
           System.out.println("Waiting for receive");
-          System.out.println(bridge.receive());
+          String temp = bridge.receive();
+          Platform.runLater(new Runnable()
+        {
+          public void run()
+          {
+            output.setText(temp);
+          }
+        });
           System.out.println("Receive done");
           actualPlayer = PLAYER1;
         }

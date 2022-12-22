@@ -51,7 +51,8 @@ public class Game implements Runnable{
                     // Wypisywanie na serwerze
                     System.out.println(line);
                     // Wysylanie do socketa
-                    outF.println("-> (" + line + ")");
+                    String temp = line.substring(0,2) + " --> " + line.substring(2);
+                    outF.println(temp);
                     turn=FIRST;
                 }
 
@@ -61,7 +62,8 @@ public class Game implements Runnable{
                     // Wypisywanie na serwerze
                     System.out.println(line);
                     // Wysylanie do socketa
-                    outS.println("-> (" + line + ")");
+                    String temp = line.substring(0,2) + " --> " + line.substring(2);
+                    outS.println(temp);
                     turn=SECOND;
                 }
             } while (true);
