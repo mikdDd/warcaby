@@ -10,7 +10,7 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(4444)) {
 
             System.out.println("Server is listening on port 4444");
-
+            //TODO kolejkowanie graczy (do zrobienia jak będzie już dopracowana komunikacja)
             while (true) 
             {
                 Socket firstClient = serverSocket.accept();
@@ -29,7 +29,10 @@ public class Server {
                 System.out.println(line);
                 System.out.println("Second client connected");
                 //TODO factory gier zależnie od typu
-                Game g = new Game(firstClient, secondClient);
+                GameFactory gameFactory = new GameControllerFactory();
+
+                //GameController b = gameFactory.createGame("POLISH");
+                Game g = new Game(firstClient, secondClient, gameFactory.createGame("POLISH"));
                 Thread gTh = new Thread(g);
                 gTh.start();
 

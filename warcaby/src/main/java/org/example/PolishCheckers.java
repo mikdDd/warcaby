@@ -6,11 +6,11 @@ import java.util.List;
 public class PolishCheckers extends GameType{
     public int xSize = 10; //poziomo
     public int ySize = 10;  //pionowo
-    public int pawnCount = 40;
+    public int pawnCount = 20;
    // public Board board;
 
     //private List<Pawn> pawnList = new ArrayList<>();
-    private String turn = "white";
+
     private Pawn multipleCapturePawn;
 
     public PolishCheckers() {
@@ -344,9 +344,7 @@ public class PolishCheckers extends GameType{
         } catch (NullPointerException e){}
         }
     }
-    public String whichPlayerTurn() {
-        return this.turn;
-    }
+
     /**
     public List<Pawn> playerPawnWithCaptureList(String playerColor) {
         List<Pawn> list = new ArrayList<>();

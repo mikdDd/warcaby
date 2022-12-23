@@ -5,7 +5,7 @@ import java.util.List;
 //TODO remis?
 public abstract class GameType implements GameController {
     public Board board;
-    
+    public String turn = "white";
 
     @Override
     public abstract void movePawn(Pawn pawn, int x, int y);
@@ -82,6 +82,22 @@ public abstract class GameType implements GameController {
         s=strWhite.toString()+":"+strBlack.toString();
         return s;
     }
+
+    @Override
+    public int getBoardSize() {
+        return board.xSize;
+    }
+
+    @Override
+    public int getPawnCount() {
+        return board.pawnCount;
+    }
+
+    @Override
+    public String whichPlayerTurn() {
+        return this.turn;
+    }
+
     public String possibleMovesToString(Pawn pawn){
         List<Move> moves= new ArrayList<>();
         StringBuilder str= new StringBuilder();
