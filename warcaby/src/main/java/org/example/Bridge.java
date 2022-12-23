@@ -36,10 +36,17 @@ public class Bridge
       
   }
 
-  public String receive() throws IOException
+  public String receive()
   {
-    String str = in.readLine();
-    return str;
+    try
+    {
+      return in.readLine();
+    }
+    catch(Exception e)
+    {
+      System.out.print("ereor: " + e);
+    }
+    return "";
   }
 
     

@@ -48,12 +48,14 @@ public class TileFX extends Rectangle
   public static TileFX[][] generateTiles(int n)
   {
     TileFX[][] arr = new TileFX[n][n];
-
+    TileFX tile;
     for (int i=0; i<n; i++)
     {
       for (int j=0; j<n; j++)
       {
-        arr[i][j] = new TileFX(i, j);
+        tile = new TileFX(i, j);
+        tile.setDisable(true);
+        arr[i][j] = tile;
       }
     }
 
