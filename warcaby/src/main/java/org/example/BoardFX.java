@@ -209,6 +209,7 @@ public class BoardFX
 
   public void addToScene(GridPane pane)
   {
+  //TODO obracanie planszy
     for (TileFX[] tileRow : tiles) 
     {
       for (TileFX tile : tileRow)

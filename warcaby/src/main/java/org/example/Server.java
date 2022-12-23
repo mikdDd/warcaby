@@ -14,12 +14,21 @@ public class Server {
             while (true) 
             {
                 Socket firstClient = serverSocket.accept();
+                //TODO wyslać tu info o typie gry wybranym przez klienta
+                InputStream inputF = firstClient.getInputStream();
+                BufferedReader inF = new BufferedReader(new InputStreamReader(inputF));
+                String line = inF.readLine();
+                System.out.println(line);
                 System.out.println("First client connected");
                 System.out.println("Waiting for the second player");
 
                 Socket secondClient = serverSocket.accept();
+                InputStream inputS = secondClient.getInputStream();
+                BufferedReader inS = new BufferedReader(new InputStreamReader(inputS));
+                line = inS.readLine();
+                System.out.println(line);
                 System.out.println("Second client connected");
-
+                //TODO factory gier zależnie od typu
                 Game g = new Game(firstClient, secondClient);
                 Thread gTh = new Thread(g);
                 gTh.start();

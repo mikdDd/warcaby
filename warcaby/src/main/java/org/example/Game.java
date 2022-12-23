@@ -40,20 +40,20 @@ public class Game implements Runnable{
             OutputStream outputS = secondPlayer.getOutputStream();
             PrintWriter outS = new PrintWriter(outputS, true);
 
-
+        //TODO wysylanie info bezpośrednio z gamecontroller
         //INIT
             //numer gracza
             outF.println("1");
             outS.println("2");
             //rozmiar planszy
-            outF.println("10");
-            outS.println("10");            
+            outF.println("11");
+            outS.println("11");
             //ilosc pionkow
             outF.println("10");
             outS.println("10");            
             //ustawienie pionkow
-            outF.println("18385878980929496989:10305070900121416181");
-            outS.println("10305070900121416181:18385878980929496989");
+            outF.println("1819385878980929496989:10305070900121416181");
+            outS.println("1819385878980929496989:10305070900121416181");
             
 
             String line;

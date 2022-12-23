@@ -28,10 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.channels.FileLock;
@@ -157,7 +154,7 @@ public class App extends Application implements Runnable
     //   System.out.println("Read failed");
     //   System.exit(1);
     // }
-    // bridge.send("GAME1");
+     bridge.send("GAME1");
     player = Integer.parseInt(bridge.receive());
     FIELDS = Integer.parseInt(bridge.receive());
     PAWNS = Integer.parseInt(bridge.receive());
