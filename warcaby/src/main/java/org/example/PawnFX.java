@@ -12,9 +12,10 @@ public class PawnFX extends Circle
   private int xIndex;
   private int yIndex;
   private static int SIZE;
-
+  private Boolean king;
   PawnFX(char c)
   {
+    this.king = false;
     this.setRadius(SIZE/2);
     if(c == 'B')
     {
@@ -39,7 +40,10 @@ public class PawnFX extends Circle
     this.xIndex = xCord;
     this.yIndex = yCord;
   }
-
+  public void setKing(boolean bool)
+  {
+    this.king = bool;
+  }
   public static void setSize(int size)
   {
     SIZE = size;
@@ -48,9 +52,12 @@ public class PawnFX extends Circle
   public static PawnFX[] generateWhitePawns(int n)
   {
     PawnFX[] arr = new PawnFX[n];
+    PawnFX pawn;
     for(int i=0; i<n; i++)
     {
-      arr[i] = new PawnFX('W');
+      pawn = new PawnFX('W');
+      pawn.setDisable(true);
+      arr[i] = pawn;
     }
     return arr;
   }
@@ -58,9 +65,12 @@ public class PawnFX extends Circle
   public static PawnFX[] generateBlackPawns(int n)
   {
     PawnFX[] arr = new PawnFX[n];
+    PawnFX pawn;
     for(int i=0; i<n; i++)
     {
-      arr[i] = new PawnFX('B');
+      pawn = new PawnFX('B');
+      pawn.setDisable(true);
+      arr[i] = pawn;
     }
     return arr;
   }

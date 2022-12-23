@@ -1,11 +1,13 @@
 package org.example;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 public class BoardFX 
 {
@@ -14,6 +16,7 @@ public class BoardFX
   PawnFX[] blackPawns;
   String message;
   Bridge bridge;
+  
   BoardFX(int x, int y)
   {
     tiles = TileFX.generateTiles(x);
@@ -49,59 +52,80 @@ public class BoardFX
       pawn.setDisable(false);
     }
   }
-  public void disableTiles()
+  public void disableTiles(String positionString)
   {
+    int index=0;
+    System.out.print(positionString.length());
     for (TileFX[] tileRow : tiles) 
     {
+      outerloop:
       for (TileFX tile : tileRow) 
       {
-        if(tile.getColor() == 'B')
+        if(tile.getXIndex() == positionString.charAt(index) && tile.getYIndex() == positionString.charAt(index+1))
         {
           tile.setDisable(true);
+          tile.setFill(Color.BROWN);
+          index += 2;
+        }
+        if (index >= positionString.length())
+        {
+          break outerloop;
         }
       }
     }
   }
-  public void enableTiles()
+  public void enableTiles(String positionString)
   {
+    int index=0;
+    outerloop:
     for (TileFX[] tileRow : tiles) 
     {
       for (TileFX tile : tileRow) 
       {
-        if(tile.getColor() == 'B')
+        if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
+            tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
         {
           tile.setDisable(false);
+          tile.setFill(Color.GREEN);  
+          index+=2;
+        }
+        if (index >= positionString.length())
+        {
+          break outerloop;
         }
       }
     }
   }
   
-  //TODO: zmiana na getPositionFromServer
-  public void setDefaultPosition()
+  public void setPosition(String positionString)
   {
-    whitePawns[0].setIndexes(1,8);
-    whitePawns[1].setIndexes(3,8);
-    whitePawns[2].setIndexes(5,8);
-    whitePawns[3].setIndexes(7,8);
-    whitePawns[4].setIndexes(9,8);
-    whitePawns[5].setIndexes(0,9);
-    whitePawns[6].setIndexes(2,9);
-    whitePawns[7].setIndexes(4,9);
-    whitePawns[8].setIndexes(6,9);
-    whitePawns[9].setIndexes(8,9);
-
-    blackPawns[0].setIndexes(1,0);
-    blackPawns[1].setIndexes(3,0);
-    blackPawns[2].setIndexes(5,0);
-    blackPawns[3].setIndexes(7,0);
-    blackPawns[4].setIndexes(9,0);
-    blackPawns[5].setIndexes(0,1);
-    blackPawns[6].setIndexes(2,1);
-    blackPawns[7].setIndexes(4,1);
-    blackPawns[8].setIndexes(6,1);
-    blackPawns[9].setIndexes(8,1);
+    String[] positionArray = positionString.split(":");
+    int index = 0;
+    for (PawnFX pawn : whitePawns) 
+    {
+      if(positionArray[0].charAt(index)== 'D')
+      {
+        pawn.setKing(true);
+        index++;
+      }
+      pawn.setIndexes(Character.getNumericValue(positionArray[0].charAt(index)), 
+        Character.getNumericValue(positionArray[0].charAt(index+1)));
+      index+=2;
+    }
+    index=0;
+    for (PawnFX pawn : blackPawns) 
+    {
+      if(positionArray[1].charAt(index)== 'D')
+      {
+        pawn.setKing(true);
+        index++;
+      }
+      pawn.setIndexes(Character.getNumericValue(positionArray[1].charAt(index)), 
+        Character.getNumericValue(positionArray[1].charAt(index+1)));
+      index+=2;
+    }
   }
-
+  //TODO: USUNAC
   public void addEvents(int player, Scene scene)
   {
     
@@ -204,17 +228,11 @@ public class BoardFX
 
   public void firstOutput(String pos)
   {
-    this.disableBlack();
-    this.disableWhite();
-    this.enableTiles();
-    message = "";
-    message += pos;
+    bridge.send(pos);
   }
 
   public void secondOutput(String pos)
   {
-    this.disableTiles();
-    message += pos;
-    bridge.send(message);
+    bridge.send(pos);
   }
 }

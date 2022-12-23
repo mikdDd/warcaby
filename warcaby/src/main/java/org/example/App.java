@@ -56,6 +56,7 @@ public class App extends Application implements Runnable
   private static int FIELDS = 10;
   private static int PAWNS = 10;
   private static int SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
+  private static Boolean END = false;
 
   Stage stage;
   //game
@@ -147,26 +148,27 @@ public class App extends Application implements Runnable
       System.out.println("No I/O");
       System.exit(1);
     }
-    try 
-    {
-      player = bridge.receiveInitFromServer();
-    } 
-    catch (IOException e) 
-    {
-      System.out.println("Read failed");
-      System.exit(1);
-    }
-
+    // try 
+    // {
+    //   player = bridge.receiveInitFromServer();
+    // } 
+    // catch (IOException e) 
+    // {
+    //   System.out.println("Read failed");
+    //   System.exit(1);
+    // }
+    // bridge.send("GAME1");
+    player = Integer.parseInt(bridge.receive());
+    FIELDS = Integer.parseInt(bridge.receive());
+    PAWNS = Integer.parseInt(bridge.receive());
+    SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
     PawnFX.setSize(SIZE);
     TileFX.setSize(SIZE);
     board = new BoardFX(FIELDS, PAWNS);
     board.setBridge(bridge);
-    board.setDefaultPosition();
+    board.setPosition(bridge.receive());
     board.addEvents(player, gameScene);
     board.addToScene(gridPane);
-    board.disableTiles();
-    board.disableBlack();
-    board.disableWhite();
 
     gameScene.setCursor(Cursor.CROSSHAIR);
 
@@ -197,7 +199,7 @@ public class App extends Application implements Runnable
 
         public void handle(ActionEvent event)
         {
-          send("Button clicked by " + player);
+          //send("Button clicked by " + player);
         }
     });
 
@@ -222,116 +224,166 @@ public class App extends Application implements Runnable
     {
       actualPlayer = PLAYER1;
     }
-    startThread();
+    //startThread();
   }
 
   @Override
   public void run() 
   {
-    if (actualPlayer==PLAYER1) 
+    while(!END)
     {
-        f1();
-    }
-    else
-    {
-        f2();
+      if (actualPlayer==PLAYER1) 
+      {
+        if(player == PLAYER1)
+        {
+          board.enableWhite();
+          String posibleMoves = bridge.receive();
+          board.disableWhite();
+          board.enableTiles(posibleMoves);
+          String moveString = bridge.receive();
+          board.disableTiles(posibleMoves);
+          if(moveString == "CANCEL")
+          {
+            System.out.print("geted CANCEL");
+            break;
+          }
+          else if(moveString == "CAPTURE")
+          {
+            System.out.print("geted CAPTURE");
+            String boardString = bridge.receive();
+            board.setPosition(boardString);
+            board.addToScene(gridPane);
+          }
+          else if(moveString == "MOVE")
+          {
+            System.out.print("geted MOVE");
+            String boardString = bridge.receive();
+            board.setPosition(boardString);
+            board.addToScene(gridPane);
+            actualPlayer = PLAYER2;  
+          }
+        }
+        else
+        {
+          String moveString = bridge.receive();  
+          if(moveString == "CAPTURE")
+          {
+            System.out.print("geted CAPTURE");
+            String boardString = bridge.receive();
+            board.setPosition(boardString);
+            board.addToScene(gridPane);
+          }
+          else if(moveString == "MOVE")
+          {
+            System.out.print("geted MOVE");
+            String boardString = bridge.receive();
+            board.setPosition(boardString);
+            board.addToScene(gridPane);
+            actualPlayer = PLAYER2;  
+          }
+        }
+      }
+      else
+      {
+        System.out.println("not done yet");
+      }
     }
   }
 
   /// Metoda uruchamiana w run dla PLAYER1
-  void f1()
-    {
-      if(player == PLAYER1)
-      {
-        System.out.println("Player1 moze klikac");
-        Platform.runLater(new Runnable()
-        {
-          public void run()
-          {
-            board.enableWhite();
-            tourButton.setDisable(false);
-          }
-        });
-      }
-      else
-      {
-        System.out.println("Player2 nie moze klikac");
-        Platform.runLater(new Runnable()
-        {
-          public void run()
-          {
-            tourButton.setDisable(true);
-          }
-        });
-        try
-        {
-          System.out.println("Waiting for receive");
-          String temp = bridge.receive();
-          Platform.runLater(new Runnable()
-        {
-          public void run()
-          {
-            output.setText(temp);
-          }
-        });
-          System.out.println("Receive done");
-          actualPlayer = PLAYER2;
-        }
-        catch (IOException e) 
-        {
-          System.out.println("Read failed"); 
-          System.exit(1);
-        }
-        run();
-      }
-    }
-  /// Metoda uruchamiana w run dla PLAYER2
-  void f2()
-  {
-    if(player == PLAYER2)
-      {
-        System.out.println("Player2 moze klikac");
-        Platform.runLater(new Runnable()
-        {
-          public void run()
-          {
-            board.enableBlack();
-            tourButton.setDisable(false);
-          }
-        });
-      }
-      else
-      {
-        System.out.println("Player1 nie moze klikac");
-        Platform.runLater(new Runnable()
-        {
-          public void run()
-          {
-            tourButton.setDisable(true);
-          }
-        });
-        try
-        {
-          System.out.println("Waiting for receive");
-          String temp = bridge.receive();
-          Platform.runLater(new Runnable()
-        {
-          public void run()
-          {
-            output.setText(temp);
-          }
-        });
-          System.out.println("Receive done");
-          actualPlayer = PLAYER1;
-        }
-        catch (IOException e) 
-        {
-          System.out.println("Read failed"); 
-          System.exit(1);
-        }
-        run();
-      }
-  }
+  // void f1()
+  //   {
+  //     if(player == PLAYER1)
+  //     {
+  //       System.out.println("Player1 moze klikac");
+  //       Platform.runLater(new Runnable()
+  //       {
+  //         public void run()
+  //         {
+  //           board.enableWhite();
+  //           tourButton.setDisable(false);
+  //         }
+  //       });
+  //     }
+  //     else
+  //     {
+  //       System.out.println("Player2 nie moze klikac");
+  //       Platform.runLater(new Runnable()
+  //       {
+  //         public void run()
+  //         {
+  //           tourButton.setDisable(true);
+  //         }
+  //       });
+  //       try
+  //       {
+  //         System.out.println("Waiting for receive");
+  //         String temp = bridge.receive();
+  //         Platform.runLater(new Runnable()
+  //       {
+  //         public void run()
+  //         {
+  //           output.setText(temp);
+  //         }
+  //       });
+  //         System.out.println("Receive done");
+  //         actualPlayer = PLAYER2;
+  //       }
+  //       catch (IOException e) 
+  //       {
+  //         System.out.println("Read failed"); 
+  //         System.exit(1);
+  //       }
+  //       run();
+  //     }
+  //   }
+  // /// Metoda uruchamiana w run dla PLAYER2
+  // void f2()
+  // {
+  //   if(player == PLAYER2)
+  //     {
+  //       System.out.println("Player2 moze klikac");
+  //       Platform.runLater(new Runnable()
+  //       {
+  //         public void run()
+  //         {
+  //           board.enableBlack();
+  //           tourButton.setDisable(false);
+  //         }
+  //       });
+  //     }
+  //     else
+  //     {
+  //       System.out.println("Player1 nie moze klikac");
+  //       Platform.runLater(new Runnable()
+  //       {
+  //         public void run()
+  //         {
+  //           tourButton.setDisable(true);
+  //         }
+  //       });
+  //       try
+  //       {
+  //         System.out.println("Waiting for receive");
+  //         String temp = bridge.receive();
+  //         Platform.runLater(new Runnable()
+  //       {
+  //         public void run()
+  //         {
+  //           output.setText(temp);
+  //         }
+  //       });
+  //         System.out.println("Receive done");
+  //         actualPlayer = PLAYER1;
+  //       }
+  //       catch (IOException e) 
+  //       {
+  //         System.out.println("Read failed"); 
+  //         System.exit(1);
+  //       }
+  //       run();
+  //     }
+  //}
     
   private void startThread() 
   {
@@ -346,3 +398,4 @@ public class App extends Application implements Runnable
     launch(args);
   }
 }
+
