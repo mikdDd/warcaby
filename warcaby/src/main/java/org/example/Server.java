@@ -4,25 +4,36 @@ import java.io.*;
 import java.net.*;
 
 public class Server {
+    static BufferedReader in;
     public static void main(String[] args) {
 
         try (ServerSocket serverSocket = new ServerSocket(4444)) {
 
             System.out.println("Server is listening on port 4444");
 
-            while (true) {
+            while (true) 
+            {
                 Socket firstClient = serverSocket.accept();
+                //TODO wyslać tu info o typie gry wybranym przez klienta
+                InputStream inputF = firstClient.getInputStream();
+                BufferedReader inF = new BufferedReader(new InputStreamReader(inputF));
+                String line = inF.readLine();
+                System.out.println(line);
                 System.out.println("First client connected");
                 System.out.println("Waiting for the second player");
 
                 Socket secondClient = serverSocket.accept();
+                InputStream inputS = secondClient.getInputStream();
+                BufferedReader inS = new BufferedReader(new InputStreamReader(inputS));
+                line = inS.readLine();
+                System.out.println(line);
                 System.out.println("Second client connected");
-
+                //TODO factory gier zależnie od typu
                 Game g = new Game(firstClient, secondClient);
                 Thread gTh = new Thread(g);
                 gTh.start();
 
-                // TODO: Musi byc dokldnie dwoch klientow
+
 
             }
 
