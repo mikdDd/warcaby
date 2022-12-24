@@ -119,7 +119,7 @@ public class Game implements Runnable{
                 String position = gameController.boardToString();
                 outF.println(position);
                 outS.println(position);
-                }
+              }
 
                 
             } while (true);
@@ -127,11 +127,6 @@ public class Game implements Runnable{
         } catch (IOException ex) {
             System.err.println("ex");
         }
-    }
-
-    private void sendMove(DataOutputStream out, String text) throws IOException {
-        out.writeChars(text);
-
     }
 }
 

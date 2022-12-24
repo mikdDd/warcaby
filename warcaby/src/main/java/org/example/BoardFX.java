@@ -1,5 +1,6 @@
 package org.example;
 
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,9 +18,13 @@ public class BoardFX
   String message;
   Bridge bridge;
   int size;
+  int player;
+  int lastClickedX;
+  int lastClickedY;
 
-  BoardFX(int size, int pawns)
+  BoardFX(int size, int pawns, int player)
   {
+    this.player = player;
     this.size=size;
     tiles = TileFX.generateTiles(size);
     whitePawns = PawnFX.generateWhitePawns(pawns);
@@ -75,6 +80,8 @@ public class BoardFX
         }
       }
     }
+    tiles[lastClickedX][lastClickedY].setDisable(true);
+    tiles[lastClickedX][lastClickedY].setFill(Color.BROWN);
   }
   public void enableTiles(String positionString)
   {
@@ -97,6 +104,8 @@ public class BoardFX
         }
       }
     }
+    tiles[lastClickedX][lastClickedY].setDisable(false);
+    tiles[lastClickedX][lastClickedY].setFill(Color.GREEN);
   }
   
   public void setPosition(String positionString)
@@ -176,6 +185,8 @@ public class BoardFX
             public void handle(MouseEvent me) 
             {
               firstOutput(pawn.getXIndex() + "" + pawn.getYIndex());
+              lastClickedX = pawn.getXIndex();
+              lastClickedY = pawn.getYIndex();
             }
         });
       }
@@ -203,52 +214,58 @@ public class BoardFX
             public void handle(MouseEvent me) 
             {
               firstOutput(pawn.getXIndex() + "" + pawn.getYIndex());
+              lastClickedX = pawn.getXIndex();
+              lastClickedY = pawn.getYIndex();
             }
         });
       }
     }
   }
 
-  public void addTilesToScene(GridPane pane, int player)
+  public void addTilesToScene(GridPane pane)
   {
-    for (TileFX[] tileRow : tiles) 
+    if(player == 1)
     {
-      for (TileFX tile : tileRow)
+      for (TileFX[] tileRow : tiles) 
       {
-        pane.add(tile, tile.getXIndex(), tile.getYIndex());
+        for (TileFX tile : tileRow)
+        {
+          pane.add(tile, size-1-tile.getXIndex(), size-1-tile.getYIndex());
+        }
+      }
+    }
+    else
+    {
+      for (TileFX[] tileRow : tiles) 
+      {
+        for (TileFX tile : tileRow)
+        {
+          pane.add(tile, tile.getXIndex(), tile.getYIndex());
+        }
       }
     }
   }
-  public void addPawnsToScene(GridPane pane, int player)
+  public void addPawnsToScene(GridPane pane)
   {
-    //TODO obracanie planszy
-    // if (player == 1)
-    // {
-    //   for (TileFX[] tileRow : tiles) 
-    //   {
-    //     for (TileFX tile : tileRow)
-    //     {
-    //       pane.add(tile, 9-tile.getXIndex(), 9-tile.getYIndex());
-    //     }
-    //   }
-    //   for (PawnFX pawn : blackPawns) 
-    //   {
-    //     pane.add(pawn, 9-pawn.getXIndex(), 9-pawn.getYIndex());
-    //   }
-    //   for (PawnFX pawn : whitePawns) 
-    //   {
-    //     pane.add(pawn, 9-pawn.getXIndex(), 9-pawn.getYIndex());
-    //   }
-    // }
-    // else
-    
-      Platform.runLater(new Runnable()
+    Platform.runLater(new Runnable()
+    {
+      public void run()
       {
-        public void run()
-        {      
-          pane.getChildren().removeAll(blackPawns);
-          pane.getChildren().removeAll(whitePawns);
-          
+        pane.getChildren().removeAll(blackPawns);
+        pane.getChildren().removeAll(whitePawns);
+        if (player == 1)
+        {
+          for (PawnFX pawn : blackPawns) 
+          {
+            pane.add(pawn, size-1-pawn.getXIndex(), size-1-pawn.getYIndex());
+          }
+          for (PawnFX pawn : whitePawns) 
+          {
+            pane.add(pawn, size-1-pawn.getXIndex(), size-1-pawn.getYIndex());
+          }
+        }
+        else
+        {
           for (PawnFX pawn : blackPawns) 
           {
             pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
@@ -257,8 +274,9 @@ public class BoardFX
           {
             pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
           }
-        }
-      });
+        }  
+      }
+    });
   }
   public void firstOutput(String pos)
   {
