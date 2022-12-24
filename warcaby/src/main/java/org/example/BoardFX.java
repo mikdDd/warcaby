@@ -67,16 +67,17 @@ public class BoardFX
     {
       for (TileFX tile : tileRow) 
       {
+        if (index >= positionString.length())
+        {
+          break outerloop;
+        }
+        
         if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
             tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
         {
           tile.setDisable(true);
           tile.setFill(Color.BROWN);
           index += 2;
-        }
-        if (index >= positionString.length())
-        {
-          break outerloop;
         }
       }
     }
@@ -91,16 +92,17 @@ public class BoardFX
     {
       for (TileFX tile : tileRow) 
       {
+        if (index >= positionString.length())
+        {
+          break outerloop;
+        }
+
         if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
             tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
         {
           tile.setDisable(false);
           tile.setFill(Color.GREEN);  
           index+=2;
-        }
-        if (index >= positionString.length())
-        {
-          break outerloop;
         }
       }
     }
