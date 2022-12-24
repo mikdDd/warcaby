@@ -58,7 +58,6 @@ public class TileFX extends Rectangle
         arr[i][j] = tile;
       }
     }
-
     return arr;
   }
 }

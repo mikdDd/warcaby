@@ -53,7 +53,6 @@ public class App extends Application implements Runnable
   private static int FIELDS = 10;
   private static int PAWNS = 10;
   private static int SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
-  private static Boolean END = false;
 
   Stage stage;
   //game
@@ -71,7 +70,7 @@ public class App extends Application implements Runnable
 
   Bridge bridge;
   
-
+  private final static int END = 0;
   public final static int PLAYER1 = 1;
   public final static int PLAYER2 = 2;
 
@@ -163,10 +162,11 @@ public class App extends Application implements Runnable
     TileFX.setSize(SIZE);
     board = new BoardFX(FIELDS, PAWNS);
     board.setBridge(bridge);
+    board.addTilesToScene(gridPane, player);
     board.setPosition(bridge.receive());
+    board.addPawnsToScene(gridPane, player);
     board.addEvents(player, gameScene);
-    board.addToScene(gridPane);
-
+    
     gameScene.setCursor(Cursor.CROSSHAIR);
 
     input = new TextField();
@@ -201,9 +201,9 @@ public class App extends Application implements Runnable
     });
 
 
-    gridPane.add(tourButton,10,2);
-    gridPane.add(output,10,5);
-    gridPane.add(input,10,6);
+    gridPane.add(tourButton,FIELDS,2);
+    gridPane.add(output,FIELDS,5);
+    gridPane.add(input,FIELDS,6);
 
     stage.setScene(gameScene);
   }
@@ -227,62 +227,49 @@ public class App extends Application implements Runnable
   @Override
   public void run() 
   {
-    while(!END)
+    while(actualPlayer != END)
     {
-      if (actualPlayer==PLAYER1) 
+      System.out.println("actual player: " + actualPlayer + " player: " + player);
+      if (actualPlayer == PLAYER1) 
       {
-        if(player == PLAYER1)
+        if (player == PLAYER1)
         {
           board.enableWhite();
           String posibleMoves = bridge.receive();
           board.disableWhite();
           board.enableTiles(posibleMoves);
-          String moveString = bridge.receive();
+          actualPlayer = Integer.parseInt(bridge.receive());
           board.disableTiles(posibleMoves);
-          if(moveString == "CANCEL")
-          {
-            System.out.print("geted CANCEL");
-            break;
-          }
-          else if(moveString == "CAPTURE")
-          {
-            System.out.print("geted CAPTURE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-          }
-          else if(moveString == "MOVE")
-          {
-            System.out.print("geted MOVE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-            actualPlayer = PLAYER2;  
-          }
+          board.setPosition(bridge.receive());
+          board.addPawnsToScene(gridPane, player);
         }
         else
         {
-          String moveString = bridge.receive();  
-          if(moveString == "CAPTURE")
-          {
-            System.out.print("geted CAPTURE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-          }
-          else if(moveString == "MOVE")
-          {
-            System.out.print("geted MOVE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-            actualPlayer = PLAYER2;  
-          }
+          actualPlayer = Integer.parseInt(bridge.receive());
+          board.setPosition(bridge.receive());
+
+          board.addPawnsToScene(gridPane, player);
         }
       }
       else
       {
-        System.out.println("not done yet");
+        if (player == PLAYER2)
+        {
+          board.enableBlack();
+          String posibleMoves = bridge.receive();
+          board.disableBlack();
+          board.enableTiles(posibleMoves);
+          actualPlayer = Integer.parseInt(bridge.receive());
+          board.disableTiles(posibleMoves);
+          board.setPosition(bridge.receive());
+          board.addPawnsToScene(gridPane, player);
+        }
+        else
+        {
+          actualPlayer = Integer.parseInt(bridge.receive());
+          board.setPosition(bridge.receive());
+          board.addPawnsToScene(gridPane, player);
+        }
       }
     }
   }

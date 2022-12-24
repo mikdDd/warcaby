@@ -16,12 +16,14 @@ public class BoardFX
   PawnFX[] blackPawns;
   String message;
   Bridge bridge;
-  
-  BoardFX(int x, int y)
+  int size;
+
+  BoardFX(int size, int pawns)
   {
-    tiles = TileFX.generateTiles(x);
-    whitePawns = PawnFX.generateWhitePawns(y);
-    blackPawns = PawnFX.generateBlackPawns(y);
+    this.size=size;
+    tiles = TileFX.generateTiles(size);
+    whitePawns = PawnFX.generateWhitePawns(pawns);
+    blackPawns = PawnFX.generateBlackPawns(pawns);
   }  
   public void setBridge(Bridge bridge)
   {
@@ -55,13 +57,13 @@ public class BoardFX
   public void disableTiles(String positionString)
   {
     int index=0;
-    System.out.print(positionString.length());
+    outerloop:
     for (TileFX[] tileRow : tiles) 
     {
-      outerloop:
       for (TileFX tile : tileRow) 
       {
-        if(tile.getXIndex() == positionString.charAt(index) && tile.getYIndex() == positionString.charAt(index+1))
+        if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
+            tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
         {
           tile.setDisable(true);
           tile.setFill(Color.BROWN);
@@ -207,9 +209,8 @@ public class BoardFX
     }
   }
 
-  public void addToScene(GridPane pane)
+  public void addTilesToScene(GridPane pane, int player)
   {
-  //TODO obracanie planszy
     for (TileFX[] tileRow : tiles) 
     {
       for (TileFX tile : tileRow)
@@ -217,16 +218,48 @@ public class BoardFX
         pane.add(tile, tile.getXIndex(), tile.getYIndex());
       }
     }
-    for (PawnFX pawn : blackPawns) 
-    {
-      pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
-    }
-    for (PawnFX pawn : whitePawns) 
-    {
-      pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
-    }
   }
-
+  public void addPawnsToScene(GridPane pane, int player)
+  {
+    //TODO obracanie planszy
+    // if (player == 1)
+    // {
+    //   for (TileFX[] tileRow : tiles) 
+    //   {
+    //     for (TileFX tile : tileRow)
+    //     {
+    //       pane.add(tile, 9-tile.getXIndex(), 9-tile.getYIndex());
+    //     }
+    //   }
+    //   for (PawnFX pawn : blackPawns) 
+    //   {
+    //     pane.add(pawn, 9-pawn.getXIndex(), 9-pawn.getYIndex());
+    //   }
+    //   for (PawnFX pawn : whitePawns) 
+    //   {
+    //     pane.add(pawn, 9-pawn.getXIndex(), 9-pawn.getYIndex());
+    //   }
+    // }
+    // else
+    
+      Platform.runLater(new Runnable()
+      {
+        public void run()
+        {      
+          pane.getChildren().removeAll(blackPawns);
+          pane.getChildren().removeAll(whitePawns);
+          
+          for (PawnFX pawn : blackPawns) 
+          {
+            pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
+          }
+          for (PawnFX pawn : whitePawns) 
+          {
+            pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
+          }
+        }
+      });
+  }
   public void firstOutput(String pos)
   {
     bridge.send(pos);
