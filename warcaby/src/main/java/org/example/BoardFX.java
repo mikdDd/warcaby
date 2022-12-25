@@ -1,6 +1,8 @@
 package org.example;
 
 
+import java.util.Arrays;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -71,7 +73,7 @@ public class BoardFX
         {
           break outerloop;
         }
-        
+
         if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
             tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
         {
@@ -116,26 +118,42 @@ public class BoardFX
     int index = 0;
     for (PawnFX pawn : whitePawns) 
     {
-      if(positionArray[0].charAt(index)== 'D')
+      if(index>=positionArray[0].length())
       {
-        pawn.setKing(true);
-        index++;
+        whitePawns = Arrays.copyOf(whitePawns, whitePawns.length-1);
+        System.out.println("Bialych pionkow: " + whitePawns.length);
       }
-      pawn.setIndexes(Character.getNumericValue(positionArray[0].charAt(index)), 
-        Character.getNumericValue(positionArray[0].charAt(index+1)));
-      index+=2;
+      else
+      {
+        if(positionArray[0].charAt(index)== 'D')
+        {
+          pawn.setKing(true);
+          index++;
+        }
+        pawn.setIndexes(Character.getNumericValue(positionArray[0].charAt(index)), 
+          Character.getNumericValue(positionArray[0].charAt(index+1)));
+        index+=2;
+      }
     }
     index=0;
     for (PawnFX pawn : blackPawns) 
     {
-      if(positionArray[1].charAt(index)== 'D')
+      if(index>=positionArray[1].length())
       {
-        pawn.setKing(true);
-        index++;
+        blackPawns = Arrays.copyOf(blackPawns, blackPawns.length-1);
+        System.out.println("Czarnych pionkow: " + blackPawns.length);
       }
-      pawn.setIndexes(Character.getNumericValue(positionArray[1].charAt(index)), 
-        Character.getNumericValue(positionArray[1].charAt(index+1)));
-      index+=2;
+      else
+      {
+        if(positionArray[1].charAt(index)== 'D')
+        {
+          pawn.setKing(true);
+          index++;
+        }
+        pawn.setIndexes(Character.getNumericValue(positionArray[1].charAt(index)), 
+          Character.getNumericValue(positionArray[1].charAt(index+1)));
+        index+=2;
+      }
     }
   }
   //TODO: USUNAC
