@@ -21,7 +21,7 @@ public class ConsoleGameTest {
 
             GameController b = gameFactory.createGame("POLISH");
             //PolishCheckers b = new PolishCheckers();
-           // b.getPawn(3,3).setKing();
+            b.getPawn(4,3).setKing();
 
             //b.setFields();
             while (true) {
