@@ -4,13 +4,14 @@ import java.util.*;
 import java.util.List;
 
 public class PolishCheckers extends GameType{
+    //TODO sprawdzic czy w biciu wielokrotnym możemy zmienić pionek, którym bijemy
     public int xSize = 10; //poziomo
     public int ySize = 10;  //pionowo
-    public int pawnCount = 40;
+    public int pawnCount = 20;
    // public Board board;
 
     //private List<Pawn> pawnList = new ArrayList<>();
-    private String turn = "white";
+
     private Pawn multipleCapturePawn;
 
     public PolishCheckers() {
@@ -34,7 +35,7 @@ public class PolishCheckers extends GameType{
         if(!pawnWithCapture.isEmpty() && !pawnWithCapture.contains(pawn)){
             return possibleMoves;
         }
-        for (int x = xPawn - 1; x <= xPawn + 1; x+=2) {                     //TODO ujednolic i zmniejszyc liczbe ifów
+        for (int x = xPawn - 1; x <= xPawn + 1; x+=2) {
             for (int y = yPawn - 1; y <= yPawn + 1; y+=2) {
                 if (x >= 0 && x < 10 && y >= 0 && y < 10) {
                     //if (board.fields[x][y] == null)
@@ -85,12 +86,15 @@ public class PolishCheckers extends GameType{
         }
         return possibleMoves;
     }
+    //TODO dokończyć poprawki damek
     public List<Move> checkKingPossibleMoves(Pawn pawn) {
         String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         int xFlag = 0;
         int yFlag = 0;
+        List <Integer[]> usedDiagonals = new ArrayList<>();
+
         boolean captureExist = false;
         List<Move> possibleMoves = new ArrayList<>();
         if(this.multipleCapturePawn != null && !pawn.equals(multipleCapturePawn) && this.multipleCapturePawn.color.equals(pawn.color)){
@@ -99,6 +103,7 @@ public class PolishCheckers extends GameType{
         if(!this.playerPawnWithCaptureList(pawn.color).isEmpty() && !this.playerPawnWithCaptureList(pawn.color).contains(pawn)){
             return possibleMoves;
         }
+        /**
         for(int x = 0; x<10; x++)
         {
             for(int y = 0; y < 10; y++)
@@ -118,15 +123,19 @@ public class PolishCheckers extends GameType{
                             }
                             //System.out.println("x"+x+"y"+y+"xFlag:"+xFlag+"YFlag:"+yFlag);
                             if(xFlag != 0 && yFlag != 0 && board.fields[x+xFlag][y+yFlag] == null){
-
-                                possibleMoves.add(new Move(x + xFlag, y + yFlag, true));
-                                captureExist = true;
+                                Integer[] flagTab = new Integer[]{xFlag,yFlag};
+                                if(!usedDiagonals.contains(flagTab)) {                      //jezeli w ruchu nie było już bicia po danej przekątnej to możemy bić
+                                    usedDiagonals.add(flagTab);
+                                    possibleMoves.add(new Move(x + xFlag, y + yFlag, true));
+                                    captureExist = true;
+                                }
                             }
+
+                        } else {
 
                         }
                     } else {
-                        //System.out.println("ASDASD");
-                            possibleMoves.add(new Move(x, y, false));
+                        possibleMoves.add(new Move(x, y, false));
 
                     }
                 }
@@ -134,6 +143,47 @@ public class PolishCheckers extends GameType{
                 yFlag = 0;
             }
         }
+        */
+
+        for(int xIncrement = -1; xIncrement<=1; xIncrement+=2)          //iteracja po przekątnych od damki
+        {
+            for(int yIncrement = -1; yIncrement<=1; yIncrement+=2)
+            {
+                for(int x = xPawn, y = yPawn; x >= 0 && x<10 && y >= 0&& y<10; x+=xIncrement, y+=yIncrement)
+                {
+                    if (board.fields[x][y] != null && board.fields[x][y].isActive) {                    //czy trafilismy na niepuste pole
+                        if (!Objects.equals(board.fields[x][y].color, pawn.color)) {         //jezeli pionek innego koloru to mamy bicie
+
+                            if(x > xPawn && x + 1 < 10){xFlag = 1;}
+                            else if(x < xPawn && x-1 >=0 ){
+                                xFlag = -1;
+                            }
+                            if(y > yPawn && y + 1 < 10 ){yFlag = 1;}
+                            else if(y < yPawn && y-1 >=0 ){
+                                yFlag = -1;
+                            }
+                            //System.out.println("x"+x+"y"+y+"xFlag:"+xFlag+"YFlag:"+yFlag);        //TODO sprawdzic czy mozemy bic jezeli za pionkiem byl inny zbity pionek
+                            if(xFlag != 0 && yFlag != 0 && (board.fields[x+xFlag][y+yFlag] == null || !board.fields[x+xFlag][y+yFlag].isActive)){
+
+
+                                    possibleMoves.add(new Move(x + xFlag, y + yFlag, true));
+                                    captureExist = true;
+                                    break;
+                            }
+
+                        } else {
+                            if(x!=xPawn && y!= yPawn)break;                              //jezeli trafilismy na pionek naszego koloru przechodzimy do innej przekatnej
+                        }
+                    } else {
+                        possibleMoves.add(new Move(x, y, false));               //jezeli trafilismy na puste pole, dodajemy je
+
+                    }
+                    xFlag = 0;
+                    yFlag = 0;
+                }
+            }
+        }
+
         if(captureExist) {
             //System.out.println("CAPTURE");
             possibleMoves.removeIf(move -> !move.isCapture());
@@ -194,7 +244,47 @@ public class PolishCheckers extends GameType{
         int xFlag=0;
         int yFlag=0;
 
+        for(int xIncrement = -1; xIncrement<=1; xIncrement+=2)          //iteracja po przekątnych od damki
+        {
+            for(int yIncrement = -1; yIncrement<=1; yIncrement+=2)
+            {
+                for(int x = xPawn, y = yPawn; x >= 0 && x<10 && y >= 0&& y<10; x+=xIncrement, y+=yIncrement)
+                {
+                    if (board.fields[x][y] != null && board.fields[x][y].isActive) {                    //czy trafilismy na niepuste pole
+                        if (!Objects.equals(board.fields[x][y].color, pawn.color)) {         //jezeli pionek innego koloru to mamy bicie
 
+                            if(x > xPawn && x + 1 < 10){xFlag = 1;}
+                            else if(x < xPawn && x-1 >=0 ){
+                                xFlag = -1;
+                            }
+                            if(y > yPawn && y + 1 < 10 ){yFlag = 1;}
+                            else if(y < yPawn && y-1 >=0 ){
+                                yFlag = -1;
+                            }
+                            //System.out.println("x"+x+"y"+y+"xFlag:"+xFlag+"YFlag:"+yFlag);        //TODO sprawdzic czy mozemy bic jezeli za pionkiem byl inny zbity pionek
+                            if(xFlag != 0 && yFlag != 0 && (board.fields[x+xFlag][y+yFlag] == null || !board.fields[x+xFlag][y+yFlag].isActive)){
+
+
+                                return true;
+                            }
+
+                        } else {
+                            if(x!=xPawn && y!= yPawn)break;                              //jezeli trafilismy na pionek naszego koloru przechodzimy do innej przekatnej
+                        }
+                    }
+                    xFlag = 0;
+                    yFlag = 0;
+                }
+            }
+        }
+
+
+        return false;
+
+
+
+
+/**
         for(int x = 0; x<10; x++)
         {
             for(int y = 0; y < 10; y++)
@@ -228,6 +318,7 @@ public class PolishCheckers extends GameType{
             }
         }
         return false;
+ */
     }
     /**
     @Override
@@ -344,9 +435,7 @@ public class PolishCheckers extends GameType{
         } catch (NullPointerException e){}
         }
     }
-    public String whichPlayerTurn() {
-        return this.turn;
-    }
+
     /**
     public List<Pawn> playerPawnWithCaptureList(String playerColor) {
         List<Pawn> list = new ArrayList<>();

@@ -21,10 +21,11 @@ public class ConsoleGameTest {
 
             GameController b = gameFactory.createGame("POLISH");
             //PolishCheckers b = new PolishCheckers();
-           // b.getPawn(3,3).setKing();
+            b.getPawn(4,3).setKing();
 
             //b.setFields();
             while (true) {
+                System.out.println(b.whichPlayerTurn());
                 System.out.println(b.boardToString());
                // System.out.println(b.whichPlayerTurn());
 
@@ -51,9 +52,10 @@ public class ConsoleGameTest {
                 int y1 = Character.getNumericValue(move.charAt(1));
                 int x2 = Character.getNumericValue(move.charAt(2));
                 int y2 = Character.getNumericValue(move.charAt(3));
-                System.out.println(x1+","+y1+","+x2+","+y2);
+                //System.out.println(x1+","+y1+","+x2+","+y2);
                // List<Move> kingMoves = b.checkKingPossibleMoves(b.fields[x1][y1]));
                 System.out.println(b.possibleMovesToString(b.getPawn(x1,y1)));
+
                 b.movePawn(b.getPawn(x1,y1), x2, y2);
                // System.out.println(b.canPlayerMove("white"));
             }

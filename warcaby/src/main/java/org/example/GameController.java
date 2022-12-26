@@ -9,5 +9,8 @@ import java.util.List;
   boolean canCapture(Pawn pawn);
   Pawn getPawn(int x, int y);
   String boardToString();
+  int getBoardSize();
+    int getPawnCount();
+    public String whichPlayerTurn();
 
 }
