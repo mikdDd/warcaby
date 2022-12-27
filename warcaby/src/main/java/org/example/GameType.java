@@ -68,7 +68,7 @@ public abstract class GameType implements GameController {
                     strWhite.append(Integer.toString(p.xPosition));
                     strWhite.append(Integer.toString(p.yPosition));
                 } else {
-                    if(p.isKing)strWhite.append("D");
+                    if(p.isKing)strBlack.append("D");
                     strBlack.append(Integer.toString(p.xPosition));
                     strBlack.append(Integer.toString(p.yPosition));
                 }

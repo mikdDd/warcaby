@@ -89,6 +89,7 @@ public class BoardFX
   }
   public void enableTiles(String positionString)
   {
+    //TODO poprawic!!!!
     int index=0;
     outerloop:
     for (TileFX[] tileRow : tiles) 

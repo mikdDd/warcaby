@@ -18,7 +18,6 @@ public class PolishBoard extends Board{
                     String color="white";
                     if(i>5)color="black";
                     Pawn pawn = new Pawn(k,i,color);
-                    //fields[k][i] = pawn;
                     pawnList.add(pawn);
 
                 }
