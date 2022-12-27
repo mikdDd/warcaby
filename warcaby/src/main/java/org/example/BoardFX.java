@@ -19,33 +19,34 @@ public class BoardFX
   PawnFX[] blackPawns;
   String message;
   Bridge bridge;
+  GridPane pane;
   int size;
   int player;
   int lastClickedX;
   int lastClickedY;
 
-  BoardFX(int size, int pawns, int player)
+  BoardFX(int size, int pawns, int player, GridPane pane, Bridge bridge)
   {
     this.player = player;
     this.size=size;
+    this.pane = pane;
+    this.bridge = bridge;
     tiles = TileFX.generateTiles(size);
     whitePawns = PawnFX.generateWhitePawns(pawns);
     blackPawns = PawnFX.generateBlackPawns(pawns);
+    addTilesToScene();
   }  
-  public void setBridge(Bridge bridge)
-  {
-    this.bridge = bridge;
-  }
-
   public void disableWhite()
   {
-    for (PawnFX pawn : whitePawns) {
+    for (PawnFX pawn : whitePawns) 
+    {
       pawn.setDisable(true);
     }
   }
   public void enableWhite()
   {
-    for (PawnFX pawn : whitePawns) {
+    for (PawnFX pawn : whitePawns) 
+    {
       pawn.setDisable(false);
     }
   }
@@ -114,52 +115,74 @@ public class BoardFX
   
   public void setPosition(String positionString)
   {
-    String[] positionArray = positionString.split(":");
-    int index = 0;
-    for (PawnFX pawn : whitePawns) 
+    System.out.println(positionString);
+    Platform.runLater(new Runnable() 
     {
-      if(index>=positionArray[0].length())
+    public void run()
+    {  
+      String[] positionArray = positionString.split(":");
+      
+      pane.getChildren().removeAll(whitePawns);
+      pane.getChildren().removeAll(blackPawns);
+      int digits = 0;
+      for (char ch : positionArray[0].toCharArray()) 
+      {
+        if (Character.isDigit(ch))
+        {
+          digits++;
+        }  
+      }
+      if(digits/2<whitePawns.length)
       {
         whitePawns = Arrays.copyOf(whitePawns, whitePawns.length-1);
         System.out.println("Bialych pionkow: " + whitePawns.length);
       }
-      else
+      int index = 0;
+      for (PawnFX pawn : whitePawns) 
       {
         if(positionArray[0].charAt(index)== 'D')
         {
-          pawn.setKing(true);
+          pawn.setStroke(Color.GRAY);
           index++;
         }
         pawn.setIndexes(Character.getNumericValue(positionArray[0].charAt(index)), 
           Character.getNumericValue(positionArray[0].charAt(index+1)));
         index+=2;
       }
-    }
-    index=0;
-    for (PawnFX pawn : blackPawns) 
-    {
-      if(index>=positionArray[1].length())
+      
+      
+      digits = 0;
+      for (char ch : positionArray[1].toCharArray()) 
+      {
+        if (Character.isDigit(ch))
+        {
+          digits++;
+        }  
+      }
+      if(digits/2<blackPawns.length)
       {
         blackPawns = Arrays.copyOf(blackPawns, blackPawns.length-1);
         System.out.println("Czarnych pionkow: " + blackPawns.length);
       }
-      else
+      index = 0;
+      for (PawnFX pawn : blackPawns) 
       {
         if(positionArray[1].charAt(index)== 'D')
         {
-          pawn.setKing(true);
+          pawn.setStroke(Color.GRAY);
           index++;
         }
         pawn.setIndexes(Character.getNumericValue(positionArray[1].charAt(index)), 
           Character.getNumericValue(positionArray[1].charAt(index+1)));
         index+=2;
       }
+
+       addPawnsToScene();
+      }
+      });
     }
-  }
-  //TODO: USUNAC
-  public void addEvents(int player, Scene scene)
+  public void addEvents(Scene scene)
   {
-    
     for (TileFX[] tileRow : tiles) 
     {
       for (TileFX tile : tileRow)
@@ -242,7 +265,7 @@ public class BoardFX
     }
   }
 
-  public void addTilesToScene(GridPane pane)
+  private void addTilesToScene()
   {
     if(player == 1)
     {
@@ -250,7 +273,7 @@ public class BoardFX
       {
         for (TileFX tile : tileRow)
         {
-          pane.add(tile, size-1-tile.getXIndex(), size-1-tile.getYIndex());
+          pane.add(tile, size-1-tile.getXIndex(), size-tile.getYIndex());
         }
       }
     }
@@ -260,43 +283,35 @@ public class BoardFX
       {
         for (TileFX tile : tileRow)
         {
-          pane.add(tile, tile.getXIndex(), tile.getYIndex());
+          pane.add(tile, tile.getXIndex(), tile.getYIndex()+1);
         }
       }
     }
   }
-  public void addPawnsToScene(GridPane pane)
+  private void addPawnsToScene()
   {
-    Platform.runLater(new Runnable()
+    if (player == 1)
     {
-      public void run()
+      for (PawnFX pawn : blackPawns) 
       {
-        pane.getChildren().removeAll(blackPawns);
-        pane.getChildren().removeAll(whitePawns);
-        if (player == 1)
-        {
-          for (PawnFX pawn : blackPawns) 
-          {
-            pane.add(pawn, size-1-pawn.getXIndex(), size-1-pawn.getYIndex());
-          }
-          for (PawnFX pawn : whitePawns) 
-          {
-            pane.add(pawn, size-1-pawn.getXIndex(), size-1-pawn.getYIndex());
-          }
-        }
-        else
-        {
-          for (PawnFX pawn : blackPawns) 
-          {
-            pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
-          }
-          for (PawnFX pawn : whitePawns) 
-          {
-            pane.add(pawn, pawn.getXIndex(), pawn.getYIndex());
-          }
-        }  
+        pane.add(pawn, size-1-pawn.getXIndex(), size-pawn.getYIndex());
       }
-    });
+      for (PawnFX pawn : whitePawns) 
+      {
+        pane.add(pawn, size-1-pawn.getXIndex(), size-pawn.getYIndex());
+      }
+    }
+    else
+    {
+      for (PawnFX pawn : blackPawns) 
+      {
+        pane.add(pawn, pawn.getXIndex(), pawn.getYIndex()+1);
+      }
+      for (PawnFX pawn : whitePawns) 
+      {
+        pane.add(pawn, pawn.getXIndex(), pawn.getYIndex()+1);
+      }
+    }  
   }
   public void firstOutput(String pos)
   {

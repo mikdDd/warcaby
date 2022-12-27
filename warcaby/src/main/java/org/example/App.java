@@ -38,27 +38,19 @@ import java.nio.channels.FileLock;
  */
 public class App extends Application implements Runnable
 {
-  //temp
-  Label output;
-  TextField input;
-  
   //TODO: posprzątać
   //TODO: zwiecha po wyborze
-  //TODO: wysylanie info
-  //TODO: synchronizacja
-
   
-  private static int WIDTH = 800;
-  private static int HEIGHT = 600;
+  private static int WIDTH = 600;
+  private static int HEIGHT = 660;
   private static int FIELDS = 10;
   private static int PAWNS = 10;
-  private static int SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
+  private static int SIZE = Math.max(WIDTH, HEIGHT)/(FIELDS+1);
 
   Stage stage;
   //game
   GridPane gridPane = new GridPane();
   Scene gameScene = new Scene(gridPane, WIDTH, HEIGHT);
-  Button tourButton;
   Label tourLabel;    
   BoardFX board;
   
@@ -147,53 +139,21 @@ public class App extends Application implements Runnable
     player = Integer.parseInt(bridge.receive());
     FIELDS = Integer.parseInt(bridge.receive());
     PAWNS = Integer.parseInt(bridge.receive());
-    SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
+    SIZE = Math.max(WIDTH, HEIGHT)/(FIELDS+1);
     PawnFX.setSize(SIZE);
     TileFX.setSize(SIZE);
-    board = new BoardFX(FIELDS, PAWNS, player);
-    board.setBridge(bridge);
-    board.addTilesToScene(gridPane);
+    board = new BoardFX(FIELDS, PAWNS, player, gridPane, bridge);
     board.setPosition(bridge.receive());
-    board.addPawnsToScene(gridPane);
-    board.addEvents(player, gameScene);
+    board.addEvents(gameScene);
     
     gameScene.setCursor(Cursor.CROSSHAIR);
 
-    input = new TextField();
-    output = new Label("OUTPUT");
-    
     tourLabel = new Label("");
-    tourLabel.setFont(new Font(SIZE/2));
-    tourLabel.setPrefWidth(WIDTH-HEIGHT);
+    tourLabel.setFont(new Font(SIZE/1.5));
+    tourLabel.setPrefWidth(WIDTH);
+    tourLabel.setPrefHeight(SIZE);
     tourLabel.setAlignment(Pos.CENTER);
-    gridPane.add(tourLabel,10,1);
-
-    tourButton = new Button("END TOUR");
-    tourButton.setMinWidth((WIDTH-HEIGHT)/1.5);
-    GridPane.setHalignment(tourButton, HPos.CENTER);
-
-    tourButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-      public void handle(MouseEvent me) {
-          gameScene.setCursor(Cursor.HAND);
-      }
-    });
-    tourButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-      public void handle(MouseEvent me) {
-          gameScene.setCursor(Cursor.CROSSHAIR);
-      }
-    });
-    tourButton.setOnAction(new EventHandler<ActionEvent>() {
-
-        public void handle(ActionEvent event)
-        {
-          //send("Button clicked by " + player);
-        }
-    });
-
-
-    gridPane.add(tourButton,FIELDS,2);
-    gridPane.add(output,FIELDS,5);
-    gridPane.add(input,FIELDS,6);
+    gridPane.add(tourLabel, 0, 0, FIELDS, 1);
 
     stage.setScene(gameScene);
   }
@@ -208,6 +168,13 @@ public class App extends Application implements Runnable
       {
         if (player == PLAYER1)
         {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Your turn");
+            }  
+          });
           board.enableWhite();
           String posibleMoves = bridge.receive();
           board.disableWhite();
@@ -215,20 +182,31 @@ public class App extends Application implements Runnable
           actualPlayer = Integer.parseInt(bridge.receive());
           board.disableTiles(posibleMoves);
           board.setPosition(bridge.receive());
-          board.addPawnsToScene(gridPane);
         }
         else
         {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Enemy's turn");
+            }  
+          });
           actualPlayer = Integer.parseInt(bridge.receive());
           board.setPosition(bridge.receive());
-
-          board.addPawnsToScene(gridPane);
         }
       }
       else
       {
         if (player == PLAYER2)
         {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Your turn");
+            }  
+          });
           board.enableBlack();
           String posibleMoves = bridge.receive();
           board.disableBlack();
@@ -236,13 +214,18 @@ public class App extends Application implements Runnable
           actualPlayer = Integer.parseInt(bridge.receive());
           board.disableTiles(posibleMoves);
           board.setPosition(bridge.receive());
-          board.addPawnsToScene(gridPane);
         }
         else
         {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Enemy's turn");
+            }  
+          });
           actualPlayer = Integer.parseInt(bridge.receive());
           board.setPosition(bridge.receive());
-          board.addPawnsToScene(gridPane);
         }
       }
     }
