@@ -38,28 +38,19 @@ import java.nio.channels.FileLock;
  */
 public class App extends Application implements Runnable
 {
-  //temp
-  Label output;
-  TextField input;
-  
   //TODO: posprzątać
   //TODO: zwiecha po wyborze
-  //TODO: wysylanie info
-  //TODO: synchronizacja
-
   
-  private static int WIDTH = 800;
-  private static int HEIGHT = 600;
+  private static int WIDTH = 600;
+  private static int HEIGHT = 660;
   private static int FIELDS = 10;
   private static int PAWNS = 10;
-  private static int SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
-  private static Boolean END = false;
+  private static int SIZE = Math.max(WIDTH, HEIGHT)/(FIELDS+1);
 
   Stage stage;
   //game
   GridPane gridPane = new GridPane();
   Scene gameScene = new Scene(gridPane, WIDTH, HEIGHT);
-  Button tourButton;
   Label tourLabel;    
   BoardFX board;
   
@@ -71,7 +62,7 @@ public class App extends Application implements Runnable
 
   Bridge bridge;
   
-
+  private final static int END = 0;
   public final static int PLAYER1 = 1;
   public final static int PLAYER2 = 2;
 
@@ -133,7 +124,6 @@ public class App extends Application implements Runnable
     try 
     {
       bridge = new Bridge();
-      
     } 
     catch (UnknownHostException e) 
     {
@@ -145,249 +135,106 @@ public class App extends Application implements Runnable
       System.out.println("No I/O");
       System.exit(1);
     }
-    // try 
-    // {
-    //   player = bridge.receiveInitFromServer();
-    // } 
-    // catch (IOException e) 
-    // {
-    //   System.out.println("Read failed");
-    //   System.exit(1);
-    // }
-     bridge.send("GAME1");
+    bridge.send("GAME1");
     player = Integer.parseInt(bridge.receive());
     FIELDS = Integer.parseInt(bridge.receive());
     PAWNS = Integer.parseInt(bridge.receive());
-    SIZE = Math.min(WIDTH, HEIGHT)/FIELDS;
+    SIZE = Math.max(WIDTH, HEIGHT)/(FIELDS+1);
     PawnFX.setSize(SIZE);
     TileFX.setSize(SIZE);
-    board = new BoardFX(FIELDS, PAWNS);
-    board.setBridge(bridge);
+    board = new BoardFX(FIELDS, PAWNS, player, gridPane, bridge);
     board.setPosition(bridge.receive());
-    board.addEvents(player, gameScene);
-    board.addToScene(gridPane);
-
+    board.addEvents(gameScene);
+    
     gameScene.setCursor(Cursor.CROSSHAIR);
 
-    input = new TextField();
-    output = new Label("OUTPUT");
-    
     tourLabel = new Label("");
-    tourLabel.setFont(new Font(SIZE/2));
-    tourLabel.setPrefWidth(WIDTH-HEIGHT);
+    tourLabel.setFont(new Font(SIZE/1.5));
+    tourLabel.setPrefWidth(WIDTH);
+    tourLabel.setPrefHeight(SIZE);
     tourLabel.setAlignment(Pos.CENTER);
-    gridPane.add(tourLabel,10,1);
-
-    tourButton = new Button("END TOUR");
-    tourButton.setMinWidth((WIDTH-HEIGHT)/1.5);
-    GridPane.setHalignment(tourButton, HPos.CENTER);
-
-    tourButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-      public void handle(MouseEvent me) {
-          gameScene.setCursor(Cursor.HAND);
-      }
-    });
-    tourButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-      public void handle(MouseEvent me) {
-          gameScene.setCursor(Cursor.CROSSHAIR);
-      }
-    });
-    tourButton.setOnAction(new EventHandler<ActionEvent>() {
-
-        public void handle(ActionEvent event)
-        {
-          //send("Button clicked by " + player);
-        }
-    });
-
-
-    gridPane.add(tourButton,10,2);
-    gridPane.add(output,10,5);
-    gridPane.add(input,10,6);
+    gridPane.add(tourLabel, 0, 0, FIELDS, 1);
 
     stage.setScene(gameScene);
   }
-
   
-  private void send(String text)
-  {
-    System.out.println("Sending message");
-    //bridge.send(text);
-    if(actualPlayer == PLAYER1)
-    {
-      actualPlayer = PLAYER2;
-    }
-    else
-    {
-      actualPlayer = PLAYER1;
-    }
-    //startThread();
-  }
-
   @Override
   public void run() 
   {
-    while(!END)
+    while(actualPlayer != END)
     {
-      if (actualPlayer==PLAYER1) 
+      System.out.println("actual player: " + actualPlayer + " player: " + player);
+      if (actualPlayer == PLAYER1) 
       {
-        if(player == PLAYER1)
+        if (player == PLAYER1)
         {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Your turn");
+            }  
+          });
           board.enableWhite();
           String posibleMoves = bridge.receive();
           board.disableWhite();
           board.enableTiles(posibleMoves);
-          String moveString = bridge.receive();
+          actualPlayer = Integer.parseInt(bridge.receive());
           board.disableTiles(posibleMoves);
-          if(moveString == "CANCEL")
-          {
-            System.out.print("geted CANCEL");
-            break;
-          }
-          else if(moveString == "CAPTURE")
-          {
-            System.out.print("geted CAPTURE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-          }
-          else if(moveString == "MOVE")
-          {
-            System.out.print("geted MOVE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-            actualPlayer = PLAYER2;  
-          }
+          board.setPosition(bridge.receive());
         }
         else
         {
-          String moveString = bridge.receive();  
-          if(moveString == "CAPTURE")
+          Platform.runLater(new Runnable() 
           {
-            System.out.print("geted CAPTURE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-          }
-          else if(moveString == "MOVE")
-          {
-            System.out.print("geted MOVE");
-            String boardString = bridge.receive();
-            board.setPosition(boardString);
-            board.addToScene(gridPane);
-            actualPlayer = PLAYER2;  
-          }
+            public void run()
+            {
+              tourLabel.setText("Enemy's turn");
+            }  
+          });
+          actualPlayer = Integer.parseInt(bridge.receive());
+          board.setPosition(bridge.receive());
         }
       }
       else
       {
-        System.out.println("not done yet");
+        if (player == PLAYER2)
+        {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Your turn");
+            }  
+          });
+          board.enableBlack();
+          String posibleMoves = bridge.receive();
+          board.disableBlack();
+          board.enableTiles(posibleMoves);
+          actualPlayer = Integer.parseInt(bridge.receive());
+          board.disableTiles(posibleMoves);
+          board.setPosition(bridge.receive());
+        }
+        else
+        {
+          Platform.runLater(new Runnable() 
+          {
+            public void run()
+            {
+              tourLabel.setText("Enemy's turn");
+            }  
+          });
+          actualPlayer = Integer.parseInt(bridge.receive());
+          board.setPosition(bridge.receive());
+        }
       }
     }
   }
 
-  /// Metoda uruchamiana w run dla PLAYER1
-  // void f1()
-  //   {
-  //     if(player == PLAYER1)
-  //     {
-  //       System.out.println("Player1 moze klikac");
-  //       Platform.runLater(new Runnable()
-  //       {
-  //         public void run()
-  //         {
-  //           board.enableWhite();
-  //           tourButton.setDisable(false);
-  //         }
-  //       });
-  //     }
-  //     else
-  //     {
-  //       System.out.println("Player2 nie moze klikac");
-  //       Platform.runLater(new Runnable()
-  //       {
-  //         public void run()
-  //         {
-  //           tourButton.setDisable(true);
-  //         }
-  //       });
-  //       try
-  //       {
-  //         System.out.println("Waiting for receive");
-  //         String temp = bridge.receive();
-  //         Platform.runLater(new Runnable()
-  //       {
-  //         public void run()
-  //         {
-  //           output.setText(temp);
-  //         }
-  //       });
-  //         System.out.println("Receive done");
-  //         actualPlayer = PLAYER2;
-  //       }
-  //       catch (IOException e) 
-  //       {
-  //         System.out.println("Read failed"); 
-  //         System.exit(1);
-  //       }
-  //       run();
-  //     }
-  //   }
-  // /// Metoda uruchamiana w run dla PLAYER2
-  // void f2()
-  // {
-  //   if(player == PLAYER2)
-  //     {
-  //       System.out.println("Player2 moze klikac");
-  //       Platform.runLater(new Runnable()
-  //       {
-  //         public void run()
-  //         {
-  //           board.enableBlack();
-  //           tourButton.setDisable(false);
-  //         }
-  //       });
-  //     }
-  //     else
-  //     {
-  //       System.out.println("Player1 nie moze klikac");
-  //       Platform.runLater(new Runnable()
-  //       {
-  //         public void run()
-  //         {
-  //           tourButton.setDisable(true);
-  //         }
-  //       });
-  //       try
-  //       {
-  //         System.out.println("Waiting for receive");
-  //         String temp = bridge.receive();
-  //         Platform.runLater(new Runnable()
-  //       {
-  //         public void run()
-  //         {
-  //           output.setText(temp);
-  //         }
-  //       });
-  //         System.out.println("Receive done");
-  //         actualPlayer = PLAYER1;
-  //       }
-  //       catch (IOException e) 
-  //       {
-  //         System.out.println("Read failed"); 
-  //         System.exit(1);
-  //       }
-  //       run();
-  //     }
-  //}
-    
   private void startThread() 
   {
     Thread gTh = new Thread(this);
-     
     gTh.start();
-    // run();
   }
   
   public static void main(String[] args) 

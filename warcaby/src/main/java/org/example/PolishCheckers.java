@@ -153,7 +153,6 @@ public class PolishCheckers extends GameType{
                 {
                     if (board.fields[x][y] != null && board.fields[x][y].isActive) {                    //czy trafilismy na niepuste pole
                         if (!Objects.equals(board.fields[x][y].color, pawn.color)) {         //jezeli pionek innego koloru to mamy bicie
-
                             if(x > xPawn && x + 1 < 10){xFlag = 1;}
                             else if(x < xPawn && x-1 >=0 ){
                                 xFlag = -1;
@@ -168,9 +167,9 @@ public class PolishCheckers extends GameType{
 
                                     possibleMoves.add(new Move(x + xFlag, y + yFlag, true));
                                     captureExist = true;
-                                    break;
-                            }
 
+                            }
+                            break;
                         } else {
                             if(x!=xPawn && y!= yPawn)break;                              //jezeli trafilismy na pionek naszego koloru przechodzimy do innej przekatnej
                         }
@@ -252,6 +251,7 @@ public class PolishCheckers extends GameType{
                 {
                     if (board.fields[x][y] != null && board.fields[x][y].isActive) {                    //czy trafilismy na niepuste pole
                         if (!Objects.equals(board.fields[x][y].color, pawn.color)) {         //jezeli pionek innego koloru to mamy bicie
+
 
                             if(x > xPawn && x + 1 < 10){xFlag = 1;}
                             else if(x < xPawn && x-1 >=0 ){
@@ -428,11 +428,12 @@ public class PolishCheckers extends GameType{
         {  try {
             if (Objects.equals(board.fields[x][0].color, "black")) {
                 board.fields[x][0].setKing();
-            }
-            if (Objects.equals(board.fields[x][9].color, "white")) {
-                board.fields[x][9].setKing();
-            }
-        } catch (NullPointerException e){}
+            }  } catch (NullPointerException e){}
+            try {
+                if (Objects.equals(board.fields[x][9].color, "white")) {
+                    board.fields[x][9].setKing();
+                }
+            } catch (NullPointerException e){}
         }
     }
 
