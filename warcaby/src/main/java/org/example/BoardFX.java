@@ -119,7 +119,6 @@ public class BoardFX
       if(digits/2<whitePawns.length)
       {
         whitePawns = Arrays.copyOf(whitePawns, whitePawns.length-1);
-        System.out.println("Bialych pionkow: " + whitePawns.length);
       }
       int index = 0;
       for (PawnFX pawn : whitePawns) 
@@ -128,6 +127,10 @@ public class BoardFX
         {
           pawn.setStroke(Color.GRAY);
           index++;
+        }
+        else
+        {
+          pawn.setStroke(Color.WHITE);
         }
         pawn.setIndexes(Character.getNumericValue(positionArray[0].charAt(index)), 
           Character.getNumericValue(positionArray[0].charAt(index+1)));
@@ -146,7 +149,6 @@ public class BoardFX
       if(digits/2<blackPawns.length)
       {
         blackPawns = Arrays.copyOf(blackPawns, blackPawns.length-1);
-        System.out.println("Czarnych pionkow: " + blackPawns.length);
       }
       index = 0;
       for (PawnFX pawn : blackPawns) 
@@ -155,6 +157,10 @@ public class BoardFX
         {
           pawn.setStroke(Color.GRAY);
           index++;
+        }
+        else
+        {
+          pawn.setStroke(Color.BLACK);
         }
         pawn.setIndexes(Character.getNumericValue(positionArray[1].charAt(index)), 
           Character.getNumericValue(positionArray[1].charAt(index+1)));
