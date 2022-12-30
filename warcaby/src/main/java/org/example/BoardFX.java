@@ -64,50 +64,34 @@ public class BoardFX
   }
   public void disableTiles(String positionString)
   {
-    int index=0;
-    outerloop:
-    for (TileFX[] tileRow : tiles) 
+    int index = 0;
+    int length = positionString.length()/2;    
+    int x; 
+    int y;
+    for (int i=0; i<length; i++)
     {
-      for (TileFX tile : tileRow) 
-      {
-        if (index >= positionString.length())
-        {
-          break outerloop;
-        }
-
-        if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
-            tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
-        {
-          tile.setDisable(true);
-          tile.setFill(Color.BROWN);
-          index += 2;
-        }
-      }
+      x = Character.getNumericValue(positionString.charAt(index));
+      y = Character.getNumericValue(positionString.charAt(index+1));
+      tiles[x][y].setDisable(true);
+      tiles[x][y].setFill(Color.BROWN);
+      index+=2;
     }
     tiles[lastClickedX][lastClickedY].setDisable(true);
     tiles[lastClickedX][lastClickedY].setFill(Color.BROWN);
   }
   public void enableTiles(String positionString)
   {
-    int index=0;
-    outerloop:
-    for (TileFX[] tileRow : tiles) 
+    int index = 0;
+    int length = positionString.length()/2;    
+    int x; 
+    int y;
+    for (int i=0; i<length; i++)
     {
-      for (TileFX tile : tileRow) 
-      {
-        if (index >= positionString.length())
-        {
-          break outerloop;
-        }
-
-        if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
-            tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
-        {
-          tile.setDisable(false);
-          tile.setFill(Color.GREEN);  
-          index+=2;
-        }
-      }
+      x = Character.getNumericValue(positionString.charAt(index));
+      y = Character.getNumericValue(positionString.charAt(index+1));
+      tiles[x][y].setDisable(false);
+      tiles[x][y].setFill(Color.GREEN);
+      index+=2;
     }
     tiles[lastClickedX][lastClickedY].setDisable(false);
     tiles[lastClickedX][lastClickedY].setFill(Color.GREEN);
