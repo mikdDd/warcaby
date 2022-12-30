@@ -64,51 +64,34 @@ public class BoardFX
   }
   public void disableTiles(String positionString)
   {
-    int index=0;
-    outerloop:
-    for (TileFX[] tileRow : tiles) 
+    int index = 0;
+    int length = positionString.length()/2;    
+    int x; 
+    int y;
+    for (int i=0; i<length; i++)
     {
-      for (TileFX tile : tileRow) 
-      {
-        if (index >= positionString.length())
-        {
-          break outerloop;
-        }
-
-        if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
-            tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
-        {
-          tile.setDisable(true);
-          tile.setFill(Color.BROWN);
-          index += 2;
-        }
-      }
+      x = Character.getNumericValue(positionString.charAt(index));
+      y = Character.getNumericValue(positionString.charAt(index+1));
+      tiles[x][y].setDisable(true);
+      tiles[x][y].setFill(Color.BROWN);
+      index+=2;
     }
     tiles[lastClickedX][lastClickedY].setDisable(true);
     tiles[lastClickedX][lastClickedY].setFill(Color.BROWN);
   }
   public void enableTiles(String positionString)
   {
-    //TODO poprawic!!!!
-    int index=0;
-    outerloop:
-    for (TileFX[] tileRow : tiles) 
+    int index = 0;
+    int length = positionString.length()/2;    
+    int x; 
+    int y;
+    for (int i=0; i<length; i++)
     {
-      for (TileFX tile : tileRow) 
-      {
-        if (index >= positionString.length())
-        {
-          break outerloop;
-        }
-
-        if (tile.getXIndex() == Character.getNumericValue(positionString.charAt(index)) &&
-            tile.getYIndex() == Character.getNumericValue(positionString.charAt(index+1)))
-        {
-          tile.setDisable(false);
-          tile.setFill(Color.GREEN);  
-          index+=2;
-        }
-      }
+      x = Character.getNumericValue(positionString.charAt(index));
+      y = Character.getNumericValue(positionString.charAt(index+1));
+      tiles[x][y].setDisable(false);
+      tiles[x][y].setFill(Color.GREEN);
+      index+=2;
     }
     tiles[lastClickedX][lastClickedY].setDisable(false);
     tiles[lastClickedX][lastClickedY].setFill(Color.GREEN);
@@ -136,7 +119,6 @@ public class BoardFX
       if(digits/2<whitePawns.length)
       {
         whitePawns = Arrays.copyOf(whitePawns, whitePawns.length-1);
-        System.out.println("Bialych pionkow: " + whitePawns.length);
       }
       int index = 0;
       for (PawnFX pawn : whitePawns) 
@@ -145,6 +127,10 @@ public class BoardFX
         {
           pawn.setStroke(Color.GRAY);
           index++;
+        }
+        else
+        {
+          pawn.setStroke(Color.WHITE);
         }
         pawn.setIndexes(Character.getNumericValue(positionArray[0].charAt(index)), 
           Character.getNumericValue(positionArray[0].charAt(index+1)));
@@ -163,7 +149,6 @@ public class BoardFX
       if(digits/2<blackPawns.length)
       {
         blackPawns = Arrays.copyOf(blackPawns, blackPawns.length-1);
-        System.out.println("Czarnych pionkow: " + blackPawns.length);
       }
       index = 0;
       for (PawnFX pawn : blackPawns) 
@@ -172,6 +157,10 @@ public class BoardFX
         {
           pawn.setStroke(Color.GRAY);
           index++;
+        }
+        else
+        {
+          pawn.setStroke(Color.BLACK);
         }
         pawn.setIndexes(Character.getNumericValue(positionArray[1].charAt(index)), 
           Character.getNumericValue(positionArray[1].charAt(index+1)));
