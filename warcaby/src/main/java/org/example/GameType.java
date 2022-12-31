@@ -217,11 +217,11 @@ public abstract class GameType implements GameController {
     {
         for(int x = 0; x < 10; x++)
         {  try {
-            if (Objects.equals(board.fields[x][0].color, "black") && !canPawnCapture(board.fields[x][0])) {
+            if (Objects.equals(board.fields[x][0].color, "black") && (!canPawnCapture(board.fields[x][0]) || multipleCapturePawn == null)) {
                 board.fields[x][0].setKing();
             }  } catch (NullPointerException e){}
             try {
-                if (Objects.equals(board.fields[x][9].color, "white") && !canPawnCapture(board.fields[x][9])) {
+                if (Objects.equals(board.fields[x][9].color, "white") && (!canPawnCapture(board.fields[x][9]) || multipleCapturePawn == null)) {
                     board.fields[x][9].setKing();
                 }
             } catch (NullPointerException e){}

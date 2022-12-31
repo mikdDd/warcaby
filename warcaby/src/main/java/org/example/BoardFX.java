@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-
+//TODO rysowanie planszy o dowolnych wymiarach
 public class BoardFX 
 {
   TileFX[][] tiles;

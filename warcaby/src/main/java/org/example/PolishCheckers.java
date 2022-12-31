@@ -8,7 +8,7 @@ public class PolishCheckers extends GameType{
     //TODO sprawdzic czy w biciu wielokrotnym możemy zmienić pionek, którym bijemy
     public int xSize = 10; //poziomo
     public int ySize = 10;  //pionowo
-    public int pawnCount = 20;
+    public int pawnCount = 5;
 
 
 
@@ -41,7 +41,7 @@ public class PolishCheckers extends GameType{
                     if (board.fields[x][y] != null &&  board.fields[x][y].isActive) {
                         if (!Objects.equals(board.fields[x][y].color, pawn.color)) {      //bicie
 
-                            /**
+                            /*
                             if(x > xPawn && x+1 < 10){xFlag = 1;}
                             else if(x < xPawn && x-1 >=0 ){
                                 xFlag = -1;
