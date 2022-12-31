@@ -2,13 +2,15 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-//TODO remis?
+import java.util.Objects;
 public abstract class GameType implements GameController {
     public Board board;
     public String turn = "white";
 
-    @Override
-    public abstract void movePawn(Pawn pawn, int x, int y);
+    Pawn multipleCapturePawn;
+    String whoWon ="";
+
+
 
     public List<Move> checkPossibleMoves(Pawn pawn) {
         if(pawn.isKing){
@@ -75,9 +77,9 @@ public abstract class GameType implements GameController {
             }
         }
         if(strWhite.isEmpty() || !canPlayerMove("white")) {
-            strWhite.append("WHITEWINS");
+            whoWon = "whitewon";
         } else if (strBlack.isEmpty() || !canPlayerMove("black")) {
-            strWhite.append("BLACKWINS");
+            whoWon = "blackwon";
         }
         s=strWhite.toString()+":"+strBlack.toString();
         return s;
@@ -95,6 +97,7 @@ public abstract class GameType implements GameController {
 
     @Override
     public String whichPlayerTurn() {
+        if(!Objects.equals(whoWon, "")){return whoWon;}
         return this.turn;
     }
 
@@ -115,7 +118,87 @@ public abstract class GameType implements GameController {
         }
         return str.toString();
     }
+    int[] coordsRelation(int x, int y, int xPawn, int yPawn)
+    {
+        int[] flags = new int[2];
+        if(x > xPawn){flags[0] = 1;}
+        else if(x < xPawn  ){
+            flags[0] = -1;
+        }
+        if(y > yPawn ){flags[1] = 1;}
+        else if(y < yPawn ){
+            flags[1] = -1;
+        }
+        return flags;
+    }
+    public void movePawn(Pawn pawn, int x, int y) {
 
+        if( pawn == null || !pawn.color.equals(this.turn)  )return;
+
+        if(this.multipleCapturePawn!=null&&pawn.equals(multipleCapturePawn)){
+            this.multipleCapturePawn = null;
+        }
+        int xPawn = pawn.xPosition;
+        int yPawn = pawn.yPosition;
+        int xFlag = 0;
+        int yFlag = 0;
+        String color = pawn.color;
+        Move moveWithCapture = new Move(x,y,true);
+        Move moveWithNoCapture = new Move(x,y,false);
+
+        List<Move> movesList;
+
+        movesList = checkPossibleMoves(pawn);
+
+        if(movesList.contains(moveWithCapture)) {
+            //System.out.println("zBICIem");
+            /*
+            if(x>xPawn){
+                if(y>yPawn){
+                    board.fields[x-1][y-1].capture();
+
+                } else {
+                    board.fields[x-1][y+1].capture();
+
+                }
+            } else if (x<xPawn) {
+                if(y>yPawn){
+                    board.fields[x+1][y-1].capture();
+
+                } else {
+                    board.fields[x+1][y+1].capture();
+
+                }
+            }
+
+
+            */
+            xFlag = coordsRelation(x,y,xPawn,yPawn)[0];
+            yFlag = coordsRelation(x,y,xPawn,yPawn)[1];
+
+            xFlag*=-1;
+            yFlag*=-1;
+            board.fields[x+xFlag][y+yFlag].capture();
+
+            pawn.changePosition(x,y);
+            if(pawn.isKing){
+                if(canKingCapture(pawn)) {
+                    multipleCapturePawn = pawn;
+                }
+            } else {
+                if(canPawnCapture(pawn)) {
+                    multipleCapturePawn = pawn;
+                }
+            }
+            if(multipleCapturePawn == null)this.changeTurn();
+        } else if(movesList.contains(moveWithNoCapture)) {
+            pawn.changePosition(x,y);
+            this.changeTurn();
+        }
+
+        board.updateFields();
+        checkKings();
+    }
     boolean canPlayerMove(String color) {
         for(Pawn p : this.board.pawnList)
         {
@@ -123,9 +206,30 @@ public abstract class GameType implements GameController {
         }
         return false;
     }
+    void changeTurn() {
+        if(this.turn.equals("white")){
+            this.turn = "black";
+        } else {
+            this.turn = "white";
+        }
+    }
+    void checkKings()
+    {
+        for(int x = 0; x < 10; x++)
+        {  try {
+            if (Objects.equals(board.fields[x][0].color, "black") && !canPawnCapture(board.fields[x][0])) {
+                board.fields[x][0].setKing();
+            }  } catch (NullPointerException e){}
+            try {
+                if (Objects.equals(board.fields[x][9].color, "white") && !canPawnCapture(board.fields[x][9])) {
+                    board.fields[x][9].setKing();
+                }
+            } catch (NullPointerException e){}
+        }
+    }
     abstract List<Move> checkPawnPossibleMoves(Pawn pawn);
     abstract List<Move> checkKingPossibleMoves(Pawn pawn);
-    abstract void checkKings();
+
     abstract boolean canPawnCapture(Pawn pawn);
     abstract boolean canKingCapture(Pawn pawn);
 }

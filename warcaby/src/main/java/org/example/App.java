@@ -38,6 +38,10 @@ import java.nio.channels.FileLock;
  */
 public class App extends Application implements Runnable
 {
+  //temp
+  Label output;
+  TextField input;
+  
   //TODO: posprzątać
   //TODO: zwiecha po wyborze
   
@@ -175,6 +179,7 @@ public class App extends Application implements Runnable
               tourLabel.setText("Your turn");
             }  
           });
+          
           board.enableWhite();
           String posibleMoves = bridge.receive();
           board.disableWhite();
@@ -207,6 +212,7 @@ public class App extends Application implements Runnable
               tourLabel.setText("Your turn");
             }  
           });
+          
           board.enableBlack();
           String posibleMoves = bridge.receive();
           board.disableBlack();
