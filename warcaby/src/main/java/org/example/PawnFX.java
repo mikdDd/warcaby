@@ -6,16 +6,16 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 
 public class PawnFX extends Circle
 {
   private int xIndex;
   private int yIndex;
   private static int SIZE;
-  private Boolean king;
+
   PawnFX(char c)
   {
-    this.king = false;
     this.setRadius(SIZE/2);
     if(c == 'B')
     {
@@ -25,6 +25,10 @@ public class PawnFX extends Circle
     {
       this.setFill(Color.WHITE);
     }
+    this.xIndex = 0;
+    this.yIndex = 0;
+    this.setStrokeType(StrokeType.INSIDE);
+    this.setStrokeWidth(SIZE/6);
   }
 
   public int getXIndex()
@@ -39,10 +43,6 @@ public class PawnFX extends Circle
   {
     this.xIndex = xCord;
     this.yIndex = yCord;
-  }
-  public void setKing(boolean bool)
-  {
-    this.king = bool;
   }
   public static void setSize(int size)
   {

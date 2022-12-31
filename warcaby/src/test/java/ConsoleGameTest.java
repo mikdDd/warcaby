@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class ConsoleGameTest {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
@@ -21,7 +21,7 @@ public class ConsoleGameTest {
 
             GameController b = gameFactory.createGame("POLISH");
             //PolishCheckers b = new PolishCheckers();
-           // b.getPawn(3,3).setKing();
+            b.getPawn(4,3).setKing();
 
             //b.setFields();
             while (true) {

@@ -81,31 +81,45 @@ public class Game implements Runnable{
                 line = inF.readLine();
                 destX = Character.getNumericValue(line.charAt(0));
                 destY = Character.getNumericValue(line.charAt(1));
+                gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
                 // Wypisywanie na serwerze
                 System.out.println("Tile: " + line);
-                //TODO wysłanie planszy z wykonanym ruchem
-                gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
-                // sprawdzenie wykonanego ruchu
-                // wysłanie informacji do 1. gracza w zależności od ruchu
-                // outF.println("MOVE");
-                // outF.println("CAPTURE");
-                // outF.println("CANCEL");
-                // wysłanie informacji do 2. gracza w zależności od ruchu
-                // outS.println("MOVE");
-                // outS.println("CAPTURE");
-
-                //turn=SECOND;
+                // wysyłanie tury | narazie zakladam że zawsze się zmienia | 0 w przypadku zakończenia gry
+                int tour = (gameController.whichPlayerTurn().equals("white") ? 1 : 2);
+                outF.println(tour);
+                outS.println(tour);
+                //TODO wysłanie planszy z wykonanym ruchemString position = gameController.boardToString();
+                String position = gameController.boardToString();
+                outF.println(position);
+                outS.println(position);
             }
-                if (gameController.whichPlayerTurn().equals("black")) {
-                    // Odbieranie od socketa
-                    line = inS.readLine();
-                    // Wypisywanie na serwerze
-                    System.out.println(line);
-                    // Wysylanie do socketa
-                    String temp = line.substring(0,2) + " --> " + line.substring(2);
-                    outF.println(temp);
-                   // turn=FIRST;
-                }
+        
+             else if (gameController.whichPlayerTurn().equals("black")) 
+             {
+                // Odbieranie od 2. gracza kliknietego pionka
+                line = inS.readLine();
+                // Wypisywanie na serwerze
+                pawnX = Character.getNumericValue(line.charAt(0));
+                pawnY = Character.getNumericValue(line.charAt(1));
+                System.out.println("Pawn: " + pawnX+""+pawnY);
+                // Wysylanie do 2. gracza informacji o dostepnych polach
+                outS.println(gameController.possibleMovesToString(gameController.getPawn(Character.getNumericValue(line.charAt(0)),Character.getNumericValue(line.charAt(1))))); // musi być posortowana według kolumny a potem wiersza // nieparzysta suma to ciemne pola
+                // Odbieranie od 2. gracza kliknietego pola
+                line = inS.readLine();
+                destX = Character.getNumericValue(line.charAt(0));
+                destY = Character.getNumericValue(line.charAt(1));
+                gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
+                // Wypisywanie na serwerze
+                System.out.println("Tile: " + line);
+                // wysyłanie tury | narazie zakladam że zawsze się zmienia | 0 w przypadku zakończenia gry
+                int tour = (gameController.whichPlayerTurn().equals("white") ? 1 : 2);
+                outF.println(tour);
+                outS.println(tour);
+                //TODO wysłanie planszy z wykonanym ruchem
+                String position = gameController.boardToString();
+                outF.println(position);
+                outS.println(position);
+              }
 
                 
             } while (true);
@@ -113,11 +127,6 @@ public class Game implements Runnable{
         } catch (IOException ex) {
             System.err.println("ex");
         }
-    }
-
-    private void sendMove(DataOutputStream out, String text) throws IOException {
-        out.writeChars(text);
-
     }
 }
 
