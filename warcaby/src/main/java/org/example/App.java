@@ -212,6 +212,7 @@ public class App extends Application implements Runnable
               tourLabel.setText("Your turn");
             }  
           });
+          
           board.enableBlack();
           String posibleMoves = bridge.receive();
           board.disableBlack();
