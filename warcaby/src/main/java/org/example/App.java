@@ -165,9 +165,8 @@ public class App extends Application implements Runnable
   @Override
   public void run() 
   {
-    while(actualPlayer != END)
+    while(actualPlayer > 0)
     {
-      System.out.println("actual player: " + actualPlayer + " player: " + player);
       if (actualPlayer == PLAYER1) 
       {
         if (player == PLAYER1)
@@ -184,9 +183,9 @@ public class App extends Application implements Runnable
           String posibleMoves = bridge.receive();
           board.disableWhite();
           board.enableTiles(posibleMoves);
-          actualPlayer = Integer.parseInt(bridge.receive());
-          board.disableTiles(posibleMoves);
           board.setPosition(bridge.receive());
+          board.disableTiles(posibleMoves);
+          actualPlayer = Integer.parseInt(bridge.receive());
         }
         else
         {
@@ -197,8 +196,8 @@ public class App extends Application implements Runnable
               tourLabel.setText("Enemy's turn");
             }  
           });
-          actualPlayer = Integer.parseInt(bridge.receive());
           board.setPosition(bridge.receive());
+          actualPlayer = Integer.parseInt(bridge.receive());
         }
       }
       else
@@ -217,9 +216,9 @@ public class App extends Application implements Runnable
           String posibleMoves = bridge.receive();
           board.disableBlack();
           board.enableTiles(posibleMoves);
-          actualPlayer = Integer.parseInt(bridge.receive());
-          board.disableTiles(posibleMoves);
           board.setPosition(bridge.receive());
+          board.disableTiles(posibleMoves);
+          actualPlayer = Integer.parseInt(bridge.receive());
         }
         else
         {
@@ -230,11 +229,25 @@ public class App extends Application implements Runnable
               tourLabel.setText("Enemy's turn");
             }  
           });
-          actualPlayer = Integer.parseInt(bridge.receive());
           board.setPosition(bridge.receive());
+          actualPlayer = Integer.parseInt(bridge.receive());
         }
       }
     }
+    System.out.println("END");
+    Platform.runLater(new Runnable() 
+    {
+      public void run()
+      {
+        if (actualPlayer == 0)
+          tourLabel.setText("DRAW!");
+        else if (actualPlayer == -1)
+          tourLabel.setText("WHITE WON!");
+        else if (actualPlayer == -2)
+          tourLabel.setText("BLACK WON!");
+
+      }  
+    });
   }
 
   private void startThread() 
