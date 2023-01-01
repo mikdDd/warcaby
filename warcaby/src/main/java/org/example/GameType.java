@@ -3,10 +3,14 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+//TODO prawdopodobnie trzeba naprawic wygrywanie
 public abstract class GameType implements GameController {
     public Board board;
     public String turn = "white";
 
+    int xSize; //poziomo
+    int ySize;  //pionowo
+    int pawnCount;
     Pawn multipleCapturePawn;
     String whoWon ="";
 
@@ -215,14 +219,14 @@ public abstract class GameType implements GameController {
     }
     void checkKings()
     {
-        for(int x = 0; x < 10; x++)
+        for(int x = 0; x < xSize; x++)
         {  try {
             if (Objects.equals(board.fields[x][0].color, "black") && (!canPawnCapture(board.fields[x][0]) || multipleCapturePawn == null)) {
                 board.fields[x][0].setKing();
             }  } catch (NullPointerException e){}
             try {
-                if (Objects.equals(board.fields[x][9].color, "white") && (!canPawnCapture(board.fields[x][9]) || multipleCapturePawn == null)) {
-                    board.fields[x][9].setKing();
+                if (Objects.equals(board.fields[x][ySize-1].color, "white") && (!canPawnCapture(board.fields[x][ySize-1]) || multipleCapturePawn == null)) {
+                    board.fields[x][ySize-1].setKing();
                 }
             } catch (NullPointerException e){}
         }

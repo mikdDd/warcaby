@@ -1,8 +1,8 @@
 package org.example;
 
-public class PolishBoard extends Board{
+public class DefaultBoard extends Board{
 
-    public PolishBoard(int xSize, int ySize, int pawnCount) {
+    public DefaultBoard(int xSize, int ySize, int pawnCount) {
         this.xSize = xSize;
         this.ySize = ySize;
         this.pawnCount = pawnCount;
