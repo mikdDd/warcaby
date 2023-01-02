@@ -45,16 +45,16 @@ public class App extends Application implements Runnable
   //TODO: posprzątać
   //TODO: zwiecha po wyborze
   
-  private static int WIDTH = 600;
-  private static int HEIGHT = 660;
+  private static float WIDTH = 600;
   private static int FIELDS = 10;
+  private static float SIZE = WIDTH/FIELDS;
+  private static float HEIGHT = SIZE * (FIELDS+1);
   private static int PAWNS = 10;
-  private static int SIZE = Math.max(WIDTH, HEIGHT)/(FIELDS+1);
 
   Stage stage;
   //game
   GridPane gridPane = new GridPane();
-  Scene gameScene = new Scene(gridPane, WIDTH, HEIGHT);
+  Scene gameScene;
   Label tourLabel;    
   BoardFX board;
   
@@ -62,11 +62,12 @@ public class App extends Application implements Runnable
   VBox vbox;
   Scene menuScene;
   Button game1Button;
-
-
+  Button game2Button;
+  Button game3Button;
+  
+  
   Bridge bridge;
   
-  private final static int END = 0;
   public final static int PLAYER1 = 1;
   public final static int PLAYER2 = 2;
 
@@ -93,10 +94,14 @@ public class App extends Application implements Runnable
   
   public void buildMenuScene()
   {
-    vbox = new VBox();
+    vbox = new VBox(HEIGHT/10);
+    vbox.setAlignment(Pos.CENTER);
     menuScene = new Scene(vbox, WIDTH, HEIGHT);
 
     game1Button = new Button("Game1");
+    game1Button.setPrefHeight(HEIGHT/6);
+    game1Button.setPrefWidth(WIDTH/2);
+    
     game1Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
     {
       public void handle(MouseEvent me) {
@@ -114,17 +119,66 @@ public class App extends Application implements Runnable
     {
         public void handle(ActionEvent event)
         {
-          buildGameScene();
-          stage.show();
-          startThread();
+          startGame("GAME1");
         }
     });
-    
     vbox.getChildren().add(game1Button);
+
+    game2Button = new Button("Game2");
+    game2Button.setPrefHeight(HEIGHT/6);
+    game2Button.setPrefWidth(WIDTH/2);
+    
+    game2Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
+    {
+      public void handle(MouseEvent me) {
+          menuScene.setCursor(Cursor.HAND);
+      }
+    });
+    game2Button.setOnMouseExited(new EventHandler<MouseEvent>() 
+    {
+      public void handle(MouseEvent me) 
+      {
+          menuScene.setCursor(Cursor.CROSSHAIR);
+      }
+    });
+    game2Button.setOnAction(new EventHandler<ActionEvent>() 
+    {
+        public void handle(ActionEvent event)
+        {
+          startGame("GAME2");
+        }
+    });
+    vbox.getChildren().add(game2Button);
+
+    game3Button = new Button("Game3");
+    game3Button.setPrefHeight(HEIGHT/6);
+    game3Button.setPrefWidth(WIDTH/2);
+    
+    game3Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
+    {
+      public void handle(MouseEvent me) {
+          menuScene.setCursor(Cursor.HAND);
+      }
+    });
+    game3Button.setOnMouseExited(new EventHandler<MouseEvent>() 
+    {
+      public void handle(MouseEvent me) 
+      {
+          menuScene.setCursor(Cursor.CROSSHAIR);
+      }
+    });
+    game3Button.setOnAction(new EventHandler<ActionEvent>() 
+    {
+        public void handle(ActionEvent event)
+        {
+          startGame("GAME3");
+        }
+    });
+    vbox.getChildren().add(game3Button);
   }
 
-  public void buildGameScene()
-  {  
+  public void startGame(String game)
+  {
     try 
     {
       bridge = new Bridge();
@@ -139,13 +193,20 @@ public class App extends Application implements Runnable
       System.out.println("No I/O");
       System.exit(1);
     }
-    bridge.send("GAME1");
+    bridge.send(game);
+    buildGameScene();
+  }
+  public void buildGameScene()
+  {  
     player = Integer.parseInt(bridge.receive());
     FIELDS = Integer.parseInt(bridge.receive());
+    HEIGHT = WIDTH * (FIELDS+1) / FIELDS;
     PAWNS = Integer.parseInt(bridge.receive());
-    SIZE = Math.max(WIDTH, HEIGHT)/(FIELDS+1);
+    SIZE = WIDTH/FIELDS;
+    gameScene = new Scene(gridPane, WIDTH, HEIGHT);
     PawnFX.setSize(SIZE);
     TileFX.setSize(SIZE);
+    
     board = new BoardFX(FIELDS, PAWNS, player, gridPane, bridge);
     board.setPosition(bridge.receive());
     board.addEvents(gameScene);
@@ -160,6 +221,11 @@ public class App extends Application implements Runnable
     gridPane.add(tourLabel, 0, 0, FIELDS, 1);
 
     stage.setScene(gameScene);
+    stage.setWidth(WIDTH);
+    stage.setHeight(HEIGHT);
+    System.out.println(WIDTH + " " + HEIGHT);
+    stage.show();
+    startThread();
   }
   
   @Override
