@@ -3,7 +3,6 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-//TODO prawdopodobnie trzeba naprawic wygrywanie
 public abstract class GameType implements GameController {
     public Board board;
     public String turn = "white";
@@ -81,9 +80,9 @@ public abstract class GameType implements GameController {
             }
         }
         if(strWhite.isEmpty() || !canPlayerMove("white")) {
-            whoWon = "whitewon";
-        } else if (strBlack.isEmpty() || !canPlayerMove("black")) {
             whoWon = "blackwon";
+        } else if (strBlack.isEmpty() || !canPlayerMove("black")) {
+            whoWon = "whitewon";
         }
         s=strWhite.toString()+":"+strBlack.toString();
         return s;
