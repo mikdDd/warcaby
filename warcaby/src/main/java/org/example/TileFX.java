@@ -9,7 +9,7 @@ public class TileFX extends Rectangle
   int yIndex;
   PawnFX pawn;
   char color;
-  private static int SIZE;
+  private static float SIZE;
   TileFX(int x, int y)
   {
     this.xIndex = x;
@@ -40,9 +40,10 @@ public class TileFX extends Rectangle
   {
     return color;
   }
-  public static void setSize(int size)
+  public static void setSize(float size)
   {
     SIZE = size;
+    System.out.println(size);
   }
 
   public static TileFX[][] generateTiles(int n)

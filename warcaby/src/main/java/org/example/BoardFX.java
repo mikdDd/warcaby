@@ -104,7 +104,9 @@ public class BoardFX
     {
     public void run()
     {  
-      String[] positionArray = positionString.split(":");
+      String[] positionArray = positionString.split(":", -1);
+      System.out.println(positionArray[0]);
+      System.out.println(positionArray[1]);
       
       pane.getChildren().removeAll(whitePawns);
       pane.getChildren().removeAll(blackPawns);
