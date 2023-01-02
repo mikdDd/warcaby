@@ -3,11 +3,14 @@ package org.example;
 import java.io.*;
 import java.net.Socket;
 
+import javafx.scene.shape.Ellipse;
+
 public class Game implements Runnable{
 
     private Socket firstPlayer;
     private Socket secondPlayer;
     private GameController gameController;
+    private String tour;
 
 
     private final static int FIRST=1;
@@ -65,9 +68,11 @@ public class Game implements Runnable{
             int pawnY;
             int destX;
             int destY;
-          do 
+
+            tour = gameController.whichPlayerTurn();
+            do 
           {
-            if (gameController.whichPlayerTurn().equals("white"))
+            if (tour.equals("white"))
             {
                 // Odbieranie od 1. gracza kliknietego pionka
                 line = inF.readLine();
@@ -84,19 +89,45 @@ public class Game implements Runnable{
                 gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
                 // Wypisywanie na serwerze
                 System.out.println("Tile: " + line);
-                // wysyłanie tury | narazie zakladam że zawsze się zmienia | 0 w przypadku zakończenia gry
-                int tour = (gameController.whichPlayerTurn().equals("white") ? 1 : 2);
-                outF.println(tour);
-                outS.println(tour);
+                // wysyłanie tury 
+                
                 //TODO wysłanie planszy z wykonanym ruchemString position = gameController.boardToString();
                 String position = gameController.boardToString();
                 outF.println(position);
                 outS.println(position);
+
+                tour = gameController.whichPlayerTurn();
+
+                System.out.println(tour);
+                if (tour.equals("white"))
+                {
+                  outF.println(1);
+                  outS.println(1);
+                }
+                else if (tour.equals("black"))
+                {
+                  outF.println(2);
+                  outS.println(2);
+                }
+                else if (tour.equals("whitewon"))
+                {
+                  outF.println(-1);
+                  outS.println(-1);
+                }
+                else if (tour.equals("blackwon"))
+                {
+                  outF.println(-2);
+                  outS.println(-2);
+                }
+                else if (tour.equals("draw"))
+                {
+                  outF.println(0);
+                  outS.println(0);
+                }
             }
-        
-             else if (gameController.whichPlayerTurn().equals("black")) 
+             else if (tour.equals("black")) 
              {
-                // Odbieranie od 2. gracza kliknietego pionka
+                //Odbieranie od 2. gracza kliknietego pionka
                 line = inS.readLine();
                 // Wypisywanie na serwerze
                 pawnX = Character.getNumericValue(line.charAt(0));
@@ -111,15 +142,43 @@ public class Game implements Runnable{
                 gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
                 // Wypisywanie na serwerze
                 System.out.println("Tile: " + line);
-                // wysyłanie tury | narazie zakladam że zawsze się zmienia | 0 w przypadku zakończenia gry
-                int tour = (gameController.whichPlayerTurn().equals("white") ? 1 : 2);
-                outF.println(tour);
-                outS.println(tour);
+                
                 //TODO wysłanie planszy z wykonanym ruchem
                 String position = gameController.boardToString();
                 outF.println(position);
                 outS.println(position);
+
+                // wysyłanie tury | narazie zakladam że zawsze się zmienia | 0 w przypadku zakończenia gry
+                tour = gameController.whichPlayerTurn();
+
+                System.out.println(tour);
+                if (tour.equals("white"))
+                {
+                  outF.println(1);
+                  outS.println(1);
+                }
+                else if (tour.equals("black"))
+                {
+                  outF.println(2);
+                  outS.println(2);
+                }
+                else if (tour.equals("whitewon"))
+                {
+                  outF.println(-1);
+                  outS.println(-1);
+                }
+                else if (tour.equals("blackwon"))
+                {
+                  outF.println(-2);
+                  outS.println(-2);
+                }
+                else if (tour.equals("draw"))
+                {
+                  outF.println(0);
+                  outS.println(0);
+                }
               }
+              else break;
 
                 
             } while (true);

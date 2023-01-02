@@ -6,14 +6,14 @@ public class GameControllerFactory implements GameFactory{
         if(gameType == null){
             return null;
         }
-        if(gameType.equalsIgnoreCase("POLISH")){
+        if(gameType.equalsIgnoreCase("GAME1")){
             return new PolishCheckers();
 
-        } else if(gameType.equalsIgnoreCase("TYPE2")){
-            return null;
+        } else if(gameType.equalsIgnoreCase("GAME2")){
+            return new EnglishCheckers();
 
-        } else if(gameType.equalsIgnoreCase("TYPE3")){
-            return null;
+        } else if(gameType.equalsIgnoreCase("GAME3")){
+            return new ThaiCheckers();
         }
 
         return null;

@@ -12,16 +12,17 @@ import java.util.Scanner;
 
 public class ConsoleGameTest {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
             //String move = myObj.nextLine();  // Read user input
-            GameFactory gameFactory = new GameControllerFactory();
-
-            GameController b = gameFactory.createGame("POLISH");
+            //GameFactory gameFactory = new GameControllerFactory();
+                //EnglishCheckers b = new EnglishCheckers();
+        ThaiCheckers b = new ThaiCheckers();
+            //GameController b = gameFactory.createGame("POLISH");
             //PolishCheckers b = new PolishCheckers();
-            b.getPawn(4,3).setKing();
+           // b.getPawn(4,3).setKing();
 
             //b.setFields();
             while (true) {
@@ -29,8 +30,8 @@ public class ConsoleGameTest {
                 System.out.println(b.boardToString());
                // System.out.println(b.whichPlayerTurn());
 
-                for (int i = 0; i < 10; i++) {
-                    for (int k = 0; k < 10; k++) {
+                for (int i = 0; i < 8; i++) {
+                    for (int k = 0; k < 8; k++) {
 
                         try {
 

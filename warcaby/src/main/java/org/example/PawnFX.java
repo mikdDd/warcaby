@@ -12,7 +12,7 @@ public class PawnFX extends Circle
 {
   private int xIndex;
   private int yIndex;
-  private static int SIZE;
+  private static float SIZE;
 
   PawnFX(char c)
   {
@@ -44,7 +44,7 @@ public class PawnFX extends Circle
     this.xIndex = xCord;
     this.yIndex = yCord;
   }
-  public static void setSize(int size)
+  public static void setSize(float size)
   {
     SIZE = size;
   }
