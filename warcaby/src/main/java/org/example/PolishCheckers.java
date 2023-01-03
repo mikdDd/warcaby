@@ -6,23 +6,24 @@ import java.util.List;
 //TODO przerzucic czesc ogólnych metod do GameType i przygotowac do dodania kolejnych trybów
 public class PolishCheckers extends GameType{
     //TODO sprawdzic czy w biciu wielokrotnym możemy zmienić pionek, którym bijemy
-    public int xSize = 10; //poziomo
-    public int ySize = 10;  //pionowo
-    public int pawnCount = 20;
+   // public int xSize = 10; //poziomo
+  //  public int ySize = 10;  //pionowo
+ //   public int pawnCount = 5;
 
 
 
 
-    public PolishCheckers() {
-        this.board = new PolishBoard(xSize, ySize, pawnCount);
+    public PolishCheckers() {this.xSize = 10;
+        this.ySize = 10;
+        this.pawnCount = 20;
+
+        this.board = new DefaultBoard(xSize, ySize, pawnCount);
         board.setPawnList();
-
         board.updateFields();
     }
     List<Move> checkPawnPossibleMoves(Pawn pawn) {
         int xFlag = 0;
         int yFlag = 0;
-        String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         boolean captureExist = false;
@@ -41,7 +42,7 @@ public class PolishCheckers extends GameType{
                     if (board.fields[x][y] != null &&  board.fields[x][y].isActive) {
                         if (!Objects.equals(board.fields[x][y].color, pawn.color)) {      //bicie
 
-                            /**
+                            /*
                             if(x > xPawn && x+1 < 10){xFlag = 1;}
                             else if(x < xPawn && x-1 >=0 ){
                                 xFlag = -1;
@@ -61,7 +62,7 @@ public class PolishCheckers extends GameType{
 
                         }
                     } else{
-                        if(color.equals("white")){
+                        if(pawn.color.equals("white")){
                             if (y > yPawn) {
                                 possibleMoves.add(new Move(x, y,false));
 

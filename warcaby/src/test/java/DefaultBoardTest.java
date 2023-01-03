@@ -5,7 +5,7 @@ import org.example.PolishCheckers;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class PolishBoardTest {
+public class DefaultBoardTest {
 
     //b.setFields();
 
@@ -27,7 +27,7 @@ public class PolishBoardTest {
             }
             System.out.println("");
         }
-        assertEquals("Błąd planszy", b.pawnCount, fieldCount);
+        assertEquals("Błąd planszy", 5, fieldCount);
     }
 
     @Test

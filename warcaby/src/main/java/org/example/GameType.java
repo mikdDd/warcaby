@@ -7,6 +7,9 @@ public abstract class GameType implements GameController {
     public Board board;
     public String turn = "white";
 
+    int xSize; //poziomo
+    int ySize;  //pionowo
+    int pawnCount;
     Pawn multipleCapturePawn;
     String whoWon ="";
 
@@ -77,9 +80,9 @@ public abstract class GameType implements GameController {
             }
         }
         if(strWhite.isEmpty() || !canPlayerMove("white")) {
-            whoWon = "whitewon";
-        } else if (strBlack.isEmpty() || !canPlayerMove("black")) {
             whoWon = "blackwon";
+        } else if (strBlack.isEmpty() || !canPlayerMove("black")) {
+            whoWon = "whitewon";
         }
         s=strWhite.toString()+":"+strBlack.toString();
         return s;
@@ -215,14 +218,14 @@ public abstract class GameType implements GameController {
     }
     void checkKings()
     {
-        for(int x = 0; x < 10; x++)
+        for(int x = 0; x < xSize; x++)
         {  try {
-            if (Objects.equals(board.fields[x][0].color, "black") && !canPawnCapture(board.fields[x][0])) {
+            if (Objects.equals(board.fields[x][0].color, "black") && (!canPawnCapture(board.fields[x][0]) || multipleCapturePawn == null)) {
                 board.fields[x][0].setKing();
             }  } catch (NullPointerException e){}
             try {
-                if (Objects.equals(board.fields[x][9].color, "white") && !canPawnCapture(board.fields[x][9])) {
-                    board.fields[x][9].setKing();
+                if (Objects.equals(board.fields[x][ySize-1].color, "white") && (!canPawnCapture(board.fields[x][ySize-1]) || multipleCapturePawn == null)) {
+                    board.fields[x][ySize-1].setKing();
                 }
             } catch (NullPointerException e){}
         }
