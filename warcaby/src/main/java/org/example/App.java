@@ -200,6 +200,7 @@ public class App extends Application implements Runnable
   {  
     player = Integer.parseInt(bridge.receive());
     FIELDS = Integer.parseInt(bridge.receive());
+    FIELDS = 20;
     HEIGHT = WIDTH * (FIELDS+1) / FIELDS;
     PAWNS = Integer.parseInt(bridge.receive());
     SIZE = WIDTH/FIELDS;
