@@ -88,16 +88,17 @@ public class App extends Application implements Runnable
 
     buildMenuScene();
     
-    stage.setScene(menuScene);
-    stage.show();
+    
   }
   
   public void buildMenuScene()
   {
+    
     vbox = new VBox(HEIGHT/10);
     vbox.setAlignment(Pos.CENTER);
+    
     menuScene = new Scene(vbox, WIDTH, HEIGHT);
-
+    
     game1Button = new Button("Game1");
     game1Button.setPrefHeight(HEIGHT/6);
     game1Button.setPrefWidth(WIDTH/2);
@@ -175,6 +176,9 @@ public class App extends Application implements Runnable
         }
     });
     vbox.getChildren().add(game3Button);
+
+    stage.setScene(menuScene);
+    stage.show();
   }
 
   public void startGame(String game)
@@ -200,11 +204,17 @@ public class App extends Application implements Runnable
   {  
     player = Integer.parseInt(bridge.receive());
     FIELDS = Integer.parseInt(bridge.receive());
-    FIELDS = 20;
-    HEIGHT = WIDTH * (FIELDS+1) / FIELDS;
-    PAWNS = Integer.parseInt(bridge.receive());
     SIZE = WIDTH/FIELDS;
+    HEIGHT = SIZE * (FIELDS+1);
+
+    System.out.println(WIDTH);
+    System.out.println(HEIGHT);
+    System.out.println(SIZE);
+
+    PAWNS = Integer.parseInt(bridge.receive());
+    
     gameScene = new Scene(gridPane, WIDTH, HEIGHT);
+    
     PawnFX.setSize(SIZE);
     TileFX.setSize(SIZE);
     
@@ -222,9 +232,6 @@ public class App extends Application implements Runnable
     gridPane.add(tourLabel, 0, 0, FIELDS, 1);
 
     stage.setScene(gameScene);
-    stage.setWidth(WIDTH);
-    stage.setHeight(HEIGHT);
-    System.out.println(WIDTH + " " + HEIGHT);
     stage.show();
     startThread();
   }

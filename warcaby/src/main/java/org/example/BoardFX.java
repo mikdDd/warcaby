@@ -99,14 +99,11 @@ public class BoardFX
   
   public void setPosition(String positionString)
   {
-    System.out.println(positionString);
     Platform.runLater(new Runnable() 
     {
     public void run()
     {  
       String[] positionArray = positionString.split(":", -1);
-      System.out.println(positionArray[0]);
-      System.out.println(positionArray[1]);
       
       pane.getChildren().removeAll(whitePawns);
       pane.getChildren().removeAll(blackPawns);
