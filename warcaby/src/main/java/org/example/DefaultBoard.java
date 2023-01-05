@@ -2,14 +2,17 @@ package org.example;
 
 public class DefaultBoard extends Board{
 
-    public DefaultBoard(int xSize, int ySize, int pawnCount) {
+    public DefaultBoard(int xSize, int ySize, int pawnCount) throws IllegalArgumentException{
+        if(pawnCount > (xSize * ySize)/4) throw new IllegalArgumentException();
         this.xSize = xSize;
         this.ySize = ySize;
         this.pawnCount = pawnCount;
+        this.setPawnList();
+        this.updateFields();
     }
 
     @Override
-    void setPawnList() {
+    protected void setPawnList() {
         /*
         for(int i = 0; i < ySize; i++)
         {
@@ -26,6 +29,7 @@ public class DefaultBoard extends Board{
         }
 
          */
+
         int whiteCounter = 0;
         int blackCounter = 0;
         for(int i = 0; i < ySize; i++)

@@ -15,7 +15,6 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(4444)) {
 
             System.out.println("Server is listening on port 4444");
-            //TODO kolejkowanie graczy (do zrobienia jak będzie już dopracowana komunikacja)
             while (true) 
             {
                 Socket firstClient = serverSocket.accept();

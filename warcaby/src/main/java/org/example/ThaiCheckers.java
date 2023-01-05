@@ -11,8 +11,8 @@ public class ThaiCheckers extends GameType{
         this.ySize = 8;
         this.pawnCount = 8;
         this.board = new DefaultBoard(xSize, ySize, pawnCount);
-        board.setPawnList();
-        board.updateFields();
+        //board.setPawnList();
+        //board.updateFields();
     }
 
     @Override

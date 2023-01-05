@@ -22,6 +22,6 @@ public abstract class Board {
             }
         }
     }
-   abstract void setPawnList();
+   abstract protected void setPawnList();
 
 }

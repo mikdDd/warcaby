@@ -1,4 +1,5 @@
 
+import org.example.DefaultBoard;
 import org.example.Pawn;
 import org.example.PolishCheckers;
 
@@ -10,49 +11,26 @@ public class DefaultBoardTest {
     //b.setFields();
 
     @Test
-    public void drawBoardTest() {
+    public void fieldConstructionTest() {
         int fieldCount = 0;
-        PolishCheckers b = new PolishCheckers();
-        for(int i = 0; i < 10; i++)
+        DefaultBoard defaultBoard = new DefaultBoard(10,10,10);
+        for(int i = 0; i < defaultBoard.fields[0].length;i++)
         {
-            for(int k = 0; k < 10; k++)
+            for(int k = 0; k < defaultBoard.fields.length;k++)
             {
-                try {
-                    System.out.print("["+b.board.fields[k][i].color+"]");
+                if(defaultBoard.fields[k][i] != null)
+                {
                     fieldCount++;
                 }
-                catch (NullPointerException e){
-                    System.out.print("[     ]");
-                }
             }
-            System.out.println("");
         }
-        assertEquals("Błąd planszy", 5, fieldCount);
+        assertEquals("Błąd planszy", defaultBoard.pawnCount*2, fieldCount);
     }
 
-    @Test
-    public void moveTest() {
+    @Test(expected = IllegalArgumentException.class)
+    public void boardExceptionTest() {
 
-        PolishCheckers b = new PolishCheckers();
-        //b.setFields();
-        b.movePawn(b.board.fields[1][3],2,4);
-        b.movePawn(b.board.fields[4][6],3,5);
-        b.movePawn(b.board.fields[2][4],4, 6);
-        for(int i = 0; i < 10; i++)
-        {
-            for(int k = 0; k < 10; k++)
-            {
-                try {
-                    System.out.print("["+b.board.fields[k][i].color+"("+k+i+")"+"]");
-                }
-                catch (NullPointerException e){
-                    System.out.print("[   "+k+i +"    ]");
-                }
-            }
-            System.out.println("");
-        }
-        if(b.board.fields[2][4] == null) System.out.println("TAK");
-
+      DefaultBoard defaultBoard = new DefaultBoard(8,8,17);
         
     }
 

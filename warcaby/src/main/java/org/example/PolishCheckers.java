@@ -18,8 +18,8 @@ public class PolishCheckers extends GameType{
         this.pawnCount = 20;
 
         this.board = new DefaultBoard(xSize, ySize, pawnCount);
-        board.setPawnList();
-        board.updateFields();
+       // board.setPawnList();
+        //board.updateFields();
     }
     List<Move> checkPawnPossibleMoves(Pawn pawn) {
         int xFlag = 0;
