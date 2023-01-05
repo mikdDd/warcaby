@@ -19,9 +19,9 @@ public class ConsoleGameTest {
             //String move = myObj.nextLine();  // Read user input
             //GameFactory gameFactory = new GameControllerFactory();
                 //EnglishCheckers b = new EnglishCheckers();
-        ThaiCheckers b = new ThaiCheckers();
+            ThaiCheckers b = new ThaiCheckers();
             //GameController b = gameFactory.createGame("POLISH");
-            //PolishCheckers b = new PolishCheckers();
+           // PolishCheckers b = new PolishCheckers();
            // b.getPawn(4,3).setKing();
 
             //b.setFields();
@@ -30,8 +30,8 @@ public class ConsoleGameTest {
                 System.out.println(b.boardToString());
                // System.out.println(b.whichPlayerTurn());
 
-                for (int i = 0; i < 8; i++) {
-                    for (int k = 0; k < 8; k++) {
+                for (int i = 0; i < b.getBoardSize(); i++) {
+                    for (int k = 0; k < b.getBoardSize(); k++) {
 
                         try {
 
