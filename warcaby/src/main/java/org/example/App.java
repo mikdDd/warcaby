@@ -61,6 +61,7 @@ public class App extends Application implements Runnable
   //menu
   VBox vbox;
   Scene menuScene;
+  Label waitLabel;    
   Button game1Button;
   Button game2Button;
   Button game3Button;
@@ -76,6 +77,7 @@ public class App extends Application implements Runnable
   private int actualPlayer = PLAYER1;
   private int player = 1;
 
+  Thread scenThread;
 
   /* (non-Javadoc)
     * @see javafx.application.Application#start(javafx.stage.Stage)
@@ -86,19 +88,30 @@ public class App extends Application implements Runnable
     this.stage=stage;
     stage.setTitle("Client");
 
-    buildMenuScene();
-    
-    
+    scenThread = new Thread(new Runnable() 
+    {
+      public void run()
+      {
+        buildGameScene();
+      }
+    });
+      buildMenuScene();
   }
   
   public void buildMenuScene()
   {
-    
     vbox = new VBox(HEIGHT/10);
     vbox.setAlignment(Pos.CENTER);
     
     menuScene = new Scene(vbox, WIDTH, HEIGHT);
     
+    waitLabel = new Label("");
+    waitLabel.setPrefHeight(HEIGHT/10);
+    waitLabel.setPrefWidth(WIDTH/2);
+    waitLabel.setAlignment(Pos.CENTER);
+    waitLabel.setFont(new Font(HEIGHT/15));
+    vbox.getChildren().add(waitLabel);
+
     game1Button = new Button("Game1");
     game1Button.setPrefHeight(HEIGHT/6);
     game1Button.setPrefWidth(WIDTH/2);
@@ -183,6 +196,12 @@ public class App extends Application implements Runnable
 
   public void startGame(String game)
   {
+    waitLabel.setText("Waiting...");
+    game1Button.setDisable(true);
+    game2Button.setDisable(true);
+    game3Button.setDisable(true);
+
+    stage.show();
     try 
     {
       bridge = new Bridge();
@@ -198,7 +217,9 @@ public class App extends Application implements Runnable
       System.exit(1);
     }
     bridge.send(game);
-    buildGameScene();
+    scenThread.start();
+    
+    startThread();
   }
   public void buildGameScene()
   {  
@@ -207,9 +228,6 @@ public class App extends Application implements Runnable
     SIZE = WIDTH/FIELDS;
     HEIGHT = SIZE * (FIELDS+1);
 
-    System.out.println(WIDTH);
-    System.out.println(HEIGHT);
-    System.out.println(SIZE);
 
     PAWNS = Integer.parseInt(bridge.receive());
     
@@ -229,16 +247,28 @@ public class App extends Application implements Runnable
     tourLabel.setPrefWidth(WIDTH);
     tourLabel.setPrefHeight(SIZE);
     tourLabel.setAlignment(Pos.CENTER);
-    gridPane.add(tourLabel, 0, 0, FIELDS, 1);
-
-    stage.setScene(gameScene);
-    stage.show();
-    startThread();
+    
+    Platform.runLater(new Runnable() 
+    {
+      public void run()
+      {
+        gridPane.add(tourLabel, 0, 0, FIELDS, 1);
+        stage.setScene(gameScene);
+        stage.show();
+      }
+    });
   }
   
   @Override
   public void run() 
   {
+    try {
+      scenThread.join();
+    } catch (InterruptedException e) {
+      System.out.println("Joining thread error: " + e);
+      e.printStackTrace();
+    }
+
     while(actualPlayer > 0)
     {
       if (actualPlayer == PLAYER1) 
@@ -308,7 +338,6 @@ public class App extends Application implements Runnable
         }
       }
     }
-    System.out.println("END");
     Platform.runLater(new Runnable() 
     {
       public void run()
@@ -327,6 +356,7 @@ public class App extends Application implements Runnable
   private void startThread() 
   {
     Thread gTh = new Thread(this);
+    
     gTh.start();
   }
   
