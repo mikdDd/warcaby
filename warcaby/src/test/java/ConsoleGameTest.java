@@ -17,11 +17,11 @@ public class ConsoleGameTest {
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
             //String move = myObj.nextLine();  // Read user input
-            //GameFactory gameFactory = new GameControllerFactory();
+            //GameFactoryInterface gameFactory = new GameFactory();
                 //EnglishCheckers b = new EnglishCheckers();
             ThaiCheckers b = new ThaiCheckers();
-            //GameController b = gameFactory.createGame("POLISH");
-           // PolishCheckers b = new PolishCheckers();
+            //Game b = gameFactory.createGame("POLISH");
+          // PolishCheckers b = new PolishCheckers();
            // b.getPawn(4,3).setKing();
 
             //b.setFields();

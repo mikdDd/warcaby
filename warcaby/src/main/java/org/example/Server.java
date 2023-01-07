@@ -4,8 +4,13 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//wzorzec singleton
 public class Server {
+    private static Server instance = new Server();
+    public static Server getInstance(){
+        return instance;
+    }
+    private Server(){}
     static BufferedReader in;
     static List<Socket> polishCheckersQueue = new ArrayList<>();
     static List<Socket> englishCheckersQueue = new ArrayList<>();
@@ -47,12 +52,12 @@ public class Server {
                    thaiCheckersQueue.add(secondClient);
                 }
                 System.out.println("Second client connected");
-                //TODO factory gier zależnie od typu
+
                 */
-                GameFactory gameFactory = new GameControllerFactory();
+                GameFactoryInterface gameFactoryInterface = new GameFactory();
                 if(polishCheckersQueue.size()>=2){
 
-                    Game g = new Game(polishCheckersQueue.get(0), polishCheckersQueue.get(1), gameFactory.createGame("GAME1"));
+                    GameController g = new GameController(polishCheckersQueue.get(0), polishCheckersQueue.get(1), gameFactoryInterface.createGame("POLISH"));
                     Thread gTh = new Thread(g);
                     gTh.start();
                     polishCheckersQueue.remove(0);
@@ -60,7 +65,7 @@ public class Server {
                 }
                 if(englishCheckersQueue.size()>=2){
 
-                    Game g = new Game(englishCheckersQueue.get(0), englishCheckersQueue.get(1), gameFactory.createGame("GAME2"));
+                    GameController g = new GameController(englishCheckersQueue.get(0), englishCheckersQueue.get(1), gameFactoryInterface.createGame("ENGLISH"));
                     Thread gTh = new Thread(g);
                     gTh.start();
                     englishCheckersQueue.remove(0);
@@ -68,14 +73,14 @@ public class Server {
                 }
                 if(thaiCheckersQueue.size()>=2){
 
-                    Game g = new Game(thaiCheckersQueue.get(0), thaiCheckersQueue.get(1), gameFactory.createGame("GAME3"));
+                    GameController g = new GameController(thaiCheckersQueue.get(0), thaiCheckersQueue.get(1), gameFactoryInterface.createGame("THAI"));
                     Thread gTh = new Thread(g);
                     gTh.start();
                     thaiCheckersQueue.remove(0);
                     thaiCheckersQueue.remove(0);
                 }
 
-                //GameController b = gameFactory.createGame("POLISH");
+                //Game b = gameFactoryInterface.createGame("POLISH");
 
 
 

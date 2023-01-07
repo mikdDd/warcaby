@@ -3,12 +3,9 @@ package org.example;
 import java.util.*;
 import java.util.List;
 //TODO remis
-//TODO przerzucic czesc ogólnych metod do GameType i przygotowac do dodania kolejnych trybów
 public class PolishCheckers extends GameType{
     //TODO sprawdzic czy w biciu wielokrotnym możemy zmienić pionek, którym bijemy
-   // public int xSize = 10; //poziomo
-  //  public int ySize = 10;  //pionowo
- //   public int pawnCount = 5;
+
 
 
 
@@ -18,12 +15,12 @@ public class PolishCheckers extends GameType{
         this.pawnCount = 20;
 
         this.board = new DefaultBoard(xSize, ySize, pawnCount);
-       // board.setPawnList();
-        //board.updateFields();
+
     }
+    @Override
     List<Move> checkPawnPossibleMoves(Pawn pawn) {
-        int xFlag = 0;
-        int yFlag = 0;
+        int xFlag;
+        int yFlag;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
         boolean captureExist = false;
@@ -62,7 +59,7 @@ public class PolishCheckers extends GameType{
 
                         }
                     } else{
-                        if(pawn.color.equals("white")){
+                        if(("white").equals(pawn.color)){
                             if (y > yPawn) {
                                 possibleMoves.add(new Move(x, y,false));
 
@@ -78,8 +75,6 @@ public class PolishCheckers extends GameType{
 
 
                 }
-                xFlag = 0;
-                yFlag = 0;
             }
         }
         //jezeli wystapilo bicie usuwamy z listy wszystkie ruchy nie będące biciami
@@ -89,13 +84,12 @@ public class PolishCheckers extends GameType{
         }
         return possibleMoves;
     }
+    @Override
     public List<Move> checkKingPossibleMoves(Pawn pawn) {
-        String color = pawn.color;
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
-        int xFlag = 0;
-        int yFlag = 0;
-        List <Integer[]> usedDiagonals = new ArrayList<>();
+        int xFlag;
+        int yFlag;
 
         boolean captureExist = false;
         List<Move> possibleMoves = new ArrayList<>();
@@ -143,8 +137,6 @@ public class PolishCheckers extends GameType{
                         possibleMoves.add(new Move(x, y, false));               //jezeli trafilismy na puste pole, dodajemy je
 
                     }
-                    xFlag = 0;
-                    yFlag = 0;
                 }
             }
         }
@@ -164,11 +156,12 @@ public class PolishCheckers extends GameType{
         }
     }
  */
+@Override
     public boolean canPawnCapture(Pawn pawn) {
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
-        int xFlag=0;
-        int yFlag=0;
+        int xFlag;
+        int yFlag;
 
 
         for (int x = xPawn - 1; x <= xPawn +1; x+=2) {
@@ -199,18 +192,17 @@ public class PolishCheckers extends GameType{
 
 
                 }
-                 xFlag=0;
-                 yFlag=0;
             }
         }
         return false;
     }
 
+    @Override
     boolean canKingCapture(Pawn pawn) {
         int xPawn = pawn.xPosition;
         int yPawn = pawn.yPosition;
-        int xFlag=0;
-        int yFlag=0;
+        int xFlag;
+        int yFlag;
 
         for(int xIncrement = -1; xIncrement<=1; xIncrement+=2)          //iteracja po przekątnych od damki
         {
@@ -244,8 +236,6 @@ public class PolishCheckers extends GameType{
                             if(x!=xPawn && y!= yPawn)break;                              //jezeli trafilismy na pionek naszego koloru przechodzimy do innej przekatnej
                         }
                     }
-                    xFlag = 0;
-                    yFlag = 0;
                 }
             }
         }

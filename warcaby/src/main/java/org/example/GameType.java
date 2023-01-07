@@ -1,9 +1,9 @@
 package org.example;
-
+//wzorzec template
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-public abstract class GameType implements GameController {
+public abstract class GameType implements Game {
     public Board board;
     public String turn = "white";
 

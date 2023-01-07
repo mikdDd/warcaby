@@ -115,20 +115,14 @@ public class App extends Application implements Runnable
           menuScene.setCursor(Cursor.CROSSHAIR);
       }
     });
-    game1Button.setOnAction(new EventHandler<ActionEvent>() 
-    {
-        public void handle(ActionEvent event)
-        {
-          startGame("GAME1");
-        }
-    });
+    game1Button.setOnAction(event -> startGame("GAME1"));
     vbox.getChildren().add(game1Button);
 
     game2Button = new Button("Game2");
     game2Button.setPrefHeight(HEIGHT/6);
     game2Button.setPrefWidth(WIDTH/2);
     
-    game2Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
+    game2Button.setOnMouseEntered(new EventHandler<MouseEvent>()
     {
       public void handle(MouseEvent me) {
           menuScene.setCursor(Cursor.HAND);
