@@ -230,9 +230,27 @@ public abstract class GameType implements Game {
             } catch (NullPointerException e){}
         }
     }
+    /**Metoda sprawdzajaca mozliwe ruchy pionka
+     * @param pawn pionek, ktorego ruchy sprawdzamy
+     * @return lista ruchow, ktore pionek moze wykonac
+     */
     abstract List<Move> checkPawnPossibleMoves(Pawn pawn);
+
+    /**Metoda sprawdzajaca mozliwe ruchy damki
+     * @param pawn pionek, ktory jest damka
+     * @return lista ruchow, ktore damka moze wykonac
+     */
     abstract List<Move> checkKingPossibleMoves(Pawn pawn);
 
+    /**Metoda sprawdzajaca czy pionek ma mozliwe bicia
+     * @param pawn sprawdzany pionek
+     * @return true - pionek ma bicia, false - pionek nie ma bic
+     */
     abstract boolean canPawnCapture(Pawn pawn);
+
+    /**Metoda sprawdzajaca czy damka ma mozliwe bicia
+     * @param pawn sprawdzana damka
+     * @return true - damka ma bicia, false - damka nie ma bic
+     */
     abstract boolean canKingCapture(Pawn pawn);
 }
