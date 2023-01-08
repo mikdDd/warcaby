@@ -9,7 +9,7 @@ import java.util.Objects;
 //TODO sprawdzic czy w biciu wielokrotnym możemy zmienić pionek, którym bijemy
 public class PolishCheckers extends GameType {
 
-  /**Konstruktor klasy
+  /**Konstruktor klasy.
    *
    */
   public PolishCheckers() {

@@ -8,7 +8,7 @@ public interface Game {
   Pawn getPawn(int x, int y);
   String boardToString();
   int getBoardSize();
-    int getPawnCount();
-    public String whichPlayerTurn();
+  int getPawnCount();
+  public String whichPlayerTurn();
 
 }
