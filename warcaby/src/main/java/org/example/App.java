@@ -87,7 +87,7 @@ public class App extends Application implements Runnable
   {
     this.stage=stage;
     stage.setTitle("Client");
-
+    stage.setResizable(false);
     scenThread = new Thread(new Runnable() 
     {
       public void run()
@@ -107,9 +107,9 @@ public class App extends Application implements Runnable
     
     waitLabel = new Label("");
     waitLabel.setPrefHeight(HEIGHT/10);
-    waitLabel.setPrefWidth(WIDTH/2);
+    waitLabel.setPrefWidth(WIDTH);
     waitLabel.setAlignment(Pos.CENTER);
-    waitLabel.setFont(new Font(HEIGHT/15));
+    waitLabel.setFont(new Font(HEIGHT/10));
     vbox.getChildren().add(waitLabel);
 
     game1Button = new Button("Game1");
@@ -196,7 +196,7 @@ public class App extends Application implements Runnable
 
   public void startGame(String game)
   {
-    waitLabel.setText("Waiting...");
+    waitLabel.setText("Waiting for another player");
     game1Button.setDisable(true);
     game2Button.setDisable(true);
     game3Button.setDisable(true);

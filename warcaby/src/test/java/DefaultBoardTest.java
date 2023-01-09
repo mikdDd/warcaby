@@ -1,4 +1,3 @@
-
 import org.example.Pawn;
 import org.example.PolishCheckers;
 

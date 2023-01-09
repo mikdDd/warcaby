@@ -15,11 +15,9 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(4444)) {
 
             System.out.println("Server is listening on port 4444");
-            //TODO kolejkowanie graczy (do zrobienia jak będzie już dopracowana komunikacja)
             while (true) 
             {
                 Socket firstClient = serverSocket.accept();
-                //TODO wyslać tu info o typie gry wybranym przez klienta
                 InputStream inputF = firstClient.getInputStream();
                 BufferedReader inF = new BufferedReader(new InputStreamReader(inputF));
                 String line = inF.readLine();
@@ -32,24 +30,6 @@ public class Server {
                     thaiCheckersQueue.add(firstClient);
                 }
                 System.out.println("Client connected");
-                /*
-                System.out.println("Waiting for the second player");
-
-                Socket secondClient = serverSocket.accept();
-                InputStream inputS = secondClient.getInputStream();
-                BufferedReader inS = new BufferedReader(new InputStreamReader(inputS));
-                line = inS.readLine();
-                System.out.println(line);
-                if(line.equals("GAME1")){
-                    polishCheckersQueue.add(secondClient);
-                } else if (line.equals("GAME2")) {
-                    englishCheckersQueue.add(secondClient);
-                } else if (line.equals("GAME3")) {
-                   thaiCheckersQueue.add(secondClient);
-                }
-                System.out.println("Second client connected");
-                //TODO factory gier zależnie od typu
-                */
                 GameFactory gameFactory = new GameControllerFactory();
                 if(polishCheckersQueue.size()>=2){
 
@@ -75,13 +55,7 @@ public class Server {
                     thaiCheckersQueue.remove(0);
                     thaiCheckersQueue.remove(0);
                 }
-
-                //GameController b = gameFactory.createGame("POLISH");
-
-
-
             }
-
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
