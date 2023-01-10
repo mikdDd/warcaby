@@ -70,7 +70,7 @@ public class GameController implements Runnable{
             tour = game.whichPlayerTurn();
             do 
           {
-            if (tour.equals("white"))
+            if ("white".equals(tour))
             {
                 // Odbieranie od 1. gracza kliknietego pionka
                 line = inF.readLine();
@@ -97,33 +97,33 @@ public class GameController implements Runnable{
                 tour = game.whichPlayerTurn();
 
                 System.out.println(tour);
-                if (tour.equals("white"))
+                if ("white".equals(tour))
                 {
                   outF.println(1);
                   outS.println(1);
                 }
-                else if (tour.equals("black"))
+                else if ("black".equals(tour))
                 {
                   outF.println(2);
                   outS.println(2);
                 }
-                else if (tour.equals("whitewon"))
+                else if ("whitewon".equals(tour))
                 {
                   outF.println(-1);
                   outS.println(-1);
                 }
-                else if (tour.equals("blackwon"))
+                else if ("blackwon".equals(tour))
                 {
                   outF.println(-2);
                   outS.println(-2);
                 }
-                else if (tour.equals("draw"))
+                else if ("draw".equals(tour))
                 {
                   outF.println(0);
                   outS.println(0);
                 }
             }
-             else if (tour.equals("black")) 
+             else if ("black".equals(tour))
              {
                 //Odbieranie od 2. gracza kliknietego pionka
                 line = inS.readLine();
@@ -150,27 +150,27 @@ public class GameController implements Runnable{
                 tour = game.whichPlayerTurn();
 
                 System.out.println(tour);
-                if (tour.equals("white"))
+                if ("white".equals(tour))
                 {
                   outF.println(1);
                   outS.println(1);
                 }
-                else if (tour.equals("black"))
+                else if ("black".equals(tour))
                 {
                   outF.println(2);
                   outS.println(2);
                 }
-                else if (tour.equals("whitewon"))
+                else if ("whitewon".equals(tour))
                 {
                   outF.println(-1);
                   outS.println(-1);
                 }
-                else if (tour.equals("blackwon"))
+                else if ("blackwon".equals(tour))
                 {
                   outF.println(-2);
                   outS.println(-2);
                 }
-                else if (tour.equals("draw"))
+                else if ("draw".equals(tour))
                 {
                   outF.println(0);
                   outS.println(0);

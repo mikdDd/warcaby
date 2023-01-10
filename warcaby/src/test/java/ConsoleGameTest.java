@@ -1,12 +1,5 @@
 import org.example.*;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -35,8 +28,8 @@ public class ConsoleGameTest {
 
                         try {
 
-                            System.out.print("[" + b.getPawn(k,i).color + "(" + k + i + ")" );
-                            if(b.getPawn(k,i).isKing){
+                            System.out.print("[" + b.getPawn(k, i).getColor() + "(" + k + i + ")" );
+                            if(b.getPawn(k, i).isKing()){
                                 System.out.print("D]");
                             } else {
                                 System.out.print(" ]");

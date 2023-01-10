@@ -1,18 +1,21 @@
 package org.example;
-//wzorzec factory
+
+/**Klasa konkretna factory obiektow klasy Game
+ *
+ */
 public class GameFactory implements GameFactoryInterface {
     @Override
-    public Game createGame(String gameType) {
+    public Game createGame(final String gameType) {
         if(gameType == null){
             return null;
         }
-        if(gameType.equalsIgnoreCase("POLISH")){
+        if("POLISH".equalsIgnoreCase(gameType)){
             return new PolishCheckers();
 
-        } else if(gameType.equalsIgnoreCase("ENGLISH")){
+        } else if("ENGLISH".equalsIgnoreCase(gameType)){
             return new EnglishCheckers();
 
-        } else if(gameType.equalsIgnoreCase("THAI")){
+        } else if("THAI".equalsIgnoreCase(gameType)){
             return new ThaiCheckers();
         }
 

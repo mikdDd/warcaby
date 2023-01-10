@@ -21,7 +21,7 @@ public class GameTypesTest {
         Game game = new PolishCheckers();
         game.movePawn(game.getPawn(0,3),-1,-1);
         String s = game.possibleMovesToString(game.getPawn(0,3));
-        assertEquals("Błąd planszy", s, "14");
+        assertEquals("Błąd planszy", "14", s);
     }
     @Test
     public void englishCheckersMoveTest()
@@ -35,9 +35,9 @@ public class GameTypesTest {
     public void englishCheckersBadMoveTest()       //pionek nie ruszy się na błędne pole
     {
         Game game = new EnglishCheckers();
-        game.movePawn(game.getPawn(0,3),50,50);
-        String s = game.possibleMovesToString(game.getPawn(0,3));
-        assertEquals("Błąd planszy", "", s);
+        game.movePawn(game.getPawn(5,2),50,50);
+        String s = game.possibleMovesToString(game.getPawn(5,2));
+        assertEquals("Błąd planszy", "4363", s);
     }
     @Test
     public void thaiCheckersMoveTest()
@@ -53,7 +53,7 @@ public class GameTypesTest {
     {
         Game game = new ThaiCheckers();
         game.movePawn(game.getPawn(2,1),-1,-1);
-        String s = game.possibleMovesToString(game.getPawn(0,3));
-        assertEquals("Błąd planszy", "", s);
+        String s = game.possibleMovesToString(game.getPawn(2,1));
+        assertEquals("Błąd planszy", "1232", s);
     }
 }

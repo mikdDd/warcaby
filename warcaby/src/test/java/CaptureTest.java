@@ -15,7 +15,7 @@ public class CaptureTest {
         game.movePawn(game.getPawn(6,3),7,4);
         game.movePawn(game.getPawn(9,6),8,5);
         game.movePawn(game.getPawn(7,4),9,6);
-        String color = game.getPawn(9,6).color;
+        String color = game.getPawn(9, 6).getColor();
         assertEquals("Błąd ruchu pionków", "white", color);
         assertNull("Błąd bicia", game.getPawn(8, 5));
     }
@@ -26,7 +26,7 @@ public class CaptureTest {
         game.movePawn(game.getPawn(5,2),4,3);
         game.movePawn(game.getPawn(6,5),5,4);
         game.movePawn(game.getPawn(4,3),6,5);
-        String color = game.getPawn(6,5).color;
+        String color = game.getPawn(6, 5).getColor();
         assertEquals("Błąd ruchu pionków", "white", color);
         assertNull("Błąd bicia", game.getPawn(5, 4));
     }
@@ -39,7 +39,7 @@ public class CaptureTest {
         game.movePawn(game.getPawn(5,2),4,3);
         game.movePawn(game.getPawn(2,5),3,4);
         game.movePawn(game.getPawn(4,3),2,5);
-        String color = game.getPawn(2,5).color;
+        String color = game.getPawn(2, 5).getColor();
         assertEquals("Błąd ruchu pionków", "white", color);
         assertNull("Błąd bicia", game.getPawn(3, 4));
     }
