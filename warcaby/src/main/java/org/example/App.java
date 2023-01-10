@@ -51,6 +51,8 @@ public class App extends Application implements Runnable
   private static float HEIGHT = SIZE * (FIELDS+1);
   private static int PAWNS = 10;
 
+  //TODO: delete
+
   Stage stage;
   //game
   GridPane gridPane = new GridPane();
@@ -69,14 +71,13 @@ public class App extends Application implements Runnable
   
   Bridge bridge;
   
-  public final static int PLAYER1 = 1;
-  public final static int PLAYER2 = 2;
+  private final static int PLAYER1 = 1;
+  private final static int PLAYER2 = 2;
 
-  public final static int ACTIVE = 0;
-  public final static int NONACTIVE = 1;
   private int actualPlayer = PLAYER1;
   private int player = 1;
 
+  //TODO: delete
   Thread scenThread;
 
   /* (non-Javadoc)
@@ -109,7 +110,7 @@ public class App extends Application implements Runnable
     waitLabel.setPrefHeight(HEIGHT/10);
     waitLabel.setPrefWidth(WIDTH);
     waitLabel.setAlignment(Pos.CENTER);
-    waitLabel.setFont(new Font(HEIGHT/10));
+    waitLabel.setFont(new Font(HEIGHT/15));
     vbox.getChildren().add(waitLabel);
 
     game1Button = new Button("Game1");
@@ -297,7 +298,7 @@ public class App extends Application implements Runnable
           {
             public void run()
             {
-              tourLabel.setText("Enemy's turn");
+              tourLabel.setText("Opponent's turn");
             }  
           });
           board.setPosition(bridge.receive());

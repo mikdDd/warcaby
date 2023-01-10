@@ -49,7 +49,7 @@ public class Bridge
     return "";
   }
 
-    
+    //TODO: delete
   public int receiveInitFromServer() throws IOException
   {
     int input = Integer.parseInt(in.readLine());

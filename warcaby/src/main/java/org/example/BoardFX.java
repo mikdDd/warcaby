@@ -302,6 +302,9 @@ public class BoardFX
       }
     }  
   }
+
+
+  //TODO: poprawic
   public void firstOutput(String pos)
   {
     bridge.send(pos);
