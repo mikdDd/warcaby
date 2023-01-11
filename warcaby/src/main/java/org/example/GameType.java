@@ -145,7 +145,7 @@ public abstract class GameType implements Game {
    * @param yPawn wspolrzedna y bierki
    * @return tablica dwoch flag, jezeli dana wspolrzedna wieksza od wspolrzednej bierki to flaga = 1, w przeciwnym wypadku flaga = -1
    */
-  protected int[] coordsRelation(final int x, final int y, final int xPawn, final int yPawn) {
+  public static int[] coordsRelation(final int x, final int y, final int xPawn, final int yPawn) {
     int[] flags = new int[2];
 
     if (x > xPawn) {
