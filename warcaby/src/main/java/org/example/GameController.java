@@ -5,15 +5,15 @@ import java.net.Socket;
 //wzorzec MVC
 public class GameController implements Runnable{
 
-    private Socket firstPlayer;
-    private Socket secondPlayer;
-    private Game game;
+    private final Socket firstPlayer;
+    private final Socket secondPlayer;
+    private final Game game;
     private String tour;
 
 
     private final static int FIRST=1;
     private final static int SECOND=2;
-    private static int turn=FIRST;
+    private static final int turn=FIRST;
 
 
     public GameController(Socket firstPlayer, Socket secondPlayer, Game game){
@@ -41,8 +41,7 @@ public class GameController implements Runnable{
             OutputStream outputS = secondPlayer.getOutputStream();
             PrintWriter outS = new PrintWriter(outputS, true);
 
-        //TODO wysylanie info bezpośrednio z gamecontroller
-        //INIT
+        
             //numer gracza
             outF.println("1");
             outS.println("2");
@@ -70,7 +69,7 @@ public class GameController implements Runnable{
             tour = game.whichPlayerTurn();
             do 
           {
-            if (tour.equals("white"))
+            if ("white".equals(tour))
             {
                 // Odbieranie od 1. gracza kliknietego pionka
                 line = inF.readLine();
@@ -97,33 +96,33 @@ public class GameController implements Runnable{
                 tour = game.whichPlayerTurn();
 
                 System.out.println(tour);
-                if (tour.equals("white"))
+                if ("white".equals(tour))
                 {
                   outF.println(1);
                   outS.println(1);
                 }
-                else if (tour.equals("black"))
+                else if ("black".equals(tour))
                 {
                   outF.println(2);
                   outS.println(2);
                 }
-                else if (tour.equals("whitewon"))
+                else if ("whitewon".equals(tour))
                 {
                   outF.println(-1);
                   outS.println(-1);
                 }
-                else if (tour.equals("blackwon"))
+                else if ("blackwon".equals(tour))
                 {
                   outF.println(-2);
                   outS.println(-2);
                 }
-                else if (tour.equals("draw"))
+                else if ("draw".equals(tour))
                 {
                   outF.println(0);
                   outS.println(0);
                 }
             }
-             else if (tour.equals("black")) 
+             else if ("black".equals(tour))
              {
                 //Odbieranie od 2. gracza kliknietego pionka
                 line = inS.readLine();
@@ -150,27 +149,27 @@ public class GameController implements Runnable{
                 tour = game.whichPlayerTurn();
 
                 System.out.println(tour);
-                if (tour.equals("white"))
+                if ("white".equals(tour))
                 {
                   outF.println(1);
                   outS.println(1);
                 }
-                else if (tour.equals("black"))
+                else if ("black".equals(tour))
                 {
                   outF.println(2);
                   outS.println(2);
                 }
-                else if (tour.equals("whitewon"))
+                else if ("whitewon".equals(tour))
                 {
                   outF.println(-1);
                   outS.println(-1);
                 }
-                else if (tour.equals("blackwon"))
+                else if ("blackwon".equals(tour))
                 {
                   outF.println(-2);
                   outS.println(-2);
                 }
-                else if (tour.equals("draw"))
+                else if ("draw".equals(tour))
                 {
                   outF.println(0);
                   outS.println(0);
