@@ -1,65 +1,50 @@
 import org.example.*;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 
+/**Klasa implementujaca konsolowa wersje gry w warcaby.
+ * Przeznaczona do testow nie wykorzystujacych GUI
+ *
+ */
 public class ConsoleGameTest {
+  public static void main(final String[] args) {
+    final Scanner myObj = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    final GameFactoryInterface gameFactory = new GameFactory();
+    final Game b = gameFactory.createGame("POLISH");
 
-            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+    while (true) {
+      System.out.println(b.whichPlayerTurn());
+      System.out.println(b.boardToString());
 
-            //String move = myObj.nextLine();  // Read user input
-            //GameFactory gameFactory = new GameControllerFactory();
-                //EnglishCheckers b = new EnglishCheckers();
-        ThaiCheckers b = new ThaiCheckers();
-            //GameController b = gameFactory.createGame("POLISH");
-            //PolishCheckers b = new PolishCheckers();
-           // b.getPawn(4,3).setKing();
 
-            //b.setFields();
-            while (true) {
-                System.out.println(b.whichPlayerTurn());
-                System.out.println(b.boardToString());
-               // System.out.println(b.whichPlayerTurn());
+      for (int i = 0; i < b.getBoardSize(); i++) {
+         for (int k = 0; k < b.getBoardSize(); k++) {
+           try {
+               System.out.print("[" + b.getPawn(k, i).getColor() + "(" + k + i + ")" );
+               if (b.getPawn(k, i).isKing()) {
+                 System.out.print("D]");
+               } else {
+                 System.out.print(" ]");
+               }
+           } catch (NullPointerException e) {
+             System.out.print("[    " + k + i + "    ]");
+           }
+         }
+         System.out.println();
+      }
 
-                for (int i = 0; i < 8; i++) {
-                    for (int k = 0; k < 8; k++) {
+      final String move = myObj.nextLine();
+      final int x1 = Character.getNumericValue(move.charAt(0));
+      final int y1 = Character.getNumericValue(move.charAt(1));
+      final int x2 = Character.getNumericValue(move.charAt(2));
+      final int y2 = Character.getNumericValue(move.charAt(3));
 
-                        try {
+      System.out.println(b.possibleMovesToString(b.getPawn(x1,y1)));
 
-                            System.out.print("[" + b.getPawn(k,i).color + "(" + k + i + ")" );
-                            if(b.getPawn(k,i).isKing){
-                                System.out.print("D]");
-                            } else {
-                                System.out.print(" ]");
-                            }
-                        } catch (NullPointerException e) {
-                            System.out.print("[    " + k + i + "    ]");
-                        }
-                    }
-                    System.out.println("");
-                }
-               // if (b.fields[2][4] == null) System.out.println("TAK");
-                String move = myObj.nextLine();
-                int x1 = Character.getNumericValue(move.charAt(0));
-                int y1 = Character.getNumericValue(move.charAt(1));
-                int x2 = Character.getNumericValue(move.charAt(2));
-                int y2 = Character.getNumericValue(move.charAt(3));
-                //System.out.println(x1+","+y1+","+x2+","+y2);
-               // List<Move> kingMoves = b.checkKingPossibleMoves(b.fields[x1][y1]));
-                System.out.println(b.possibleMovesToString(b.getPawn(x1,y1)));
+      b.movePawn(b.getPawn(x1,y1), x2, y2);
 
-                b.movePawn(b.getPawn(x1,y1), x2, y2);
-               // System.out.println(b.canPlayerMove("white"));
-            }
-        }
-
+    }
+  }
 }

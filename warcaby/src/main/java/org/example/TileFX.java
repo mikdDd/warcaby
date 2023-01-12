@@ -19,12 +19,12 @@ public class TileFX extends Rectangle
     if((x+y) % 2 == 1 )
     {
       color='B';
-      this.setFill(Color.BROWN);
+      this.setFill(Color.SIENNA);
     }
     else
     {
       color='W';
-      this.setFill(Color.YELLOW);
+      this.setFill(Color.BEIGE);
     }
   }  
   public int getXIndex()

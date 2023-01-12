@@ -72,11 +72,11 @@ public class BoardFX
       x = Character.getNumericValue(positionString.charAt(index));
       y = Character.getNumericValue(positionString.charAt(index+1));
       tiles[x][y].setDisable(true);
-      tiles[x][y].setFill(Color.BROWN);
+      tiles[x][y].setFill(Color.SIENNA);
       index+=2;
     }
     tiles[lastClickedX][lastClickedY].setDisable(true);
-    tiles[lastClickedX][lastClickedY].setFill(Color.BROWN);
+    tiles[lastClickedX][lastClickedY].setFill(Color.SIENNA);
   }
   public void enableTiles(String positionString)
   {

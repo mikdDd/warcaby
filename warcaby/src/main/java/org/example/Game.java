@@ -1,185 +1,53 @@
 package org.example;
 
-import java.io.*;
-import java.net.Socket;
+/**Interfejs dla trybow gry, wykorzystywany przez serwer.
+ *
+ */
+public interface Game {
+  /**Metoda ruszajaca bierka po planszy.
+   * @param pawn bierka
+   * @param x wspolrzedna x, na ktora sie ruszamy
+   * @param y wspolrzedna y, na ktora sie ruszamy
+   */
+  void movePawn(Pawn pawn, int x, int y);
 
+<<<<<<< HEAD
+=======
+  /**Metoda zwracajaca stringa zawierajacego mozliwe ruchy danej bierki.
+   * @param pawn bierka ktorej ruchy sprawdzamy
+   * @return string zawierajacy wspolrzedne pol na ktore moze ruszyc sie dany pionek
+   */
+  String possibleMovesToString(Pawn pawn);
+>>>>>>> 050aa3000b41a84208f7cf49023fdc3d94b4fcc9
 
-public class Game implements Runnable{
+  /**Metoda zwracajaca bierke znajdujaca sie na danej pozycji.
+   * @param x wspolrzedna x
+   * @param y wspolrzedna y
+   * @return bierka znajdujaca sie na danych wspolrzednych
+   */
+  Pawn getPawn(int x, int y);
 
-    private Socket firstPlayer;
-    private Socket secondPlayer;
-    private GameController gameController;
-    private String tour;
+  /**Metoda zwracaja stringa zawierajacego pozycje bierek obu graczy.
+   * podane jako wspolrzedne,
+   * najpierw bierki biale, a potem czarne oddzielone ":",
+   * przed wspolrzednymi damki wstawiana jest litera "D"
+   * @return string zawierajacy wspolrzedne wszystkich aktywnych pionkow na planszy
+   */
+  String boardToString();
 
+  /**Metoda zwracajaca rozmiar planszy.
+   * @return rozmiar planszy
+   */
+  int getBoardSize();
 
-    public Game(Socket firstPlayer, Socket secondPlayer, GameController gameController){
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
-        this.gameController = gameController;
-    }
-    @Override
-    public void run() {
+  /**Metoda zwracajaca liczbe pionkow dla kazdego gracza.
+   * @return liczba pionkow
+   */
+  int getPawnCount();
 
-        try{
-            //Inicjalizacja pobieranie od socketa dla player1
-            InputStream inputF = firstPlayer.getInputStream();
-            BufferedReader inF = new BufferedReader(new InputStreamReader(inputF));
+  /**Metoda zwracaja obecna ture oraz informacje o wygranej.
+   * @return aktywna tura lub strone ktora wygrala gre
+   */
+  String whichPlayerTurn();
 
-            //Inicjalizacja pobieranie od socketa dla player2
-            InputStream inputS = secondPlayer.getInputStream();
-            BufferedReader inS = new BufferedReader(new InputStreamReader(inputS));
-
-            //Inicjalizacja Wysylania do socketa dla player1
-            OutputStream outputF = firstPlayer.getOutputStream();
-            PrintWriter outF = new PrintWriter(outputF, true);
-
-            //Inicjalizacja Wysylania do socketa dla player2
-            OutputStream outputS = secondPlayer.getOutputStream();
-            PrintWriter outS = new PrintWriter(outputS, true);
-
-        //TODO wysylanie info bezpośrednio z gamecontroller
-        //INIT
-            //numer gracza
-            outF.println("1");
-            outS.println("2");
-            //rozmiar planszy
-            outF.println(gameController.getBoardSize());
-            outS.println(gameController.getBoardSize());
-            //ilosc pionkow
-
-            outF.println(gameController.getPawnCount());
-            outS.println(gameController.getPawnCount());
-
-            //ustawienie pionkow
-            String board = gameController.boardToString();
-            //String board = "0020406080113151719102224262821333537393:0626466686173757779708284868881939597999";
-            outF.println(board);
-            outS.println(board);
-            
-
-            String line;
-            int pawnX;
-            int pawnY;
-            int destX;
-            int destY;
-
-            tour = gameController.whichPlayerTurn();
-            do 
-          {
-            if (tour.equals("white"))
-            {
-                // Odbieranie od 1. gracza kliknietego pionka
-                line = inF.readLine();
-                // Wypisywanie na serwerze
-                pawnX = Character.getNumericValue(line.charAt(0));
-                pawnY = Character.getNumericValue(line.charAt(1));
-                System.out.println("Pawn: " + pawnX+""+pawnY);
-                // Wysylanie do 1. gracza informacji o dostepnych polach
-                outF.println(gameController.possibleMovesToString(gameController.getPawn(Character.getNumericValue(line.charAt(0)),Character.getNumericValue(line.charAt(1))))); // musi być posortowana według kolumny a potem wiersza // nieparzysta suma to ciemne pola
-                // Odbieranie od 1. gracza kliknietego pola
-                line = inF.readLine();
-                destX = Character.getNumericValue(line.charAt(0));
-                destY = Character.getNumericValue(line.charAt(1));
-                gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
-                // Wypisywanie na serwerze
-                System.out.println("Tile: " + line);
-                // wysyłanie tury 
-                
-                //TODO wysłanie planszy z wykonanym ruchemString position = gameController.boardToString();
-                String position = gameController.boardToString();
-                outF.println(position);
-                outS.println(position);
-
-                tour = gameController.whichPlayerTurn();
-
-                System.out.println(tour);
-                if (tour.equals("white"))
-                {
-                  outF.println(1);
-                  outS.println(1);
-                }
-                else if (tour.equals("black"))
-                {
-                  outF.println(2);
-                  outS.println(2);
-                }
-                else if (tour.equals("whitewon"))
-                {
-                  outF.println(-1);
-                  outS.println(-1);
-                }
-                else if (tour.equals("blackwon"))
-                {
-                  outF.println(-2);
-                  outS.println(-2);
-                }
-                else if (tour.equals("draw"))
-                {
-                  outF.println(0);
-                  outS.println(0);
-                }
-            }
-             else if (tour.equals("black")) 
-             {
-                //Odbieranie od 2. gracza kliknietego pionka
-                line = inS.readLine();
-                // Wypisywanie na serwerze
-                pawnX = Character.getNumericValue(line.charAt(0));
-                pawnY = Character.getNumericValue(line.charAt(1));
-                System.out.println("Pawn: " + pawnX+""+pawnY);
-                // Wysylanie do 2. gracza informacji o dostepnych polach
-                outS.println(gameController.possibleMovesToString(gameController.getPawn(Character.getNumericValue(line.charAt(0)),Character.getNumericValue(line.charAt(1))))); // musi być posortowana według kolumny a potem wiersza // nieparzysta suma to ciemne pola
-                // Odbieranie od 2. gracza kliknietego pola
-                line = inS.readLine();
-                destX = Character.getNumericValue(line.charAt(0));
-                destY = Character.getNumericValue(line.charAt(1));
-                gameController.movePawn(gameController.getPawn(pawnX,pawnY),destX,destY);
-                // Wypisywanie na serwerze
-                System.out.println("Tile: " + line);
-                
-                //TODO wysłanie planszy z wykonanym ruchem
-                String position = gameController.boardToString();
-                outF.println(position);
-                outS.println(position);
-
-                // wysyłanie tury | narazie zakladam że zawsze się zmienia | 0 w przypadku zakończenia gry
-                tour = gameController.whichPlayerTurn();
-
-                System.out.println(tour);
-                if (tour.equals("white"))
-                {
-                  outF.println(1);
-                  outS.println(1);
-                }
-                else if (tour.equals("black"))
-                {
-                  outF.println(2);
-                  outS.println(2);
-                }
-                else if (tour.equals("whitewon"))
-                {
-                  outF.println(-1);
-                  outS.println(-1);
-                }
-                else if (tour.equals("blackwon"))
-                {
-                  outF.println(-2);
-                  outS.println(-2);
-                }
-                else if (tour.equals("draw"))
-                {
-                  outF.println(0);
-                  outS.println(0);
-                }
-              }
-              else break;
-
-                
-            } while (true);
-
-        } catch (IOException ex) {
-            System.err.println("ex");
-        }
-    }
 }
-
