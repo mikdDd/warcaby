@@ -7,7 +7,7 @@ import java.util.Objects;
 /**Klasa implementujaca warcaby angielskie.
  *
  */
-public class EnglishCheckers extends GameType {
+public class EnglishCheckers extends GameTypeTemplate {
 
 
   /**Konstruktor klasy.

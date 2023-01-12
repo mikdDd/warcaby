@@ -64,8 +64,8 @@ public class GameTypesTest {
     /**Test metody coordsRelation dla takich samych wspolrzednych.*/
     @Test
     public void equalCoordsRelationTest() {
-        final int xFlag = GameType.coordsRelation(5,5,5,5)[0];
-        final int yFlag = GameType.coordsRelation(5,5,5,5)[0];
+        final int xFlag = GameTypeTemplate.coordsRelation(5,5,5,5)[0];
+        final int yFlag = GameTypeTemplate.coordsRelation(5,5,5,5)[0];
         assertEquals("Błąd wspolrzednych", 0, xFlag);
         assertEquals("Błąd wspolrzednych", 0, yFlag);
     }

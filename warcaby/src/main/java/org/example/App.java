@@ -112,9 +112,10 @@ public class App extends Application implements Runnable
     waitLabel.setFont(new Font(HEIGHT/15));
     vbox.getChildren().add(waitLabel);
 
-    game1Button = new Button("Game1");
-    game1Button.setPrefHeight(HEIGHT/6);
+    game1Button = new Button("POLISH CHECKERS");
+    game1Button.setPrefHeight(HEIGHT/7);
     game1Button.setPrefWidth(WIDTH/2);
+    game1Button.setStyle("-fx-font-size:25");
     
     game1Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
     {
@@ -132,9 +133,10 @@ public class App extends Application implements Runnable
     game1Button.setOnAction(event -> startGame("GAME1"));
     vbox.getChildren().add(game1Button);
 
-    game2Button = new Button("Game2");
-    game2Button.setPrefHeight(HEIGHT/6);
+    game2Button = new Button("ENGLISH CHECKERS");
+    game2Button.setPrefHeight(HEIGHT/7);
     game2Button.setPrefWidth(WIDTH/2);
+    game2Button.setStyle("-fx-font-size:25");
     
     game2Button.setOnMouseEntered(new EventHandler<MouseEvent>()
     {
@@ -158,10 +160,10 @@ public class App extends Application implements Runnable
     });
     vbox.getChildren().add(game2Button);
 
-    game3Button = new Button("Game3");
-    game3Button.setPrefHeight(HEIGHT/6);
+    game3Button = new Button("THAI CHECKERS");
+    game3Button.setPrefHeight(HEIGHT/7);
     game3Button.setPrefWidth(WIDTH/2);
-    
+    game3Button.setStyle("-fx-font-size:25");
     game3Button.setOnMouseEntered(new EventHandler<MouseEvent>() 
     {
       public void handle(MouseEvent me) {

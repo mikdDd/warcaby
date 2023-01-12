@@ -7,7 +7,7 @@ import java.util.Objects;
 /**Klasa implementujaca warcaby tajskie.
  *
  */
-public class ThaiCheckers extends GameType {
+public class ThaiCheckers extends GameTypeTemplate {
 
   /**Konstruktor klasy.
    *

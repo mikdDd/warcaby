@@ -7,7 +7,7 @@ import java.util.Objects;
 /**Klasa implementujaca warcaby polskie.
  */
 //TODO sprawdzic czy w biciu wielokrotnym możemy zmienić pionek, którym bijemy
-public class PolishCheckers extends GameType {
+public class PolishCheckers extends GameTypeTemplate {
 
   /**Konstruktor klasy.
    *

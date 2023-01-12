@@ -8,7 +8,7 @@ import java.util.Objects;
 /**Klasa abstrakcyjna oparta na wzorcu TEMPLATE zawierajaca metody wykorzystywane przez tryby gry.
  *
  */
-public abstract class GameType implements Game {
+public abstract class GameTypeTemplate implements Game {
 
   /**Plansza do gry realizujaca interfejs Board.*/
   protected transient Board board;
@@ -31,7 +31,7 @@ public abstract class GameType implements Game {
    * @param pawn bierka
    * @return lista ruchow bierki
    */
-  public List<Move> checkPossibleMoves(final Pawn pawn) {
+  private List<Move> checkPossibleMoves(final Pawn pawn) {
     if (pawn.isKing()) {
       return checkKingPossibleMoves(pawn);
     } else {
