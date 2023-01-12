@@ -3,7 +3,6 @@ package org.example;
 import java.io.*;
 import java.net.Socket;
 
-import javafx.scene.shape.Ellipse;
 
 public class Game implements Runnable{
 
@@ -11,11 +10,6 @@ public class Game implements Runnable{
     private Socket secondPlayer;
     private GameController gameController;
     private String tour;
-
-
-    private final static int FIRST=1;
-    private final static int SECOND=2;
-    private static int turn=FIRST;
 
 
     public Game(Socket firstPlayer, Socket secondPlayer, GameController gameController){

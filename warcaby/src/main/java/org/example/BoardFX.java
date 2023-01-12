@@ -4,14 +4,13 @@ package org.example;
 import java.util.Arrays;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-//TODO rysowanie planszy o dowolnych wymiarach
+
 public class BoardFX 
 {
   TileFX[][] tiles;
@@ -192,7 +191,7 @@ public class BoardFX
           {
               public void handle(MouseEvent me) 
               {
-                secondOutput(tile.getXIndex() + "" + tile.getYIndex());
+                bridge.send(tile.getXIndex() + "" + tile.getYIndex());
               }
           });
         }
@@ -216,7 +215,7 @@ public class BoardFX
         {
             public void handle(MouseEvent me) 
             {
-              firstOutput(pawn.getXIndex() + "" + pawn.getYIndex());
+              bridge.send(pawn.getXIndex() + "" + pawn.getYIndex());
               lastClickedX = pawn.getXIndex();
               lastClickedY = pawn.getYIndex();
             }
@@ -245,7 +244,7 @@ public class BoardFX
         {
             public void handle(MouseEvent me) 
             {
-              firstOutput(pawn.getXIndex() + "" + pawn.getYIndex());
+              bridge.send(pawn.getXIndex() + "" + pawn.getYIndex());
               lastClickedX = pawn.getXIndex();
               lastClickedY = pawn.getYIndex();
             }
@@ -303,15 +302,4 @@ public class BoardFX
     }  
   }
 
-
-  //TODO: poprawic
-  public void firstOutput(String pos)
-  {
-    bridge.send(pos);
-  }
-
-  public void secondOutput(String pos)
-  {
-    bridge.send(pos);
-  }
 }

@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.concurrent.RecursiveAction;
-
-import javafx.application.Platform;
 
 public class Bridge 
 {
@@ -47,25 +44,6 @@ public class Bridge
       System.out.print("ereor: " + e);
     }
     return "";
-  }
-
-    //TODO: delete
-  public int receiveInitFromServer() throws IOException
-  {
-    int input = Integer.parseInt(in.readLine());
-    if (input == 1) 
-      {
-        //tourLabel.setText("My Turn");
-        System.out.println("Player 1");
-      } 
-      else 
-      {
-        // tourLabel.setText("Opposite turn");
-        // tourButton.setDisable(true);
-        System.out.println("Player 2");
-      }
-    
-    return input;
   }
 
 }
