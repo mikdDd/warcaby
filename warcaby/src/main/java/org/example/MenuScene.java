@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class MenuScene extends SceneParent implements Runnable
 {
@@ -33,11 +34,7 @@ public class MenuScene extends SceneParent implements Runnable
     th = new Thread(this);
     th.start();
   }
- 
-  public VBox getPane()
-  {
-    return vbox;
-  }
+
   public void waitingForPlayer()
   {
     waitLabel.setText("Waiting for another player");
@@ -61,7 +58,7 @@ public class MenuScene extends SceneParent implements Runnable
 
     Image image;
     try {
-      image = new Image(getClass().getResource("logoszachy2.png").toURI().toString());
+      image = new Image(Objects.requireNonNull(getClass().getResource("logoszachy2.png")).toURI().toString());
     } catch (URISyntaxException e) {
       throw new RuntimeException(e);
     }
