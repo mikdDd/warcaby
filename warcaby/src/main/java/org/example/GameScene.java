@@ -20,13 +20,7 @@ public class GameScene extends SceneParent implements Runnable
   }
   public void setLabel(String s)
   {
-    Platform.runLater(new Runnable() 
-    {
-      public void run()
-      {
-        tourLabel.setText(s);
-      }
-    });
+    Platform.runLater(() -> tourLabel.setText(s));
   }
   public void run()
   {

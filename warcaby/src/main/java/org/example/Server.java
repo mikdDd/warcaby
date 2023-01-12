@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Server {
   /**Instancja klasy Server.*/
-  private static Server instance = new Server();
+  private static final Server instance = new Server();
   /**
    * Lista socketow oczekujacych na gre w warcay polskie.
    */

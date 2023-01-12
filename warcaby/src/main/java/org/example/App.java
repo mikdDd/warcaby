@@ -17,7 +17,7 @@ public class App extends Application implements Runnable
   MenuScene menuScene;
   GameScene gameScene;
 
-  private static float WIDTH = 600;
+  private static final float WIDTH = 600;
   private static int FIELDS = 10;
   private static float SIZE = WIDTH/FIELDS;
   private static float HEIGHT = SIZE * (FIELDS+1);
@@ -27,7 +27,6 @@ public class App extends Application implements Runnable
   Bridge bridge;
 
   BoardFX board;
-  App app = this;
 
   private final static int PLAYER1 = 1;
   private final static int PLAYER2 = 2;
@@ -73,24 +72,14 @@ public class App extends Application implements Runnable
     }
     menuScene.waitingForPlayer();
 
-    new Thread(new Runnable() 
-    {
-      public void run()
-      {
-        player = Integer.parseInt(bridge.receive());
-        FIELDS = Integer.parseInt(bridge.receive());
-        SIZE = WIDTH/FIELDS;
-        HEIGHT = SIZE * (FIELDS+1);
-        PAWNS = Integer.parseInt(bridge.receive());
-        
-        Platform.runLater(new Runnable() 
-        {
-          public void run()
-          {
-            startGame2();
-          }
-        });
-      }
+    new Thread(() -> {
+      player = Integer.parseInt(bridge.receive());
+      FIELDS = Integer.parseInt(bridge.receive());
+      SIZE = WIDTH/FIELDS;
+      HEIGHT = SIZE * (FIELDS+1);
+      PAWNS = Integer.parseInt(bridge.receive());
+
+      Platform.runLater(this::startGame2);
     }).start();
     }
   public void startGame2()

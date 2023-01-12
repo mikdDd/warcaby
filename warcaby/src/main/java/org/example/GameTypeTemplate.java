@@ -166,7 +166,7 @@ public abstract class GameTypeTemplate implements Game {
   /**{@inheritDoc}*/
   @Override
   public void movePawn(final Pawn pawn, final int x, final int y) {
-    if (pawn == null || !pawn.getColor().equals(this.turn)) { return; }
+    if (pawn == null || !pawn.getColor().equals(this.turn) || (pawn.getXPosition() == x && pawn.getYPosition() == y)) { return; }
 
     if (pawn.equals(multipleCapturePawn)) {
       this.multipleCapturePawn = null;
@@ -237,11 +237,11 @@ public abstract class GameTypeTemplate implements Game {
    */
   protected void checkKings() {
     for (int x = 0; x < xSize; x++) {
-      if (board.getFields()[x][0] != null && Objects.equals(board.getFields()[x][0].getColor(), "black") && (!canPawnCapture(board.getFields()[x][0]) || multipleCapturePawn == null)) {
+      if (board.getFields()[x][0] != null && Objects.equals(board.getFields()[x][0].getColor(), "black") && (!canPawnCapture(board.getFields()[x][0]) || multipleCapturePawn != board.getFields()[x][0] )) {
         board.getFields()[x][0].setKing();
       }
 
-      if (board.getFields()[x][ySize - 1] != null && Objects.equals(board.getFields()[x][ySize - 1].getColor(), "white") && (!canPawnCapture(board.getFields()[x][ySize - 1]) || multipleCapturePawn == null)) {
+      if (board.getFields()[x][ySize - 1] != null && Objects.equals(board.getFields()[x][ySize - 1].getColor(), "white") && (!canPawnCapture(board.getFields()[x][ySize - 1]) || multipleCapturePawn != board.getFields()[x][ySize - 1])) {
         board.getFields()[x][ySize - 1].setKing();
       }
 
