@@ -11,14 +11,12 @@ public interface Game {
    */
   void movePawn(Pawn pawn, int x, int y);
 
-<<<<<<< HEAD
-=======
+
   /**Metoda zwracajaca stringa zawierajacego mozliwe ruchy danej bierki.
    * @param pawn bierka ktorej ruchy sprawdzamy
    * @return string zawierajacy wspolrzedne pol na ktore moze ruszyc sie dany pionek
    */
   String possibleMovesToString(Pawn pawn);
->>>>>>> 050aa3000b41a84208f7cf49023fdc3d94b4fcc9
 
   /**Metoda zwracajaca bierke znajdujaca sie na danej pozycji.
    * @param x wspolrzedna x
