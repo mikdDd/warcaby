@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * Klasa wysyłająca i odbierająca
+ * Klasa wysylajaca i odbierajaca
  * informacje z serwera.
  */
 public class Bridge 

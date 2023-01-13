@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Klasa obsługująca pola planszy.
+ * Klasa obslugujaca pola planszy.
  */
 public class TileFX extends Rectangle 
 {
