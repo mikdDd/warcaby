@@ -20,7 +20,7 @@ import java.util.Objects;
 
 
 /**
- * Klasa obsługująca scene menu.
+ * Klasa obslugujaca scene menu.
  */
 public class MenuScene extends SceneParent implements Runnable
 {

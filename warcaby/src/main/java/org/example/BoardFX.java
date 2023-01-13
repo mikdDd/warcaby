@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 /**
- * Klasa obługująca plansze do gry.
+ * Klasa oblugujaca plansze do gry.
  */
 public class BoardFX 
 {
@@ -30,10 +30,10 @@ public class BoardFX
   /**
    * Konstruktor BoardFX
    * @param size rozmiar pola planszy
-   * @param pawns liczba pionków jednego gracza
+   * @param pawns liczba pionkóow jednego gracza
    * @param player numer gracza
-   * @param pane gridPane do wyświetlania planszy
-   * @param bridge klasa do wysyłania i odbierania wiadomości
+   * @param pane gridPane do wyswietlania planszy
+   * @param bridge klasa do wysylania i odbierania wiadomości
    */
   BoardFX(int size, int pawns, int player, GridPane pane, Bridge bridge)
   {
@@ -47,7 +47,7 @@ public class BoardFX
     addTilesToScene();
   }  
   /**
-   * Dezaktywacja białych pionków.
+   * Dezaktywacja bialych pionkow.
    */
   public void disableWhite()
   {
@@ -57,7 +57,7 @@ public class BoardFX
     }
   }
   /**
-   * Aktywacja biaych pionków.
+   * Aktywacja bialych pionkow.
    */
   public void enableWhite()
   {
@@ -67,7 +67,7 @@ public class BoardFX
     }
   }
   /** 
-   * Dezaktywacja czarnych pionków.
+   * Dezaktywacja czarnych pionkow.
    */
   public void disableBlack()
   {
@@ -76,7 +76,7 @@ public class BoardFX
     }
   }
   /** 
-   * Aktywacja czarnych pionków.
+   * Aktywacja czarnych pionkow.
    */
   public void enableBlack()
   {
@@ -86,8 +86,8 @@ public class BoardFX
   }
 
   /**
-   * Dezaktywacja wybranych pól.
-   * @param positionString pozycje pól do dezaktywacji
+   * Dezaktywacja wybranych pol.
+   * @param positionString pozycje pol do dezaktywacji
    */
   public void disableTiles(String positionString)
   {
@@ -108,8 +108,8 @@ public class BoardFX
   }
 
   /**
-   * Aktywacja wybranych pól.
-   * @param positionString pozycje pól do aktywacji
+   * Aktywacja wybranych pol.
+   * @param positionString pozycje pol do aktywacji
    */
   public void enableTiles(String positionString)
   {
@@ -130,8 +130,8 @@ public class BoardFX
   }
   
   /**
-   * Ustawienie pozycji pionków.
-   * @param positionString pozycje pionków
+   * Ustawienie pozycji pionkow.
+   * @param positionString pozycje pionkow
    */
   public void setPosition(String positionString)
   {
@@ -207,7 +207,7 @@ public class BoardFX
       });
     }
     /**
-     * Ustawienie eventów pionków i pól
+     * Ustawienie eventów pionkow i pol
      * @param scene scena gry
      */
   public void addEvents(Scene scene)
@@ -295,7 +295,7 @@ public class BoardFX
   }
 
   /**
-   * Rysowanie pól planszy.
+   * Rysowanie pol planszy.
    */
   private void addTilesToScene()
   {
@@ -322,7 +322,7 @@ public class BoardFX
   }
 
   /**
-   * Rysowanie białych i czarnych pionków.
+   * Rysowanie bialych i czarnych pionkow.
    */
   private void addPawnsToScene()
   {

@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 /**
- * Klasa obsługująca scene gry.
+ * Klasa obslugujaca scene gry.
  */
 public class GameScene extends SceneParent implements Runnable
 {
@@ -26,7 +26,7 @@ public class GameScene extends SceneParent implements Runnable
   }
   
   /**
-   * Ustawienie górnego tekstu.
+   * Ustawienie gornego tekstu.
    * @param s text
    */
   public void setLabel(String s)

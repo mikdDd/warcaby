@@ -15,8 +15,8 @@ public class TileFX extends Rectangle
 
   /**
    * Konstruktor.
-   * @param x współrzędna x
-   * @param y współrzędna y
+   * @param x wspolrzedna x
+   * @param y wspolrzedna y
    */
   TileFX(int x, int y)
   {
@@ -38,8 +38,8 @@ public class TileFX extends Rectangle
   }  
 
   /**
-   * Getter współrzędnej x
-   * @return współrzędna x
+   * Getter wspolrzednej x
+   * @return wspolrzedna x
    */
   public int getXIndex()
   {
@@ -47,8 +47,8 @@ public class TileFX extends Rectangle
   }
 
   /**
-   * Getter współrzędnej y
-   * @return współrzędna y
+   * Getter wspolrzednej y
+   * @return wspolrzedna y
    */
   public int getYIndex()
   {
@@ -74,9 +74,9 @@ public class TileFX extends Rectangle
   }
 
   /**
-   * Generowanie tablicy pól 
-   * @param n liczba pól
-   * @return tablica pól
+   * Generowanie tablicy pol 
+   * @param n liczba pol
+   * @return tablica pol
    */
   public static TileFX[][] generateTiles(int n)
   {

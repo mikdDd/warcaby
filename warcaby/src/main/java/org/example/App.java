@@ -34,7 +34,7 @@ public class App extends Application implements Runnable
   private int player = 1;
 
   /*
-  * Default start function.
+  * Funkcja startowa.
   */
   @Override
   public void start(Stage stage)
@@ -108,7 +108,7 @@ public class App extends Application implements Runnable
   }
 
   /**
-   * Rozpoczynanie wątka rozgrywki.
+   * Rozpoczynanie watka rozgrywki.
    */
   public void startThread()
   {
