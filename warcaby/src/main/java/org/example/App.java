@@ -1,7 +1,6 @@
 package org.example;
 
 import javafx.application.Application;
-//import javafx.fxml.FXMLLoader;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -34,9 +33,9 @@ public class App extends Application implements Runnable
   private int actualPlayer = PLAYER1;
   private int player = 1;
 
-  /* (non-Javadoc)
-    * @see javafx.application.Application#start(javafx.stage.Stage)
-    */
+  /*
+  * Default start function.
+  */
   @Override
   public void start(Stage stage)
   {
@@ -53,6 +52,10 @@ public class App extends Application implements Runnable
     stage.show();
   }
 
+  /**
+   * Inicjalizownanie trybu gry.
+   * @param game Nazwa trybu gry
+   */
   public void startGame(String game)
   {
     try 
@@ -82,6 +85,10 @@ public class App extends Application implements Runnable
       Platform.runLater(this::startGame2);
     }).start();
     }
+
+    /**
+     * Tworzenie gry.
+     */
   public void startGame2()
   {
     SceneParent.setSize(WIDTH, HEIGHT, SIZE, FIELDS);
@@ -99,11 +106,19 @@ public class App extends Application implements Runnable
     stage.show();
     startThread();
   }
+
+  /**
+   * Rozpoczynanie wątka rozgrywki.
+   */
   public void startThread()
   {
     Thread gTh = new Thread(this);
     gTh.start();
   }
+
+  /**
+   * Rozgrywka.
+   */
   public void run() 
   {
     while(actualPlayer > 0)
@@ -165,9 +180,12 @@ public class App extends Application implements Runnable
       }
   }
 
+  /**
+   * Tworzenie aplikacji.
+   * @param args startowe argumenty
+   */
   public static void main(String[] args) 
   {
     launch(args);
   }
 }
-

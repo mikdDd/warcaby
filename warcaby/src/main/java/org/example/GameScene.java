@@ -8,20 +8,35 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
+/**
+ * Klasa obsługująca scene gry.
+ */
 public class GameScene extends SceneParent implements Runnable
 {
   GridPane gridPane;
   Label tourLabel;    
 
+  /**
+   * Konstruktor.
+   */
   public GameScene()
   {
     th = new Thread(this);
     th.start();
   }
+  
+  /**
+   * Ustawienie górnego tekstu.
+   * @param s text
+   */
   public void setLabel(String s)
   {
     Platform.runLater(() -> tourLabel.setText(s));
   }
+
+  /**
+   * Tworzenie planszy.
+   */
   public void run()
   {
     gridPane = new GridPane();
@@ -37,6 +52,10 @@ public class GameScene extends SceneParent implements Runnable
     gridPane.add(tourLabel, 0, 0, FIELDS, 1);
   }
 
+  /**
+   * Getter GridPane
+   * @return gridPane
+   */
   public GridPane getPane()
   {
     return gridPane;

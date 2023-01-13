@@ -8,12 +8,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 
+/**
+ * Klasa obsługująca pionki.
+ */
 public class PawnFX extends Circle
 {
   private int xIndex;
   private int yIndex;
   private static float SIZE;
 
+  /**
+   * Konstruktor.
+   * @param c kolor ('W'/'B')
+   */
   PawnFX(char c)
   {
     this.setRadius(SIZE/2);
@@ -31,24 +38,49 @@ public class PawnFX extends Circle
     this.setStrokeWidth(SIZE/6);
   }
 
+  /**
+   * Getter współrzędnej x;
+   * @return współrzędna x
+   */
   public int getXIndex()
   {
     return xIndex;
   }
+
+  /**
+   * Getter współrzędnej y;
+   * @return współrzędna y
+   */
   public int getYIndex()
   {
     return yIndex;
   }
+
+  /**
+   * Setter współrzędnych.
+   * @param xCord współrzędna x
+   * @param yCord współrzędna y
+   */
   public void setIndexes(int xCord, int yCord)
   {
     this.xIndex = xCord;
     this.yIndex = yCord;
   }
+
+  /**
+   * Setter rozmiaru.
+   * @param size rozmiar
+   */
   public static void setSize(float size)
   {
     SIZE = size;
   }
 
+  /**
+   * Generowanie tablicy białych pionków.
+   * @param n liczba pionków
+   * @return tablica pionków
+   */
   public static PawnFX[] generateWhitePawns(int n)
   {
     PawnFX[] arr = new PawnFX[n];
@@ -62,6 +94,11 @@ public class PawnFX extends Circle
     return arr;
   }
 
+  /**
+   * Generowanie tablicy czarnych pionków.
+   * @param n liczba pionków
+   * @return tablica pionków
+   */
   public static PawnFX[] generateBlackPawns(int n)
   {
     PawnFX[] arr = new PawnFX[n];
@@ -75,6 +112,11 @@ public class PawnFX extends Circle
     return arr;
   }
 
+  /**
+   * Aktywacja pionków.
+   * @param pawns tablica pionków
+   * @param scene scena
+   */
   public static void activePawns(PawnFX[] pawns, Scene scene)
   {
     for (PawnFX pawn : pawns) 

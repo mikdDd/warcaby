@@ -18,6 +18,10 @@ import javafx.scene.text.Font;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+
+/**
+ * Klasa obsługująca scene menu.
+ */
 public class MenuScene extends SceneParent implements Runnable
 {
   VBox vbox;
@@ -27,6 +31,10 @@ public class MenuScene extends SceneParent implements Runnable
   Button game3Button;
   App app;
 
+  /**
+   * Konstruktor.
+   * @param a aplikacja
+   */
   MenuScene(App a)
   {
     app = a;
@@ -35,6 +43,9 @@ public class MenuScene extends SceneParent implements Runnable
     th.start();
   }
 
+  /**
+   * Ustawienie tekstu oczekiwania.
+   */
   public void waitingForPlayer()
   {
     waitLabel.setText("Waiting for another player");
@@ -44,6 +55,9 @@ public class MenuScene extends SceneParent implements Runnable
     game3Button.setDisable(true);
   }
 
+  /**
+   * Tworzenie sceny menu.
+   */
   public void run()
   {
     vbox = new VBox(HEIGHT/40);
