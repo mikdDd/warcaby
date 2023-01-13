@@ -3,7 +3,6 @@ import org.junit.Test;
 
 /**Klasa testujaca klase pionka.*/
 public class PawnTest {
-
   /**Test zmiany pozycji pionka.*/
   @Test(expected = IllegalArgumentException.class)
   public void changePositionTest() {

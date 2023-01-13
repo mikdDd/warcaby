@@ -2,7 +2,6 @@ import org.example.*;
 
 import java.util.Scanner;
 
-
 /**Klasa implementujaca konsolowa wersje gry w warcaby.
  * Przeznaczona do testow nie wykorzystujacych GUI
  *

@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 
 /**Klasa testujaca serwer.*/
 public class ServerTest {
-
   /**Metoda sprawdzajaca czy serwer nasluchuje na danym porcie
    * @param host nazwa hosta
    * @param port port serwera
