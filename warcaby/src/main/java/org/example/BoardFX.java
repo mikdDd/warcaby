@@ -11,6 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
+/**
+ * Klasa obługująca plansze do gry.
+ */
 public class BoardFX 
 {
   TileFX[][] tiles;
@@ -24,6 +27,14 @@ public class BoardFX
   int lastClickedX;
   int lastClickedY;
 
+  /**
+   * Konstruktor BoardFX
+   * @param size rozmiar pola planszy
+   * @param pawns liczba pionków jednego gracza
+   * @param player numer gracza
+   * @param pane gridPane do wyświetlania planszy
+   * @param bridge klasa do wysyłania i odbierania wiadomości
+   */
   BoardFX(int size, int pawns, int player, GridPane pane, Bridge bridge)
   {
     this.player = player;
@@ -35,6 +46,9 @@ public class BoardFX
     blackPawns = PawnFX.generateBlackPawns(pawns);
     addTilesToScene();
   }  
+  /**
+   * Dezaktywacja białych pionków.
+   */
   public void disableWhite()
   {
     for (PawnFX pawn : whitePawns) 
@@ -42,6 +56,9 @@ public class BoardFX
       pawn.setDisable(true);
     }
   }
+  /**
+   * Aktywacja biaych pionków.
+   */
   public void enableWhite()
   {
     for (PawnFX pawn : whitePawns) 
@@ -49,18 +66,29 @@ public class BoardFX
       pawn.setDisable(false);
     }
   }
+  /** 
+   * Dezaktywacja czarnych pionków.
+   */
   public void disableBlack()
   {
     for (PawnFX pawn : blackPawns) {
       pawn.setDisable(true);
     }
   }
+  /** 
+   * Aktywacja czarnych pionków.
+   */
   public void enableBlack()
   {
     for (PawnFX pawn : blackPawns) {
       pawn.setDisable(false);
     }
   }
+
+  /**
+   * Dezaktywacja wybranych pól.
+   * @param positionString pozycje pól do dezaktywacji
+   */
   public void disableTiles(String positionString)
   {
     int index = 0;
@@ -78,6 +106,11 @@ public class BoardFX
     tiles[lastClickedX][lastClickedY].setDisable(true);
     tiles[lastClickedX][lastClickedY].setFill(Color.SIENNA);
   }
+
+  /**
+   * Aktywacja wybranych pól.
+   * @param positionString pozycje pól do aktywacji
+   */
   public void enableTiles(String positionString)
   {
     int index = 0;
@@ -96,6 +129,10 @@ public class BoardFX
     tiles[lastClickedX][lastClickedY].setFill(Color.GREEN);
   }
   
+  /**
+   * Ustawienie pozycji pionków.
+   * @param positionString pozycje pionków
+   */
   public void setPosition(String positionString)
   {
     Platform.runLater(new Runnable() 
@@ -169,6 +206,10 @@ public class BoardFX
       }
       });
     }
+    /**
+     * Ustawienie eventów pionków i pól
+     * @param scene scena gry
+     */
   public void addEvents(Scene scene)
   {
     for (TileFX[] tileRow : tiles) 
@@ -253,6 +294,9 @@ public class BoardFX
     }
   }
 
+  /**
+   * Rysowanie pól planszy.
+   */
   private void addTilesToScene()
   {
     if(player == 1)
@@ -276,6 +320,10 @@ public class BoardFX
       }
     }
   }
+
+  /**
+   * Rysowanie białych i czarnych pionków.
+   */
   private void addPawnsToScene()
   {
     if (player == 1)
