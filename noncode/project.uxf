@@ -1,67 +1,376 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>516</x><y>688</y><w>224</w><h>56</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
-_GameFactory_
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>660</y>
+      <w>204</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>_Server_
 --
-+GameType createGameOfType(String gameType)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>4</x><y>688</y><w>168</w><h>56</h></coordinates><panel_attributes>_Server_
+-instance:Server
+-polishCheckersQueue:List&lt;Socket&gt;
+-englishCheckersQueue:List&lt;Socket&gt;
+-thaiCheckersQueue:List&lt;Socket&gt;
+-gameFactoryInterface:GameFactoryInterface
 --
--List&lt;Game&gt; gameList
---
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>84</x><y>856</y><w>168</w><h>56</h></coordinates><panel_attributes>_Client_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>396</x><y>704</y><w>136</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=1
-m2=1
-</panel_attributes><additional_attributes>150;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>732</x><y>704</y><w>120</w><h>32</h></coordinates><panel_attributes>lt=&lt;.
-</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>836</x><y>696</y><w>208</w><h>56</h></coordinates><panel_attributes>_ConcreteGameFactory_
---
-+GameType createGameOfType(String gameType)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>284</x><y>576</y><w>32</w><h>136</h></coordinates><panel_attributes>lt=-
+-Server()
++getInstance():Server
++runServer():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>756</y>
+      <w>24</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-
 m1=*
 m2=1
-</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>212</x><y>464</y><w>168</w><h>120</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
-_GameType_
+</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>306</x>
+      <y>690</y>
+      <w>174</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>270.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>156</x>
+      <y>684</y>
+      <w>156</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>_GameFactory_
 --
--Board board
---
-+startGame()
-+Board getBoard()
-+movePawn()
-+checkIfWon</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>488</y><w>160</w><h>24</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;180;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>516</x><y>552</y><w>168</w><h>56</h></coordinates><panel_attributes>_GameType1_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>512</y><w>160</w><h>80</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;180;80</additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>384</y><w>160</w><h>104</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;110;180;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>516</x><y>464</y><w>168</w><h>56</h></coordinates><panel_attributes>_GameType2
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>516</x><y>368</y><w>168</w><h>56</h></coordinates><panel_attributes>_GameType3_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1068</x><y>72</y><w>168</w><h>72</h></coordinates><panel_attributes>_Board1_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>676</x><y>376</y><w>136</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=1
++createGame(gameType:String):Game</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>222</x>
+      <y>408</y>
+      <w>24</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
 m2=1
-</panel_attributes><additional_attributes>150;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>676</x><y>480</y><w>128</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=1
-m2=1
-</panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>676</x><y>560</y><w>128</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=1
-m2=1
-</panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>892</x><y>208</y><w>192</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;220;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>796</x><y>360</y><w>168</w><h>80</h></coordinates><panel_attributes>_Board_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>788</x><y>456</y><w>168</w><h>80</h></coordinates><panel_attributes>_Board_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>788</x><y>544</y><w>168</w><h>64</h></coordinates><panel_attributes>_Board_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>716</x><y>0</y><w>584</w><h>344</h></coordinates><panel_attributes>Klasa Board</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>732</x><y>176</y><w>168</w><h>80</h></coordinates><panel_attributes>_Board_
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>168</x>
+      <y>312</y>
+      <w>174</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+_Game_
 --
-+List&lt;Pawn&gt; pawnsList
+movePawn(pawn:Pawn, x:int, y:int):void
+possibleMovesToString(pawn:Pawn):String
+getPawn(x:int, y:int):Pawn
+boardToString():String
+getBoardSize():int
+getPawnCount():int
+whichPlayerTurn():String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>402</y>
+      <w>252</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>_EnglishCheckers_
 --
-+move()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1068</x><y>160</y><w>168</w><h>80</h></coordinates><panel_attributes>_Board2_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>892</x><y>96</y><w>192</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;110;220;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1068</x><y>256</y><w>168</w><h>80</h></coordinates><panel_attributes>_Board3_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>892</x><y>232</y><w>192</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;220;70</additional_attributes></element><element><id>Relation</id><coordinates><x>804</x><y>96</y><w>32</w><h>96</h></coordinates><panel_attributes>lt=-
+--
++EnglishCheckers()
+#checkPawnPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#checkKingPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#canPawnCapture(pawn:Pawn):boolean
+#canKingCapture(pawn:Pawn):boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>324</y>
+      <w>246</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>_PolishCheckers_
+--
+--
++PolishCheckers()
+#checkPawnPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#checkKingPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#canPawnCapture(pawn:Pawn):boolean
+#canKingCapture(pawn:Pawn):boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>594</x>
+      <y>90</y>
+      <w>24</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-
 m1=1
 m2=*
-</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>740</x><y>40</y><w>168</w><h>64</h></coordinates><panel_attributes>_Pawn_
+</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>528</x>
+      <y>6</y>
+      <w>156</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>_Pawn_
 --
-#String position
-+boolean isActive
+-xPosition:int
+-yPosition:int
+-active:boolean
+-color:String
 --
-#changePosition()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>452</x><y>640</y><w>600</w><h>192</h></coordinates><panel_attributes>Wzorzec factory</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>84</x><y>992</y><w>168</w><h>56</h></coordinates><panel_attributes>_UserInterface_
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>164</x><y>904</y><w>32</w><h>104</h></coordinates><panel_attributes>lt=-
++Pawn(x:int, y:int, c:String)
++changePosition(x:int, y:int):void
++capture():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>666</x>
+      <y>828</y>
+      <w>300</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>_GameController_
+--
+-firstPlayer:Socket
+-secondPlayer:Socket
+-game:Game
+--
++GameController(firstPlayer:Socket, secondPlayer:Socket, game:Game)
++run():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>216</y>
+      <w>138</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>162</y>
+      <w>126</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+_Board_
+--
+-xSize:int
+-ySize:int
+-pawnCount:int
+-fields:Pawn[][]
+-pawnList:List&lt;Pawn&gt;
+--
++updateFields():void
+#setPawnList():void &lt;&lt;abstract&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>414</x>
+      <y>306</y>
+      <w>270</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+_GameTypeTemplate_
+--
+#board:Board
+#turn:String
+#xSize:int
+#ySize:int
+#pawnCount:int
+#multipleCapturePawn:Pawn
+#whoWon:String
+--
+-checkPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#playerPawnWithCaptureList(playerColor:String):List&lt;Pawn&gt;
++getPawn(x:int, y:int):Pawn
++boardToString():String
++getBoardSize():int
++getPawnCount():int
++whichPlayerTurn():String
++possibleMovesToString(pawn:Pawn):String
++coordsRelation(x:int, y:int, xPawn:int, yPawn:int):int[]
++movePawn(pawn:Pawn, x:int, y:int):void
+#canPlayerMove(color:String):boolean
+#changeTurn():void
+#checkKing():void
+
+#checkPawnPossibleMoves(pawn:Pawn):List&lt;Move&gt; &lt;&lt;abstract&gt;&gt;
+#checkKingPossibleMoves(pawn:Pawn):List&lt;Move&gt; &lt;&lt;abstract&gt;&gt;
+#canPawnCapture(pawn:Pawn):boolean &lt;&lt;abstract&gt;&gt;
+#canKingCapture(pawn:Pawn):boolean &lt;&lt;abstract&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>324</y>
+      <w>90</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>678</x>
+      <y>336</y>
+      <w>78</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>678</x>
+      <y>426</y>
+      <w>78</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>678</x>
+      <y>498</y>
+      <w>78</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>594</x>
+      <y>258</y>
+      <w>24</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-
 m1=1
 m2=1
-</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>236</x><y>696</y><w>168</w><h>56</h></coordinates><panel_attributes>_Game_
+</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>786</x>
+      <y>192</y>
+      <w>198</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>_DefaultBoard_
 --
--GameFactory gameFactory
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>164</x><y>704</y><w>88</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=*
++DefaultBoard(xSize:int, ySize:int, pawnCount:int)
+#setPawnList():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>486</y>
+      <w>252</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>_ThaiCheckers_
+--
+--
++ThaiCheckers()
+#checkPawnPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#checkKingPossibleMoves(pawn:Pawn):List&lt;Move&gt;
+#canPawnCapture(pawn:Pawn):boolean
+#canKingCapture(pawn:Pawn):boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>684</y>
+      <w>174</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+_GameFactoryInterface_
+--
+createGame(gameType:String):Game</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>636</x>
+      <y>702</y>
+      <w>132</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
 m2=1
-</panel_attributes><additional_attributes>10;20;90;20</additional_attributes></element></diagram>
+</panel_attributes>
+    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+</diagram>
